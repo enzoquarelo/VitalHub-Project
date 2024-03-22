@@ -58,8 +58,7 @@
               "RelativeToolTip": "WebAPI\\Interfaces\\IMedicoRepository.cs",
               "ViewState": "AQIAAAUAAAAAAAAAAAAxwBAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-21T12:04:57.638Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-21T12:04:57.638Z"
             },
             {
               "$type": "Document",
@@ -71,8 +70,7 @@
               "RelativeToolTip": "WebAPI\\Repositories\\PacienteRepository.cs",
               "ViewState": "AQIAABsAAAAAAAAAAAAqwD4AAAAeAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-21T12:02:30.588Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-21T12:02:30.588Z"
             },
             {
               "$type": "Document",
@@ -84,8 +82,7 @@
               "RelativeToolTip": "WebAPI\\Repositories\\MedicoRepository.cs",
               "ViewState": "AQIAACgAAAAAAAAAAAAnwC8AAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-21T12:02:16.651Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-21T12:02:16.651Z"
             },
             {
               "$type": "Document",
@@ -97,8 +94,7 @@
               "RelativeToolTip": "WebAPI\\Controllers\\PacientesController.cs",
               "ViewState": "AQIAAEMAAAAAAAAAAAAwwFMAAAA0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-21T12:01:07.09Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-21T12:01:07.09Z"
             },
             {
               "$type": "Document",
@@ -106,9 +102,9 @@
               "Title": "MedicoViewModel.cs",
               "DocumentMoniker": "C:\\Users\\47766876825\\Desktop\\VitalHub-Project\\WebAPI\\WebAPI\\ViewModels\\MedicoViewModel.cs",
               "RelativeDocumentMoniker": "WebAPI\\ViewModels\\MedicoViewModel.cs",
-              "ToolTip": "C:\\Users\\47766876825\\Desktop\\VitalHub-Project\\WebAPI\\WebAPI\\ViewModels\\MedicoViewModel.cs",
-              "RelativeToolTip": "WebAPI\\ViewModels\\MedicoViewModel.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
+              "ToolTip": "C:\\Users\\47766876825\\Desktop\\VitalHub-Project\\WebAPI\\WebAPI\\ViewModels\\MedicoViewModel.cs*",
+              "RelativeToolTip": "WebAPI\\ViewModels\\MedicoViewModel.cs*",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-21T11:56:26.007Z",
               "EditorCaption": ""
@@ -123,8 +119,7 @@
               "RelativeToolTip": "WebAPI\\Controllers\\MedicosController.cs",
               "ViewState": "AQIAACIAAAAAAAAAAAAuwDUAAAAuAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-21T11:20:27.611Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-21T11:20:27.611Z"
             },
             {
               "$type": "Document",
@@ -136,8 +131,7 @@
               "RelativeToolTip": "UpgradeLog.htm",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2024-03-22T10:52:43.061Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-22T10:52:43.061Z"
             },
             {
               "$type": "Document",
