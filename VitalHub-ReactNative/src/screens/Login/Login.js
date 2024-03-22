@@ -12,8 +12,24 @@ import { View, TouchableWithoutFeedback } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { StatusBar } from "expo-status-bar";
 
+import api from "../../service/service";
+
 
 export const Login = ({ navigation }) => {
+    const [email, setEmail] = useState('kamile.paciente@gmail.com');
+    const [senha, setSenha] = useState('paciente123');
+
+    async function Login() {
+        const response = await api.post('/Login', {
+            email: email,
+            senha: senha
+        })
+
+        console.log(response)
+
+        // navigation.navigate("Main")
+    }
+
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -30,10 +46,17 @@ export const Login = ({ navigation }) => {
             <Input
                 placeholder="Usuário ou E-mail"
                 style={{ marginBottom: 15, marginTop: 20 }}
+
+                value={email}
+                onChangeText={ (txt) => setEmail(txt)}
             />
+
             <Input
                 placeholder="Senha"
                 secureTextEntry={!showPassword}
+
+                value={senha}
+                onChangeText={ (txt) => setSenha(txt)}
             />
 
             <Container widthContainer={"88%"} heightContainer={"30px"} flexDirection={"row"} justifyContent={"start"} style={{marginLeft: 3}}>
@@ -66,7 +89,7 @@ export const Login = ({ navigation }) => {
 
             <Links style={{ marginTop: 8, marginBottom: 30, textAlign: 'start' }} onPress={() => { navigation.navigate("RecoverPassword") }}>Esqueceu a senha?</Links>
 
-            <CustomButton onPress={() => {navigation.navigate("Main")}}>
+            <CustomButton onPress={() => {Login()}}>
                 <TitleButton>ENTRAR</TitleButton>
             </CustomButton>
 
