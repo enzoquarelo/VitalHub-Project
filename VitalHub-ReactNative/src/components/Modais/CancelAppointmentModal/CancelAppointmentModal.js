@@ -20,13 +20,13 @@ export const CancelAppointmentModal = ({ visible, onClose }) => {
 
           <Title>Cancelar consulta</Title>
           
-          <DefaultText fontSize={18}>Ao cancelar essa consulta, abrirá uma possível disponibilidade no seu horário, deseja mesmo cancelar essa consulta?</DefaultText>
+          <DefaultText fontSize={16} widthText={"100%"}>Ao cancelar essa consulta, abrirá uma possível disponibilidade no seu horário, deseja mesmo cancelar essa consulta?</DefaultText>
           
           <CustomButton style={{marginTop: 15}}>
             <TitleButton>CONFIRMAR</TitleButton>
           </CustomButton>
 
-          <Links colorLink={'#496BBA'} fontLink={'MontserratAlternates_600SemiBold'} fontSize={16} style={{marginTop: 8}} onPress={() => onClose()}>Voltar</Links>
+          <Links colorLink={'#496BBA'} fontLink={'MontserratAlternates_600SemiBold'} fontSize={16} style={{marginTop: 12}} onPress={() => onClose()}>Voltar</Links>
 
         </ModalView>
       </ModalContainer>
