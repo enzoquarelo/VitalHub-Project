@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 
 import { StatusBar } from "expo-status-bar";
 import { ScrollView } from "react-native";
@@ -10,7 +10,36 @@ import { InputDisable, TitleInput } from "../../components/Input/styles"
 import { UserImage } from "./style";
 import { ButtonDisable, CustomButton, TitleButton } from "../../components/Button/styles";
 
+import { userDecodeToken } from "../../utils/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export const Profile = ({ navigation }) => {
+    const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+
+    async function profileLoad(){
+        const token = await userDecodeToken();
+
+        console.log(token)
+
+        const userNameToken = token.name;
+        const userEmailToken = token.email;
+        setUserName(userNameToken);
+        setUserEmail(userEmailToken);
+    }
+
+    async function deleteToken() {
+        await AsyncStorage.removeItem('token');
+
+        navigation.navigate("Login")
+
+        console.log(token)
+    }
+
+    useEffect(()=> {
+        profileLoad();
+    }, [])
+
     return (
         <ScrollView>
             <Container>
@@ -18,8 +47,8 @@ export const Profile = ({ navigation }) => {
 
                 <UserImage source={require('../../../assets/images/doctorImage_temp.png')} />
 
-                <Title style={{marginTop: 14}}>Nome do Usuário</Title>
-                <DefaultText fontSize={18}>email do usuário</DefaultText>
+                <Title style={{marginTop: 14}}>{userName}</Title>
+                <DefaultText fontSize={18}>{userEmail}</DefaultText>
 
                 <TitleInput style={{marginTop: 14, marginBottom: 5}}>Data de Nascimento</TitleInput>
                 <InputDisable
@@ -60,7 +89,7 @@ export const Profile = ({ navigation }) => {
                     <TitleButton>EDITAR</TitleButton>
                 </CustomButton>
 
-                <ButtonDisable widthButton={60} style={{marginTop: 20, marginBottom: 20}}>
+                <ButtonDisable widthButton={60} style={{marginTop: 20, marginBottom: 20}} onPress={() => {deleteToken()}}>
                     <TitleButton>SAIR DO APP</TitleButton>
                 </ButtonDisable>
             </Container>

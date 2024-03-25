@@ -12,12 +12,15 @@ import { View, TouchableWithoutFeedback } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { StatusBar } from "expo-status-bar";
 
+import { userDecodeToken } from "../../utils/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import api from "../../service/service";
 
 
 export const Login = ({ navigation }) => {
-    const [email, setEmail] = useState('kamile.paciente@gmail.com');
-    const [senha, setSenha] = useState('paciente123');
+    const [email, setEmail] = useState('carlos.medico@gmail.com');
+    const [senha, setSenha] = useState('medico123');
 
     async function Login() {
         try {
@@ -27,9 +30,12 @@ export const Login = ({ navigation }) => {
             });
 
             if (response.status === 200) {
+                const token = response.data.token;
+                await AsyncStorage.setItem("token", JSON.stringify(token));
+                
                 navigation.navigate("Main");
             } else {
-                alert('Login falhou. Por favor, verifique suas credenciais.');
+                alert('Login falhou');
             }
             
         } catch (error) {

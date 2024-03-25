@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Importe das Telas
-import SplashScreen from './src/screens/SplashScreen/SplashScreen';
+import { SplashScreen } from './src/screens/Splash/Splash';
 import { Login } from './src/screens/Login/Login';
 import { RecoverPassword } from './src/screens/RecoverPassword/RecoverPassword';
 import { VerifyEmail } from './src/screens/VerifyEmail/VerifyEmail';
