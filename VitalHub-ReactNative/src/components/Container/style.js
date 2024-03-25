@@ -13,7 +13,7 @@ export const Container = styled.View`
 `
 
 export const ContainerInputAndTitle = styled.View`
-    width: 144px;
+    width: 150px;
     height: 83px;
 
     display: flex;

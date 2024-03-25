@@ -20,14 +20,21 @@ export const Login = ({ navigation }) => {
     const [senha, setSenha] = useState('paciente123');
 
     async function Login() {
-        const response = await api.post('/Login', {
-            email: email,
-            senha: senha
-        })
+        try {
+            const response = await api.post('/Login', {
+                email: email,
+                senha: senha
+            });
 
-        console.log(response)
-
-        // navigation.navigate("Main")
+            if (response.status === 200) {
+                navigation.navigate("Main");
+            } else {
+                alert('Login falhou. Por favor, verifique suas credenciais.');
+            }
+            
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +45,7 @@ export const Login = ({ navigation }) => {
 
     return (
         <Container>
-            <StatusBar/>
+            <StatusBar />
             <Logo />
 
             <Title style={{ marginTop: 45 }}>Entrar ou criar conta</Title>
@@ -48,48 +55,34 @@ export const Login = ({ navigation }) => {
                 style={{ marginBottom: 15, marginTop: 20 }}
 
                 value={email}
-                onChangeText={ (txt) => setEmail(txt)}
+                onChangeText={(txt) => setEmail(txt)}
             />
 
-            <Input
-                placeholder="Senha"
-                secureTextEntry={!showPassword}
+            <Container heightContainer={"30px"} flexDirection={"row"} style={{marginBottom: 20, marginTop: 10}}>
+                <Input
+                    placeholder="Senha"
+                    secureTextEntry={!showPassword}
 
-                value={senha}
-                onChangeText={ (txt) => setSenha(txt)}
-            />
+                    value={senha}
+                    onChangeText={(txt) => setSenha(txt)}
+                />
 
-            <Container widthContainer={"88%"} heightContainer={"30px"} flexDirection={"row"} justifyContent={"start"} style={{marginLeft: 3}}>
                 <TouchableWithoutFeedback onPress={togglePasswordVisibility}>
-                    <View
+                    <AntDesign
+                        name={showPassword ? "eyeo" : "eye"}
+                        size={25}
+                        color="#34898F"
                         style={{
-                            width: 20,
-                            height: 20,
-                            backgroundColor: showPassword ? '#34898F' : 'transparent',
-                            borderWidth: showPassword ? 0 : 1,
-                            borderColor: showPassword ? '#34898F' : '#34898F',
-                            borderRadius: 5,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
+                            position: 'absolute',
+                            right: "10%",
                         }}
-                    >
-                        {showPassword && (
-                            <AntDesign
-                                name="check"
-                                size={14}
-                                color="white"
-                                style={{ alignSelf: 'center' }}
-                            />
-                        )}
-                    </View>
+                    />
                 </TouchableWithoutFeedback>
-                <DefaultText style={{marginLeft: 4}} fontSize={16} colorText={"#34898F"}>Mostrar Senha</DefaultText>
             </Container>
 
             <Links style={{ marginTop: 8, marginBottom: 30, textAlign: 'start' }} onPress={() => { navigation.navigate("RecoverPassword") }}>Esqueceu a senha?</Links>
 
-            <CustomButton onPress={() => {Login()}}>
+            <CustomButton onPress={() => { Login() }}>
                 <TitleButton>ENTRAR</TitleButton>
             </CustomButton>
 
@@ -100,7 +93,7 @@ export const Login = ({ navigation }) => {
 
             <Container style={{ marginTop: 10 }} widthContainer={"290px"} heightContainer={"30px"} flexDirection={"row"} justifyContent={"start"}>
                 <DefaultText fontFamily={"MontserratAlternates_600SemiBold"} fontSize={16} colorTxt={"#4E4B59"}>Não tem conta?</DefaultText>
-                <Links colorLink={"#496BBA"} fontLink={"MontserratAlternates_600SemiBold"} fontSize={16} onPress={() => { navigation.navigate("CreateAccount") }} style={{textAlign: 'start'}}>Crie uma conta agora!</Links>
+                <Links colorLink={"#496BBA"} fontLink={"MontserratAlternates_600SemiBold"} fontSize={16} onPress={() => { navigation.navigate("CreateAccount") }} style={{ textAlign: 'start' }}>Crie uma conta agora!</Links>
             </Container>
 
         </Container>
