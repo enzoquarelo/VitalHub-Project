@@ -25,6 +25,7 @@ export const Login = ({ navigation }) => {
     const [email, setEmail] = useState('carlos.medico@gmail.com');
     const [senha, setSenha] = useState('medico123');
 
+
     async function Login() {
         try {
             //chama afunção de login pela url da api
@@ -38,18 +39,30 @@ export const Login = ({ navigation }) => {
                 //guarda o token em um constante e depois da AsyncStorage
                 const token = response.data.token;
                 await AsyncStorage.setItem("token", JSON.stringify(token));
-                
+
                 //faz a navegação para a Main(Home)
                 navigation.navigate("Main");
             } else {
                 //futuramente fazer um texto para usuario ou senha invalido caso o login falhar
                 alert('Login falhou');
             }
-            
+
         } catch (error) {
             console.error(error);
         }
     }
+
+    const VerifyUser = () => {
+        if (textInput.trim() !== '') {
+            navigation.navigate("VerifyEmail");
+        } else {
+            setTextWarning("O campo acima não pode ser vazio!");
+
+            setTimeout(() => {
+                setTextWarning('');
+            }, 3000);
+        }
+    };
 
     //state e função para mostrar a senha
     const [showPassword, setShowPassword] = useState(false);
@@ -65,15 +78,25 @@ export const Login = ({ navigation }) => {
 
             <Title style={{ marginTop: 45 }}>Entrar ou criar conta</Title>
 
+            <DefaultText
+                fontSize={18}
+                colorText={"#C81D25"}
+                widthText={"90%"}
+                textAlign={"start"}
+                style={{ marginTop: 20 }}
+            >
+                Usuário o Senha inválidos !
+            </DefaultText>
+
             <Input
                 placeholder="Usuário ou E-mail"
-                style={{ marginBottom: 15, marginTop: 20 }}
+                style={{ marginBottom: 20 }}
 
                 value={email}
                 onChangeText={(txt) => setEmail(txt)}
             />
 
-            <Container heightContainer={"30px"} flexDirection={"row"} style={{marginBottom: 20, marginTop: 10}}>
+            <Container heightContainer={"30px"} flexDirection={"row"} style={{ marginBottom: 10 }}>
                 <Input
                     placeholder="Senha"
                     secureTextEntry={!showPassword}
@@ -95,7 +118,7 @@ export const Login = ({ navigation }) => {
                 </TouchableWithoutFeedback>
             </Container>
 
-            <Links style={{ marginTop: 8, marginBottom: 30, textAlign: 'start' }} onPress={() => { navigation.navigate("RecoverPassword") }}>Esqueceu a senha?</Links>
+            <Links style={{ marginTop: 8, marginBottom: 35, textAlign: 'start' }} onPress={() => { navigation.navigate("RecoverPassword") }}>Esqueceu a senha?</Links>
 
             <CustomButton onPress={() => { Login() }}>
                 <TitleButton>ENTRAR</TitleButton>
