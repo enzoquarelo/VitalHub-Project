@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const portaAPI = '4466';
 
 const ip = "172.16.39.100"

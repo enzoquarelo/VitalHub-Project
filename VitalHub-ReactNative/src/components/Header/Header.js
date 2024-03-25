@@ -1,25 +1,30 @@
+import { useEffect, useState } from 'react'
+import { HeaderContainer, HeaderUserProfile, HeaderUserProfileText, UserProfilePhotoHeaderContain } from './style'
+
 import { FontAwesome } from '@expo/vector-icons'
-import { HeaderContainer, HeaderUserProfile, HeaderUserProfileText } from './style'
+
+//import components
 import { DefaultText } from '../DefaultText/DefaultText'
 import { Title } from '../Title/style'
 
-import { UserProfilePhotoHeaderContain } from './style'
-
 import { userDecodeToken } from '../../utils/auth'
-import { useEffect, useState } from 'react'
+
 
 export const Header = ({imageHeader}) => {
+    //state para guardar e manipular o dado retirado do token
     const [userName, setUserName] = useState('');
 
     async function profileLoad(){
+        //chama a função da auth para termos os dados do token
         const token = await userDecodeToken();
 
-        console.log(token)
-
+        //pega e guarda o name retirado pelo token
         const userNameToken = token.name;
         setUserName(userNameToken);
     }
 
+
+    //chama o useEffect para que a função rode assim que a tela onde o componente se encontra for atualizada
     useEffect(()=> {
         profileLoad();
     }, [])

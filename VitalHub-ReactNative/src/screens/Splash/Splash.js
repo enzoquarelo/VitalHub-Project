@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
+//import bibliotecas
 import {
   View,
   Text,
@@ -10,6 +11,7 @@ import {
 import LottieView from "lottie-react-native";
 import { useNavigation } from "@react-navigation/native";
 
+//import components
 import splashjson from "./splashDoctor.json";
 import { Logo } from "../../components/Logo/Logo";
 

@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 
+//import dos components
 import { Container } from "../../components/Container/style"
 import { Logo } from "../../components/Logo/Logo";
 import { Title } from "../../components/Title/style";
@@ -8,13 +9,15 @@ import { Links } from "../../components/Links/style";
 import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { DefaultText } from "../../components/DefaultText/DefaultText";
 
+//imports de bibliotecas
 import { View, TouchableWithoutFeedback } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { StatusBar } from "expo-status-bar";
-
-import { userDecodeToken } from "../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { userDecodeToken } from "../../utils/auth";
+
+//import da api
 import api from "../../service/service";
 
 
@@ -24,17 +27,22 @@ export const Login = ({ navigation }) => {
 
     async function Login() {
         try {
+            //chama afunção de login pela url da api
             const response = await api.post('/Login', {
                 email: email,
                 senha: senha
             });
 
+            //valida se o método de login teve sucesso ou não
             if (response.status === 200) {
+                //guarda o token em um constante e depois da AsyncStorage
                 const token = response.data.token;
                 await AsyncStorage.setItem("token", JSON.stringify(token));
                 
+                //faz a navegação para a Main(Home)
                 navigation.navigate("Main");
             } else {
+                //futuramente fazer um texto para usuario ou senha invalido caso o login falhar
                 alert('Login falhou');
             }
             
@@ -43,6 +51,7 @@ export const Login = ({ navigation }) => {
         }
     }
 
+    //state e função para mostrar a senha
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {

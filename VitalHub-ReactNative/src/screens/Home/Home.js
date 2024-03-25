@@ -14,15 +14,17 @@ export const Home = ({ navigation }) => {
     const [selectedRealizadas, setSelectedRealizadas] = useState(false);
     const [selectedCanceladas, setSelectedCanceladas] = useState(false);
 
+    //state para guardar a role
     const [userRole, setUserRole] = useState('');
 
-    useEffect(() => {
-        async function loadUserRole() {
-            const token = await userDecodeToken();
-            const userRoleToken = token.role;
-            setUserRole(userRoleToken);
-        }
+    //função para pegar a role pelo token e guarda dentro do state
+    async function loadUserRole() {
+        const token = await userDecodeToken();
+        const userRoleToken = token.role;
+        setUserRole(userRoleToken);
+    }
 
+    useEffect(() => {
         loadUserRole();
     }, []);
 
@@ -46,6 +48,8 @@ export const Home = ({ navigation }) => {
         }
     };
 
+
+    //dependendo da role do usuário ele tera uma home diferente
     if (userRole === 'Medico') {
         return (
             <>

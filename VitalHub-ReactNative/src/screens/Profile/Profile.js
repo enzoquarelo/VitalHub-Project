@@ -14,13 +14,13 @@ import { userDecodeToken } from "../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Profile = ({ navigation }) => {
+    //state para guardar e manipular os dados
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
 
+    //função que captura e guarda o nome e email do usuário pelo token
     async function profileLoad(){
         const token = await userDecodeToken();
-
-        console.log(token)
 
         const userNameToken = token.name;
         const userEmailToken = token.email;
@@ -28,6 +28,7 @@ export const Profile = ({ navigation }) => {
         setUserEmail(userEmailToken);
     }
 
+    //função responsavél por deletar o token da AsyncStorage e retornar o usuário para a Login caso ele opte por sair do app
     async function deleteToken() {
         await AsyncStorage.removeItem('token');
 
