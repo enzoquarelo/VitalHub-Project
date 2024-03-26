@@ -1,6 +1,2 @@
-<<<<<<< HEAD
-# VitalHub-Project
+### VitalHub-Project
 
-=======
-## VitalHub-Project
->>>>>>> developer
