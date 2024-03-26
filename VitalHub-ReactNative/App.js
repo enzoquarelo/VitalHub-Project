@@ -14,6 +14,7 @@ import { NavigationScreen } from './src/screens/Navigation/NavigationScreen';
 import { AppointmentLocation } from './src/screens/AppointmentLocation/AppointmentLocation';
 import { ViewPrescription } from './src/screens/ViewPrescription/ViewPrescription';
 import { Profile } from './src/screens/Profile/Profile';
+import { CompleteDataProfile } from './src/screens/CompleteDataProfile/CompleteDataProfile';
 import { Main } from './src/screens/Main/Main';
 
 // Importe das Fontes
@@ -89,6 +90,12 @@ export default function App() {
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccount}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="CompleteDataProfile"
+          component={CompleteDataProfile}
           options={{ headerShown: false }}
         />
 

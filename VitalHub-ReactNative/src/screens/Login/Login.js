@@ -25,11 +25,18 @@ import { userDecodeToken } from "../../utils/auth";
 import api from "../../service/service";
 
 export const Login = ({ navigation }) => {
+<<<<<<< HEAD
   const [email, setEmail] = useState("carlos.medico@gmail.com");
   const [senha, setSenha] = useState("medico123");
 
   //const do Loading do botão Entrar
   const [isLoading, setIsLoading] = useState(false);
+=======
+    const [email, setEmail] = useState('carlos.medico@gmail.com');
+    const [senha, setSenha] = useState('medico123');
+
+    const [textWarning, setTextWarning] = useState('');
+>>>>>>> 3261828648eb72596704019643475acf0a045d07
 
   async function Login() {
     try {
@@ -38,6 +45,7 @@ export const Login = ({ navigation }) => {
       // Simula um atraso de 3 segundos antes de fazer o login
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
+<<<<<<< HEAD
       //chama afunção de login pela url da api
       const response = await api.post("/Login", {
         email: email,
@@ -60,6 +68,16 @@ export const Login = ({ navigation }) => {
       console.error(error);
     } finally {
       setIsLoading(false); // Define isLoading como false após o carregamento
+=======
+                //faz a navegação para a Main(Home)
+                navigation.navigate("Main");
+                setTextWarning('');
+            }
+
+        } catch (e) {
+            setTextWarning('Usuário o Senha inválidos !')
+        }
+>>>>>>> 3261828648eb72596704019643475acf0a045d07
     }
   }
 
@@ -77,6 +95,7 @@ export const Login = ({ navigation }) => {
 
       <Title style={{ marginTop: 45 }}>Entrar ou criar conta</Title>
 
+<<<<<<< HEAD
       <DefaultText
         fontSize={18}
         colorText={"#C81D25"}
@@ -86,6 +105,17 @@ export const Login = ({ navigation }) => {
       >
         Usuário o Senha inválidos !
       </DefaultText>
+=======
+            <DefaultText
+                fontSize={18}
+                colorText={"#C81D25"}
+                widthText={"90%"}
+                textAlign={"start"}
+                style={{ marginTop: 20 }}
+            >
+                {textWarning}
+            </DefaultText>
+>>>>>>> 3261828648eb72596704019643475acf0a045d07
 
       <Input
         placeholder="Usuário ou E-mail"
