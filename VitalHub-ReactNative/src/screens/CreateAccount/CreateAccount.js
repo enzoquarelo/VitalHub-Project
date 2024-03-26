@@ -35,7 +35,7 @@ export const CreateAccount = ({ navigation }) => {
                 style={{ marginBottom: 30 }}
             />
 
-            <CustomButton onPress={() => {navigation.replace("Login")}}>
+            <CustomButton onPress={() => {navigation.replace("CompleteDataProfile")}}>
                 <TitleButton>CADASTRAR</TitleButton>
             </CustomButton>
 

@@ -9,7 +9,6 @@ import { UserImage } from "../Profile/style";
 import { DefaultText } from "../../components/DefaultText/DefaultText"
 import { Input, TitleInput } from "../../components/Input/styles"
 import { ButtonDisable, CustomButton, TitleButton } from "../../components/Button/styles";
-import { ButtonNewImage } from "./style";
 
 import { userDecodeToken } from "../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,41 +25,41 @@ export const CompleteDataProfile = ({ navigation }) => {
 
                 <UserImage source={require('../../../assets/images/imageUser404.png')} style={{height: 275}} />
 
-                <Title style={{ marginTop: 14 }}>Nome do Usuário</Title>
-                <DefaultText fontSize={18}>Email do Usuário</DefaultText>
+                <Title style={{ marginTop: 14 }}>Complete seu Perfil</Title>
+                <DefaultText fontSize={18}>Preencha os campos com seus dados</DefaultText>
 
-                <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Data de Nascimento</TitleInput>
+                <TitleInput style={{ marginTop: 30, marginBottom: 5 }}>Data de Nascimento</TitleInput>
                 <Input
-                    placeholder="04/05/1999"
+                    placeholder="00/00/000"
                 />
 
                 <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>RG</TitleInput>
                 <Input
-                    placeholder="452******-*"
+                    placeholder="000******-*"
                 />
 
                 <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>CPF</TitleInput>
                 <Input
-                    placeholder="983******"
+                    placeholder="000******"
                 />
 
                 <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Endereço</TitleInput>
                 <Input
-                    placeholder="Rua Vicenso Silva, 987"
+                    placeholder="Nome da rua, N°"
                 />
 
                 <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14, marginBottom: 40 }}>
                     <ContainerInputAndTitle>
                         <TitleInput>CEP</TitleInput>
                         <Input
-                            placeholder="06548-909"
+                            placeholder="00000-000"
                         />
                     </ContainerInputAndTitle>
 
                     <ContainerInputAndTitle>
                         <TitleInput>Cidade</TitleInput>
                         <Input
-                            placeholder="Moema-SP"
+                            placeholder="Cidade"
                         />
                     </ContainerInputAndTitle>
                 </Container>
