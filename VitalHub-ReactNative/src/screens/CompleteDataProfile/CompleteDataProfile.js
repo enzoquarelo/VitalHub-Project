@@ -5,40 +5,18 @@ import { ScrollView } from "react-native";
 
 import { Container, ContainerInputAndTitle } from "../../components/Container/style"
 import { Title } from "../../components/Title/style"
+import { UserImage } from "../Profile/style";
 import { DefaultText } from "../../components/DefaultText/DefaultText"
-import { InputDisable, TitleInput } from "../../components/Input/styles"
-import { UserImage } from "./style";
+import { Input, TitleInput } from "../../components/Input/styles"
 import { ButtonDisable, CustomButton, TitleButton } from "../../components/Button/styles";
+import { ButtonNewImage } from "./style";
 
 import { userDecodeToken } from "../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const Profile = ({ navigation }) => {
-    //state para guardar e manipular os dados
-    const [userName, setUserName] = useState('');
-    const [userEmail, setUserEmail] = useState('');
-
-    //função que captura e guarda o nome e email do usuário pelo token
-    async function profileLoad() {
-        const token = await userDecodeToken();
-
-        const userNameToken = token.name;
-        const userEmailToken = token.email;
-        setUserName(userNameToken);
-        setUserEmail(userEmailToken);
-    }
-
-    //função responsavél por deletar o token da AsyncStorage e retornar o usuário para a Login caso ele opte por sair do app
-    async function deleteToken() {
-        await AsyncStorage.removeItem('token');
-
-        navigation.navigate("Login")
-
-        console.log(token)
-    }
-
+export const CompleteDataProfile = ({ navigation }) => {
     useEffect(() => {
-        profileLoad();
+
     }, [])
 
     return (
@@ -46,42 +24,42 @@ export const Profile = ({ navigation }) => {
             <Container>
                 <StatusBar style="light" />
 
-                <UserImage source={require('../../../assets/images/doctorImage_temp.png')} />
+                <UserImage source={require('../../../assets/images/imageUser404.png')} style={{height: 275}} />
 
-                <Title style={{ marginTop: 14 }}>{userName}</Title>
-                <DefaultText fontSize={18}>{userEmail}</DefaultText>
+                <Title style={{ marginTop: 14 }}>Nome do Usuário</Title>
+                <DefaultText fontSize={18}>Email do Usuário</DefaultText>
 
                 <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Data de Nascimento</TitleInput>
-                <InputDisable
+                <Input
                     placeholder="04/05/1999"
                 />
 
                 <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>RG</TitleInput>
-                <InputDisable
+                <Input
                     placeholder="452******-*"
                 />
 
                 <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>CPF</TitleInput>
-                <InputDisable
+                <Input
                     placeholder="983******"
                 />
 
                 <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Endereço</TitleInput>
-                <InputDisable
+                <Input
                     placeholder="Rua Vicenso Silva, 987"
                 />
 
                 <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14, marginBottom: 40 }}>
                     <ContainerInputAndTitle>
                         <TitleInput>CEP</TitleInput>
-                        <InputDisable
+                        <Input
                             placeholder="06548-909"
                         />
                     </ContainerInputAndTitle>
 
                     <ContainerInputAndTitle>
                         <TitleInput>Cidade</TitleInput>
-                        <InputDisable
+                        <Input
                             placeholder="Moema-SP"
                         />
                     </ContainerInputAndTitle>
@@ -90,14 +68,6 @@ export const Profile = ({ navigation }) => {
                 <CustomButton style={{ marginBottom: 20 }}>
                     <TitleButton>SALVAR</TitleButton>
                 </CustomButton>
-
-                <CustomButton>
-                    <TitleButton>EDITAR</TitleButton>
-                </CustomButton>
-
-                <ButtonDisable widthButton={60} style={{ marginTop: 20, marginBottom: 20 }} onPress={() => { deleteToken() }}>
-                    <TitleButton>SAIR DO APP</TitleButton>
-                </ButtonDisable>
             </Container>
         </ScrollView>
     );

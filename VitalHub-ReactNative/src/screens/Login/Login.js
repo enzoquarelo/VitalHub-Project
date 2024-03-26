@@ -24,8 +24,8 @@ import api from "../../service/service";
 export const Login = ({ navigation }) => {
     const [email, setEmail] = useState('carlos.medico@gmail.com');
     const [senha, setSenha] = useState('medico123');
-    
 
+    const [textWarning, setTextWarning] = useState('');
 
     async function Login() {
         try {
@@ -43,13 +43,11 @@ export const Login = ({ navigation }) => {
 
                 //faz a navegação para a Main(Home)
                 navigation.navigate("Main");
-            } else {
-                //futuramente fazer um texto para usuario ou senha invalido caso o login falhar
-                alert('Login falhou');
+                setTextWarning('');
             }
 
-        } catch (error) {
-            console.error(error);
+        } catch (e) {
+            setTextWarning('Usuário o Senha inválidos !')
         }
     }
 
@@ -74,7 +72,7 @@ export const Login = ({ navigation }) => {
                 textAlign={"start"}
                 style={{ marginTop: 20 }}
             >
-                Usuário o Senha inválidos !
+                {textWarning}
             </DefaultText>
 
             <Input
