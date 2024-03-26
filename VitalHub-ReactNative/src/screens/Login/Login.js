@@ -25,6 +25,7 @@ export const Login = ({ navigation }) => {
     const [email, setEmail] = useState('carlos.medico@gmail.com');
     const [senha, setSenha] = useState('medico123');
 
+    const [textWarning, setTextWarning] = useState('');
 
     async function Login() {
         try {
@@ -51,18 +52,6 @@ export const Login = ({ navigation }) => {
             console.error(error);
         }
     }
-
-    const VerifyUser = () => {
-        if (textInput.trim() !== '') {
-            navigation.navigate("VerifyEmail");
-        } else {
-            setTextWarning("O campo acima não pode ser vazio!");
-
-            setTimeout(() => {
-                setTextWarning('');
-            }, 3000);
-        }
-    };
 
     //state e função para mostrar a senha
     const [showPassword, setShowPassword] = useState(false);
