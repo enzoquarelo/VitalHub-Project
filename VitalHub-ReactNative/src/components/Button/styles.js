@@ -48,6 +48,7 @@ export const SelectableTitleButton = styled(TitleButton)`
 export const SelectableButtonAppointment = styled(CustomButton)`
     border-radius: 5px;
     border: 2px solid #60BFC5;
+    background-color: #FFFFFF;
 
     ${(props) => props.selected && `
         background-color: #60BFC5; 

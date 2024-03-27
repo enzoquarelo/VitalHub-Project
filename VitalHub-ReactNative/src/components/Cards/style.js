@@ -44,5 +44,6 @@ export const TimeTxt = styled.Text`
 
 export const ButtonLinkCancel = styled.TouchableOpacity`
     width: 40%;
-    padding: 5px;
+    height: 80%;
+    padding: 3px;
 `

@@ -26,7 +26,7 @@ VALUES
 	(NEWID(), '7CB21A7C-9451-4F29-A40B-9FED58D71865', 'Carlos Roque', 'carlos.roque@gmail.com', 'medico123', 'string'),
 	(NEWID(), '3179FF3C-B60C-421F-BABE-CA28910595A9', 'Enzo Quarelo', 'enzo.quarelo@gmail.com', 'paciente123', 'string');
 
-UPDATE dbo.Usuarios SET senha = '$2y$10$kZROpWHidaGEbQdfvq3SpeVPGiNcpLQHAOcENJbblYV0aAqXoHnYO' WHERE id = 'F63A83C9-35C7-4BDE-940D-5B07303D8F02';
+UPDATE dbo.Usuarios SET senha = '$2y$HbZmiMKGWHidaGEbQdfvq3SpeVPGiNcpLQHAOcENJbblYV0aAqXoHnYO' WHERE id = 'D3F52089-4621-4598-AEEC-B0E860F721FA';
 
 
 -- Selecionando todas as especialidades
