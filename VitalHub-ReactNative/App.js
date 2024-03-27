@@ -16,6 +16,7 @@ import { ViewPrescription } from './src/screens/ViewPrescription/ViewPrescriptio
 import { Profile } from './src/screens/Profile/Profile';
 import { CompleteDataProfile } from './src/screens/CompleteDataProfile/CompleteDataProfile';
 import { Main } from './src/screens/Main/Main';
+import { SelectClinic } from './src/screens/SelectClinic/SelectClinic';
 
 // Importe das Fontes
 import {
@@ -49,7 +50,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Navigator initialRouteName="SelectClinic">
 
         <Stack.Screen
           name="Main"
@@ -120,6 +121,12 @@ export default function App() {
         <Stack.Screen
           name="ViewPrescription"
           component={ViewPrescription}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="SelectClinic"
+          component={SelectClinic}
           options={{ headerShown: false }}
         />
 
