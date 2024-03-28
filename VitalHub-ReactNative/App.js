@@ -10,13 +10,13 @@ import { VerifyEmail } from './src/screens/VerifyEmail/VerifyEmail';
 import { RedefinePassword } from './src/screens/RedefinePassword/RedefinePassword';
 import { CreateAccount } from './src/screens/CreateAccount/CreateAccount';
 import { Home } from './src/screens/Home/Home';
-import { NavigationScreen } from './src/screens/Navigation/NavigationScreen';
 import { AppointmentLocation } from './src/screens/AppointmentLocation/AppointmentLocation';
 import { ViewPrescription } from './src/screens/ViewPrescription/ViewPrescription';
 import { Profile } from './src/screens/Profile/Profile';
 import { CompleteDataProfile } from './src/screens/CompleteDataProfile/CompleteDataProfile';
 import { Main } from './src/screens/Main/Main';
 import { SelectClinic } from './src/screens/SelectClinic/SelectClinic';
+import { SelectDoctor } from './src/screens/SelectDoctor/SelectDoctor';
 
 // Importe das Fontes
 import {
@@ -127,6 +127,12 @@ export default function App() {
         <Stack.Screen
           name="SelectClinic"
           component={SelectClinic}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="SelectDoctor"
+          component={SelectDoctor}
           options={{ headerShown: false }}
         />
 
