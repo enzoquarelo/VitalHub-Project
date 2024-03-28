@@ -19,6 +19,8 @@ export const QueryModalComponent = ({ visible, setShowModalQuery, ...rest }) => 
     };
     const onPressSelectClinic = () => {
         setShowModalQuery(false);
+
+        navigation.navigate('SelectClinic')
     }
 
     return (

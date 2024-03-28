@@ -6,7 +6,7 @@ import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { Links } from "../../components/Links/style";
 import { ClinicCard } from "../../components/ClinicCard/ClinicCard";
 
-export const SelectClinic = () => {
+export const SelectClinic = ({ navigation }) => {
 
     const clinicData = [
         { nameClinic: "Clínica Natureh", locate: " São Paulo, SP", assessment: "4,8", workingDays: "Seg-Sex" },
@@ -29,7 +29,7 @@ export const SelectClinic = () => {
                 />
             ))}
 
-            <CustomButton style={{marginTop: 50}}>
+            <CustomButton style={{marginTop: 50}} onPress={() => navigation.navigate("SelectDoctor")}>
                 <TitleButton>Continuar</TitleButton>
             </CustomButton>
 
@@ -37,6 +37,7 @@ export const SelectClinic = () => {
                 colorLink={'#344F8F'}
                 fontSize={18}
                 style={{ marginTop: 12 }}
+                onPress={() => navigation.navigate('Home')}
             >
                 Cancelar
             </Links>
