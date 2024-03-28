@@ -17,6 +17,7 @@ import { CompleteDataProfile } from './src/screens/CompleteDataProfile/CompleteD
 import { Main } from './src/screens/Main/Main';
 import { SelectClinic } from './src/screens/SelectClinic/SelectClinic';
 import { SelectDoctor } from './src/screens/SelectDoctor/SelectDoctor';
+import { SelectDate } from './src/screens/SelectDate/SelectDate';
 
 // Importe das Fontes
 import {
@@ -50,7 +51,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Navigator initialRouteName="SelectDate">
 
         <Stack.Screen
           name="Main"
@@ -133,6 +134,12 @@ export default function App() {
         <Stack.Screen
           name="SelectDoctor"
           component={SelectDoctor}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="SelectDate"
+          component={SelectDate}
           options={{ headerShown: false }}
         />
 
