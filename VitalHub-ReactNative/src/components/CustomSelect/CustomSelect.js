@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const CustomSelect = ({ data, placeholder, onSelect }) => {
- const [isOpen, setIsOpen] = useState(false);
- const [selectedItem, setSelectedItem] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
- const toggleOpen = () => setIsOpen(!isOpen);
+  const toggleOpen = () => setIsOpen(!isOpen);
 
- const handleSelect = (item) => {
+  const handleSelect = (item) => {
     setSelectedItem(item);
     onSelect(item);
     toggleOpen();
- };
+  };
 
- return (
+  return (
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleOpen} style={styles.selectButton}>
         <Text style={styles.selectButtonText}>
@@ -34,33 +34,26 @@ const CustomSelect = ({ data, placeholder, onSelect }) => {
         </View>
       )}
     </View>
- );
+  );
 };
 
 const styles = StyleSheet.create({
- container: {
-    width: '90%',
-    borderColor: '#34898F',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 20,
- },
- selectButton: {
+  selectButton: {
     // Estilos para o botão de seleção
- },
- selectButtonText: {
+  },
+  selectButtonText: {
     // Estilos para o texto do botão de seleção
- },
- optionsContainer: {
+  },
+  optionsContainer: {
     // Estilos para o contêiner das opções
- },
- option: {
-    // Estilos para cada opção
- },
- optionText: {
+  },
+  option: {
+    color: '#34898F',
+    fontSize: 16,
+  },
+  optionText: {
     // Estilos para o texto de cada opção
- },
+  },
 });
 
 export default CustomSelect;

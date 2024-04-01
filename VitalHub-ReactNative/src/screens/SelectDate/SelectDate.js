@@ -2,12 +2,13 @@ import { React, useState, useEffect } from "react";
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { SelectList } from "react-native-dropdown-select-list";
+import { FontAwesome } from '@expo/vector-icons';
+
 
 //import Components
 import { Container } from "../../components/Container/style";
 import { Title } from "../../components/Title/style";
 import { TextSelectDatelabel, ViewCalendar } from "./style";
-
 
 //import fonts
 import {
@@ -24,7 +25,7 @@ import { View } from "react-native";
 export const SelectDate = ({ navigation }) => {
     const [selected, setSelected] = useState("");
 
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState(null);
     const [subcategory, setSubCategory] = useState("");
 
     const categories = [
@@ -160,25 +161,39 @@ export const SelectDate = ({ navigation }) => {
                 />
             </ViewCalendar>
 
-            <View>
-                <SelectList
-                    setSelected={setCategory}
-                    data={categories}
-                    placeholder="Selecione o Horário"
-                    defaultOption={{ key: '9h', value: '09:00' }}
-                    style={{
-                        width: '90%', // Define a largura para 90% da tela
-                        borderColor: '#34898F', // Define a cor da borda
-                        borderWidth: 1, // Define a espessura da borda
-                        borderRadius: 5, // Define o raio da borda para arredondar os cantos
-                        padding: 10, // Adiciona um pouco de padding interno
-                        marginBottom: 20, // Adiciona um espaço abaixo do componente
-                    }}
-                    placeholderStyle={{
-                        color: '#34898F', // Define a cor do texto do placeholder
-                    }}
-                />
-            </View>
+            <SelectList
+                setSelected={setCategory}
+                data={categories}
+                placeholder="Selecione o Horário"
+                fontFamily="MontserratAlternates_600SemiBold"
+                boxStyles={{
+                    width: '90%',
+                    borderColor: '#34898F',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    padding: 10,
+                    display: 'flex',
+                    alignItems: 'center'
+                }}
+                dropdownStyles={{
+                    borderColor: '#34898F',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    padding: 10,
+                    display: 'flex',
+                    alignItems: 'start'
+                }}
+                inputStyles={{
+                    color: '#34898F',
+                    fontSize: 16,
+                }}
+                dropdownTextStyles={{
+                    color: '#34898F',
+                    fontSize: 16,
+                }}
+                arrowicon={<FontAwesome name="chevron-down" size={14} color={'#34898F'} />}
+                search={false}
+            />
         </Container>
     );
 };
