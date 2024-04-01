@@ -1,33 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Container } from "../../components/Container/style";
 import { Title } from "../../components/Title/style";
 import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { Links } from "../../components/Links/style";
 import { ClinicCard } from "../../components/ClinicCard/ClinicCard";
+import { ListComponent } from "../../components/List/List";
+
+import api from "../../service/service";
 
 export const SelectClinic = ({ navigation }) => {
 
-    const clinicData = [
-        { nameClinic: "Clínica Natureh", locate: " São Paulo, SP", assessment: "4,8", workingDays: "Seg-Sex" },
-        { nameClinic: "Diamond Pró-Mulher", locate: " São Paulo, SP", assessment: "4,5", workingDays: "Seg-Sex" },
-        { nameClinic: "Clinica Villa Lobos", locate: " Taboão, SP", assessment: "4,2", workingDays: "Seg-Sáb" },
-        { nameClinic: "SP Oncologia Clínica", locate: " Taboão, SP", assessment: "4,2", workingDays: "Seg-Sáb" },
-    ];
+    const [selectedClinicId, setSelectedClinicId] = useState(null);
+    const [clinicaLista, setclinicaLista] = useState([]);
+
+    const handleSelectClinic = (clinicId) => {
+        setSelectedClinicId(clinicId);
+      };
+    
+       useEffect(() => {
+           const listarClinicas = async () => {
+               try {
+                   const response = await api.get("/Clinica/ListarTodas");
+                   setclinicaLista(response.data);
+               } catch (error) {
+                   console.log(error);
+               }
+           };
+           listarClinicas();
+       }, []);
 
     return (
         <Container>
             <Title style={{paddingBottom: 50}}>Selecionar Clínica</Title>
 
-            {clinicData.map((data, index) => (
-                <ClinicCard
-                    key={index}
-                    nameClinic={data.nameClinic}
-                    locate={data.locate}
-                    assessment={data.assessment}
-                    workingDays={data.workingDays}
-                />
-            ))}
+            <ListComponent
+              data={clinicaLista}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                  <ClinicCard
+                      clinic={item}
+                      isSelected={item.id === selectedClinicId}
+                      onPressClinic={() => handleSelectClinic(item.id)}
+                      navigation={navigation} 
+                  />
+              )} // Verifica se é o primeiro item da lista
+          />
 
             <CustomButton style={{marginTop: 50}} onPress={() => navigation.navigate("SelectDoctor")}>
                 <TitleButton>Continuar</TitleButton>
