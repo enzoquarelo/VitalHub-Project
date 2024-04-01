@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Links = styled.Text`
     width: ${props => (props.widthLink ? props.widthLink + "%" : "88%")};
-    height: 40px;
+    height: 2dvb;
     text-align: center;
 
     font-size: ${props => (props.fontSize ? props.fontSize + "px" : "16px")};

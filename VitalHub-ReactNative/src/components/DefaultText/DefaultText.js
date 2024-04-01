@@ -7,5 +7,4 @@ export const DefaultText = styled.Text`
     text-align: ${(props) => props.textAlign ? props.textAlign : "center"};
 
     width: ${props => (props.widthText ? props.widthText : null)};
-
 `
