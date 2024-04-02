@@ -57,6 +57,7 @@ namespace WebAPI.Repositories
 
         }
 
+        
         public List<Medico> ListarTodos()
         {
             return ctx.Medicos.

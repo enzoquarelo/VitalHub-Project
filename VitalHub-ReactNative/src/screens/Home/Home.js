@@ -12,10 +12,18 @@ import { QueryModalComponent } from "../../components/Modais/QueryModal/QueryMod
 import { userDecodeToken } from "../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const Home = ({ navigation }) => {
+import moment from "moment";
+
+import api from '../../service/service'
+
+export const Home = ({ navigation,  appointments}) => {
     const [selectedAgendadas, setSelectedAgendadas] = useState(true);
     const [selectedRealizadas, setSelectedRealizadas] = useState(false);
     const [selectedCanceladas, setSelectedCanceladas] = useState(false);
+    
+    const [dataConsulta, setDataConsulta] = useState('');
+    const [consultas, setConsultas] = useState([]);
+    
 
     const [showModalQuery, setShowModalQuery] = useState(false);
 
@@ -29,9 +37,49 @@ export const Home = ({ navigation }) => {
         setUserRole(userRoleToken);
     }
 
+
+     // Função para listar as consultas com base na data selecionada
+     async function ListarConsultas() {
+        try {
+            // Chamada para a API para obter as consultas com base na data
+            const response = await api.get(`/consultas?data=${dataConsulta}`);
+            // Atualiza o estado das consultas com os dados obtidos da API
+            setConsultas(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Efeito para chamar ListarConsultas sempre que a data selecionada mudar
+    useEffect(() => {
+        if (dataConsulta !== '') {
+            ListarConsultas();
+        }
+    }, [dataConsulta]);
+
+  
+    // async function ListarConsultas() {
+    //     const url = (profile.role == 'Medico' ? 'Medicos' : 'Pacientes')
+    //     await api.get(`/${url}/BuscarPorData?data=${dataConsulta}gid=${profile.user}`)
+    //     .then(response => {
+    //         setConsultas(response.data)
+    //     }).catch (error => {
+
+    //     })
+    // }
+
+    // useEffect(() => {
+    //     if (dataConsulta != '') {
+    //         ListarConsultas();
+    //     }
+        
+    // }, [dataConsulta]);
+
     useEffect(() => {
         loadUserRole();
     }, []);
+
+
 
     const handleButtonClick = (buttonName) => {
         setSelectedAgendadas(false);
@@ -62,7 +110,7 @@ export const Home = ({ navigation }) => {
                     <StatusBar style="light" />
                     <Header imageHeader="https://avatars.githubusercontent.com/u/29419052?v=4" profileName="Dr. Eduardo" />
 
-                    <CalendarHome />
+                    <CalendarHome onDateSelected={setdataConsulta} />
                     <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-around"}>
                         <SelectableButton
                             widthButton={28}
@@ -118,7 +166,7 @@ export const Home = ({ navigation }) => {
                     <StatusBar style="light" />
                     <Header imageHeader="https://avatars.githubusercontent.com/u/29419052?v=4" profileName="Dr. Eduardo" />
 
-                    <CalendarHome />
+                    <CalendarHome setDataConsulta={setDataConsulta} />
                     <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-around"}>
                         <SelectableButton
                             widthButton={28}
@@ -163,7 +211,7 @@ export const Home = ({ navigation }) => {
                         </SelectableButton>
                     </Container>
 
-                    <Cards />
+                    <Cards dataConsulta={dataConsulta} appointments={appointments} />
 
                     <ScheduleAppointment
                         onPress={() => {

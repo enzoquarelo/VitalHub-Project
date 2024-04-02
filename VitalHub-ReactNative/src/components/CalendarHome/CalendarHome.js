@@ -10,7 +10,13 @@ import { StyledCalendarStrip } from './style';
 import { useFonts, MontserratAlternates_600SemiBold } from '@expo-google-fonts/montserrat-alternates';
 
 //component CalendarHome
-const CalendarHome = () => {
+const CalendarHome = ({ setDataConsulta }) => {
+  
+   // Função para lidar com a seleção de data
+   const handleDateSelected = (date) => {
+    // Usando setDataConsulta para definir a data selecionada
+    setDataConsulta(date);
+};
 
   //hook useFonts
   const [fontsLoaded, fontsError] = useFonts({
@@ -59,6 +65,9 @@ const CalendarHome = () => {
   //retorna o componente StyleCalendarStrip
   return (
     <StyledCalendarStrip
+    onDateSelected={handleDateSelected}
+    // onDateSelected={date => setDataConsulta(moment(date).format('yyyy-MM-DD'))}
+
       // animação e seleção de cada data
       calendarAnimation={{ type: "sequence", duration: 30 }}
       daySelectionAnimation={ styles.selectedAnimationStyle }
@@ -66,6 +75,8 @@ const CalendarHome = () => {
       // seta esquerda e direita para avançar e voltar(aqui como display none)
       iconLeftStyle={styles.iconsStyle}
       iconRightStyle={styles.iconsStyle}
+
+      
 
       // deixa uma marcação default - data atual
       selectedDate={currentDate}
