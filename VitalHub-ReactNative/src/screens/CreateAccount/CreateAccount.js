@@ -68,6 +68,7 @@ export const CreateAccount = ({ navigation }) => {
             >
                 {textWarning}
             </DefaultText>
+            
             <Input
                 placeholder="Email"
                 value={email}
