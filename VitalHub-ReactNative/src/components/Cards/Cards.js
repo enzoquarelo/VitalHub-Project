@@ -10,7 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import api from "../../service/service"
 
-export const Cards = ({ imageHeader, profileName, profileData, appointmentHour }) => {
+export const Cards = ({ imageHeader, profileName, profileData, appointmentHour,onCardPress }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const handleCancelPress = () => {
@@ -23,7 +23,7 @@ export const Cards = ({ imageHeader, profileName, profileData, appointmentHour }
 
     return (
         <>
-            <CardContainer>
+            <CardContainer onPress={onCardPress}>
                 <ImagePerson source={{ uri: imageHeader }} />
                 <Container widthContainer={'65%'} heightContainer={80}>
 
