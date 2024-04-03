@@ -11,9 +11,6 @@ import {
 } from "./style";
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
-
-
-
 export const ClinicCard = ({ clinic, locate, assessment, workingDays }) => {
     return (
         <ContainerClinicCard>

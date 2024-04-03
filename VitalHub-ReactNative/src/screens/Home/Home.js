@@ -10,7 +10,6 @@ import { ScheduleAppointment } from "../../components/ScheduleAppointment/Schedu
 import { QueryModalComponent } from "../../components/Modais/QueryModal/QueryModal";
 
 import { userDecodeToken } from "../../utils/auth";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import moment from "moment";
 
@@ -20,15 +19,19 @@ export const Home = ({ navigation,  appointments}) => {
     const [selectedAgendadas, setSelectedAgendadas] = useState(true);
     const [selectedRealizadas, setSelectedRealizadas] = useState(false);
     const [selectedCanceladas, setSelectedCanceladas] = useState(false);
+
+    const [diaSelecionado, setDiaSelecionado] = useState(moment().format(""));
+    const [consultas, setConsultas] = useState([]);
+    const [idEncontrado, setIdEncontrado] = useState("");
     
     const [dataConsulta, setDataConsulta] = useState('');
-    const [consultas, setConsultas] = useState([]);
-    
 
     const [showModalQuery, setShowModalQuery] = useState(false);
 
     //state para guardar a role
     const [userRole, setUserRole] = useState('');
+
+    const [consultaSelecionada, setConsultaSelecionada] = useState('');
 
     //função para pegar a role pelo token e guarda dentro do state
     async function loadUserRole() {
@@ -38,48 +41,39 @@ export const Home = ({ navigation,  appointments}) => {
     }
 
 
-     // Função para listar as consultas com base na data selecionada
-     async function ListarConsultas() {
-        try {
-            // Chamada para a API para obter as consultas com base na data
-            const response = await api.get(`/consultas?data=${dataConsulta}`);
-            // Atualiza o estado das consultas com os dados obtidos da API
-            setConsultas(response.data);
-        } catch (error) {
-            console.error(error);
-        }
+    async function ListarConsulta() {
+        const token = await userDecodeToken();
+        const userRoleToken = token.role;
+        const userId = token.jti;
+
+        const url = (userRoleToken === "Medico" ? "Medicos" : "Pacientes");
+
+        await api.get(`/${url}/BuscarPorData?data=${diaSelecionado}&id=${userId}`)
+            .then(response => {
+                setConsultas(response.data);
+                console.log("consultas, exito:");
+                console.log(response.data);
+            }).catch(error => {
+                console.log("consultas, erro:");
+                console.log(error);
+            });
     }
-
-    // Efeito para chamar ListarConsultas sempre que a data selecionada mudar
-    useEffect(() => {
-        if (dataConsulta !== '') {
-            ListarConsultas();
-        }
-    }, [dataConsulta]);
-
-  
-    // async function ListarConsultas() {
-    //     const url = (profile.role == 'Medico' ? 'Medicos' : 'Pacientes')
-    //     await api.get(`/${url}/BuscarPorData?data=${dataConsulta}gid=${profile.user}`)
-    //     .then(response => {
-    //         setConsultas(response.data)
-    //     }).catch (error => {
-
-    //     })
-    // }
-
-    // useEffect(() => {
-    //     if (dataConsulta != '') {
-    //         ListarConsultas();
-    //     }
-        
-    // }, [dataConsulta]);
 
     useEffect(() => {
         loadUserRole();
     }, []);
 
+    useEffect(() => {
+        ListarConsulta();   
+    }, [diaSelecionado]);
 
+    function MostrarModal(modal, consulta ) {
+        if(modal == 'cancelar') {
+            setSelectedCanceladas(true)
+
+            setConsultaSelecionada(consulta)
+        }
+    }
 
     const handleButtonClick = (buttonName) => {
         setSelectedAgendadas(false);
@@ -110,7 +104,7 @@ export const Home = ({ navigation,  appointments}) => {
                     <StatusBar style="light" />
                     <Header imageHeader="https://avatars.githubusercontent.com/u/29419052?v=4" profileName="Dr. Eduardo" />
 
-                    <CalendarHome onDateSelected={setdataConsulta} />
+                    <CalendarHome setDiaSelecionado={setDiaSelecionado} />
                     <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-around"}>
                         <SelectableButton
                             widthButton={28}
@@ -166,7 +160,7 @@ export const Home = ({ navigation,  appointments}) => {
                     <StatusBar style="light" />
                     <Header imageHeader="https://avatars.githubusercontent.com/u/29419052?v=4" profileName="Dr. Eduardo" />
 
-                    <CalendarHome setDataConsulta={setDataConsulta} />
+                    <CalendarHome setDiaSelecionado={setDiaSelecionado} />
                     <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-around"}>
                         <SelectableButton
                             widthButton={28}
@@ -211,7 +205,23 @@ export const Home = ({ navigation,  appointments}) => {
                         </SelectableButton>
                     </Container>
 
-                    <Cards dataConsulta={dataConsulta} appointments={appointments} />
+                    {consultas.map((consulta, index) => {
+
+                        const crmDoctor = consulta.medicoClinica.medico.crm;
+        
+                        return (
+                            <Cards
+                                key={index}
+                                imageHeader={'imageHeader'} 
+                                profileName={consulta.paciente.idNavigation.nome} 
+                                profileData={`CRM ${crmDoctor} `} 
+                                appointmentHour={moment(consulta.dataConsulta).format('HH:mm')} 
+
+                                onConnectCancelar={() => MostrarModal("cancelar", item)}
+                                onConnectAppointment={() => MostrarModal("prontuario", item)}
+                            />
+                        );
+                    })}
 
                     <ScheduleAppointment
                         onPress={() => {

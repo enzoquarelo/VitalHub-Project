@@ -7,7 +7,13 @@ import {
     ImageDoctor
 } from "./style";
 
+import api from "../../service/service"
+import axios from "axios";
+
 export const DoctorCard = ({ nameDoctor, aboutDoctor, imageDoctor }) => {
+
+    
+    
     return (
         <ContainerDoctorCard>
             <ContainerTextCard>
