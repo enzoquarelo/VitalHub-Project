@@ -149,7 +149,7 @@ export const Home = ({ navigation }) => {
                                 profileName={consulta.paciente.idNavigation.nome}
                                 profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
                                 appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
-                                
+
                                 onCardPress={() => setShowPrescription(true)}
                             />
                         );
@@ -158,7 +158,7 @@ export const Home = ({ navigation }) => {
                     <PrescriptionModal
                         visible={showModalPrescription}
                         setShowPrescription={setShowPrescription}
-                        
+
                         onPressClose={() => setShowPrescription(false)}
                     />
 
@@ -218,7 +218,23 @@ export const Home = ({ navigation }) => {
                         </SelectableButton>
                     </Container>
 
-                    <Cards />
+                    {consultas.map((consulta, index) => {
+
+                        const crmDoctor = consulta.medicoClinica.medico.crm;
+                        const doctorName = consulta.medicoClinica.medico.idNavigation.nome
+
+                        return (
+                            <Cards
+                                key={index}
+                                imageHeader={'imageHeader'}
+                                profileName={`Dr(a) ${doctorName}`}
+                                profileData={`CRM ${crmDoctor} `}
+                                appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+
+                                onCardPress={() => setShowPrescription(true)}
+                            />
+                        );
+                    })}
 
                     <ScheduleAppointment
                         onPress={() => {
@@ -234,6 +250,8 @@ export const Home = ({ navigation }) => {
                     <PrescriptionModal
                         visible={showModalPrescription}
                         setShowPrescription={setShowPrescription}
+
+                        onPressClose={() => setShowPrescription(false)}
                     />
 
                 </Container>
