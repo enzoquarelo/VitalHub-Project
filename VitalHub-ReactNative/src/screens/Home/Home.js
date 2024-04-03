@@ -8,9 +8,12 @@ import { Cards } from "../../components/Cards/Cards";
 import { ScheduleAppointment } from "../../components/ScheduleAppointment/ScheduleAppointment";
 
 import { QueryModalComponent } from "../../components/Modais/QueryModal/QueryModal";
+import { PrescriptionModal } from "../../components/Modais/PrescriptionModal/PrescriptionModal";
 
 import { userDecodeToken } from "../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from "moment"
+import api from "../../service/service"
 
 export const Home = ({ navigation }) => {
     const [selectedAgendadas, setSelectedAgendadas] = useState(true);
@@ -18,9 +21,14 @@ export const Home = ({ navigation }) => {
     const [selectedCanceladas, setSelectedCanceladas] = useState(false);
 
     const [showModalQuery, setShowModalQuery] = useState(false);
+    const [showModalPrescription, setShowPrescription] = useState(false);
 
     //state para guardar a role
     const [userRole, setUserRole] = useState('');
+
+    const [diaSelecionado, setDiaSelecionado] = useState(moment().format(""));
+    const [consultas, setConsultas] = useState([]);
+    const [idEncontrado, setIdEncontrado] = useState("");
 
     //função para pegar a role pelo token e guarda dentro do state
     async function loadUserRole() {
@@ -29,9 +37,32 @@ export const Home = ({ navigation }) => {
         setUserRole(userRoleToken);
     }
 
+    async function ListarConsulta() {
+        const token = await userDecodeToken();
+        const userRoleToken = token.role;
+        const userId = token.jti;
+
+        const url = (userRoleToken === "Medico" ? "Medicos" : "Pacientes");
+
+        await api.get(`/${url}/BuscarPorData?data=${diaSelecionado}&id=${userId}`)
+            .then(response => {
+                setConsultas(response.data);
+                console.log("consultas, exito:");
+                console.log(response.data);
+            }).catch(error => {
+                console.log("consultas, erro:");
+                console.log(error);
+            });
+    }
+
+
+
     useEffect(() => {
         loadUserRole();
-    }, []);
+    }, [])
+    useEffect(() => {
+        ListarConsulta();
+    }, [diaSelecionado])
 
     const handleButtonClick = (buttonName) => {
         setSelectedAgendadas(false);
@@ -62,7 +93,7 @@ export const Home = ({ navigation }) => {
                     <StatusBar style="light" />
                     <Header imageHeader="https://avatars.githubusercontent.com/u/29419052?v=4" profileName="Dr. Eduardo" />
 
-                    <CalendarHome />
+                    <CalendarHome setDiaSelecionado={setDiaSelecionado} />
                     <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-around"}>
                         <SelectableButton
                             widthButton={28}
@@ -107,7 +138,30 @@ export const Home = ({ navigation }) => {
                         </SelectableButton>
                     </Container>
 
-                    <Cards />
+                    {consultas.map((consulta, index) => {
+                        const idadePaciente = moment().diff(consulta.paciente.dataNascimento, 'years');
+                        const situacaoConsulta = consulta.situacao.situacao;
+
+                        return (
+                            <Cards
+                                key={index}
+                                imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
+                                profileName={consulta.paciente.idNavigation.nome}
+                                profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
+                                appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                
+                                onCardPress={() => setShowPrescription(true)}
+                            />
+                        );
+                    })}
+
+                    <PrescriptionModal
+                        visible={showModalPrescription}
+                        setShowPrescription={setShowPrescription}
+                        
+                        onPressClose={() => setShowPrescription(false)}
+                    />
+
                 </Container>
             </>
         );
@@ -118,7 +172,8 @@ export const Home = ({ navigation }) => {
                     <StatusBar style="light" />
                     <Header imageHeader="https://avatars.githubusercontent.com/u/29419052?v=4" profileName="Dr. Eduardo" />
 
-                    <CalendarHome />
+                    <CalendarHome setDiaSelecionado={setDiaSelecionado} />
+
                     <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-around"}>
                         <SelectableButton
                             widthButton={28}
@@ -174,6 +229,11 @@ export const Home = ({ navigation }) => {
                     <QueryModalComponent
                         visible={showModalQuery}
                         setShowModalQuery={setShowModalQuery}
+                    />
+
+                    <PrescriptionModal
+                        visible={showModalPrescription}
+                        setShowPrescription={setShowPrescription}
                     />
 
                 </Container>

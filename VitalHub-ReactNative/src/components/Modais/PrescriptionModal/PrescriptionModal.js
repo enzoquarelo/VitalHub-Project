@@ -7,13 +7,13 @@ import { DefaultText } from "../../DefaultText/DefaultText"
 import { CustomButton, TitleButton } from "../../Button/styles"
 import { Links } from "../../Links/style"
 
-export const PrescriptionModal = ({ visible, onClose }) => {
+export const PrescriptionModal = ({ visible, onPressClose }) => {
  return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={visible}
-      onRequestClose={onClose}
+      onRequestClose={onPressClose}
     >
       <ModalContainer>
         <ModalView>
@@ -26,7 +26,7 @@ export const PrescriptionModal = ({ visible, onClose }) => {
             <TitleButton>Inserir Prontuário</TitleButton>
           </CustomButton>
 
-          <Links colorLink={'#496BBA'} fontLink={'MontserratAlternates_600SemiBold'} fontSize={16} style={{marginTop: 12}} onPress={() => onClose()}>Cancelar</Links>
+          <Links colorLink={'#496BBA'} fontLink={'MontserratAlternates_600SemiBold'} fontSize={16} style={{marginTop: 12}} onPress={onPressClose}>Cancelar</Links>
 
         </ModalView>
       </ModalContainer>
