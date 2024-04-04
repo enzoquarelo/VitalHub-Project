@@ -23,14 +23,12 @@ export const Home = ({ navigation }) => {
     const [showModalQuery, setShowModalQuery] = useState(false);
     const [showModalPrescription, setShowPrescription] = useState(false);
 
-    //state para guardar a role
     const [userRole, setUserRole] = useState('');
 
     const [diaSelecionado, setDiaSelecionado] = useState(moment().format(""));
     const [consultas, setConsultas] = useState([]);
-    const [idEncontrado, setIdEncontrado] = useState("");
+    const [consultaSelecionada, setConsultaSelecionada] = useState(null); // Adicionado para armazenar a consulta selecionada
 
-    //função para pegar a role pelo token e guarda dentro do state
     async function loadUserRole() {
         const token = await userDecodeToken();
         const userRoleToken = token.role;
@@ -47,15 +45,10 @@ export const Home = ({ navigation }) => {
         await api.get(`/${url}/BuscarPorData?data=${diaSelecionado}&id=${userId}`)
             .then(response => {
                 setConsultas(response.data);
-                console.log("consultas, exito:");
-                console.log(response.data);
             }).catch(error => {
-                console.log("consultas, erro:");
                 console.log(error);
             });
     }
-
-
 
     useEffect(() => {
         loadUserRole();
@@ -84,8 +77,11 @@ export const Home = ({ navigation }) => {
         }
     };
 
+    const handleCardPress = (consulta) => {
+        setConsultaSelecionada(consulta); // Atualiza a consulta selecionada
+        setShowPrescription(true); // Mostra o modal de prescrição
+    };
 
-    //dependendo da role do usuário ele tera uma home diferente
     if (userRole === 'Medico') {
         return (
             <>
@@ -149,8 +145,7 @@ export const Home = ({ navigation }) => {
                                 profileName={consulta.paciente.idNavigation.nome}
                                 profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
                                 appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
-
-                                onCardPress={() => setShowPrescription(true)}
+                                onCardPress={() => handleCardPress(consulta)}
                             />
                         );
                     })}
@@ -158,11 +153,10 @@ export const Home = ({ navigation }) => {
                     <PrescriptionModal
                         visible={showModalPrescription}
                         setShowPrescription={setShowPrescription}
-
                         onPressClose={() => setShowPrescription(false)}
-                        userRole={userRole} 
+                        userRole={userRole}
+                        consulta={consultaSelecionada} // Passa a consulta selecionada para o modal
                     />
-
                 </Container>
             </>
         );
@@ -220,19 +214,17 @@ export const Home = ({ navigation }) => {
                     </Container>
 
                     {consultas.map((consulta, index) => {
-
                         const crmDoctor = consulta.medicoClinica.medico.crm;
-                        const doctorName = consulta.medicoClinica.medico.idNavigation.nome
+                        const doctorName = consulta.medicoClinica.medico.idNavigation.nome;
 
                         return (
                             <Cards
                                 key={index}
-                                imageHeader={'imageHeader'}
+                                imageHeader={'imageHeader'} // Substitua 'imageHeader' pela imagem real do médico, se disponível
                                 profileName={`Dr(a) ${doctorName}`}
                                 profileData={`CRM ${crmDoctor} `}
                                 appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
-
-                                onCardPress={() => setShowPrescription(true)}
+                                onCardPress={() => handleCardPress(consulta)}
                             />
                         );
                     })}
@@ -251,9 +243,12 @@ export const Home = ({ navigation }) => {
                     <PrescriptionModal
                         visible={showModalPrescription}
                         setShowPrescription={setShowPrescription}
-
                         onPressClose={() => setShowPrescription(false)}
-                        userRole={userRole} 
+                        userRole={userRole}
+                        doctorCRM={consultaSelecionada?.medicoClinica?.medico?.crm}
+                        specialtyName={consultaSelecionada?.medicoClinica?.medico?.especialidade?.especialidade1}
+                        doctorName={consultaSelecionada?.medicoClinica?.medico?.idNavigation?.nome}
+                        consulta={consultaSelecionada}
                     />
 
                 </Container>

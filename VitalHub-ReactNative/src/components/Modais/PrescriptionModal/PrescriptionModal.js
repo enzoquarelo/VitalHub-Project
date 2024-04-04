@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Text, View, TouchableOpacity } from 'react-native';
-import { ModalContainer, ModalView } from './style';
+import { Modal } from 'react-native';
+
+import { ModalContainer, ModalView, UserImage } from './style';
 
 import { Title } from "../../Title/style"
 import { DefaultText } from "../../DefaultText/DefaultText"
 import { CustomButton, TitleButton } from "../../Button/styles"
 import { Links } from "../../Links/style"
 
-import { userDecodedToken } from "../../../utils/auth"
-import api from "../../../service/service"
-
 import { useNavigation } from '@react-navigation/native';
 
-export const PrescriptionModal = ({ visible, onPressClose, userRole }) => {
+export const PrescriptionModal = ({ visible, onPressClose, userRole, doctorCRM, specialtyName, doctorName }) => {
 
   const navigation = useNavigation();
+
+  async function handleClose(screen) {
+    onPressClose();
+
+    navigation.replace("AppointmentLocation");
+  };
 
 
   if (userRole === "Medico") {
@@ -51,15 +55,19 @@ export const PrescriptionModal = ({ visible, onPressClose, userRole }) => {
         visible={visible}
         onRequestClose={onPressClose}
       >
+
         <ModalContainer>
           <ModalView>
 
-            <Title>Nome Usuário</Title>
+            <UserImage source={require('../../../../assets/images/doctorImage_temp.png')} />
 
-            <DefaultText fontSize={16} widthText={"100%"}>clinica  -  crm do usuário</DefaultText>
+            <Title>Dr(a) {doctorName}</Title>
 
+            <DefaultText fontSize={16} widthText={"100%"} style={{ marginTop: 5 }}>
+              CRM {doctorCRM} - {specialtyName}
+            </DefaultText>
 
-            <CustomButton style={{ marginTop: 15 }} onPress={() => navigation.navigate("AppointmentLocation")}>
+            <CustomButton style={{ marginTop: 30 }} onPress={() => handleClose("AppointmentLocation")}>
               <TitleButton>VER LOCAL DA CONSULTA</TitleButton>
             </CustomButton>
 
@@ -67,6 +75,7 @@ export const PrescriptionModal = ({ visible, onPressClose, userRole }) => {
 
           </ModalView>
         </ModalContainer>
+
       </Modal>
     );
   }

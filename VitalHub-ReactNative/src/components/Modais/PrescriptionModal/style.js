@@ -10,7 +10,6 @@ export const ModalContainer = styled.View`
 
 export const ModalView = styled.View`
  width: 90%;
- height: 35%;
 
  background-color: #FFFFFF;
  border-radius: 15px;
@@ -27,3 +26,12 @@ export const ModalView = styled.View`
  shadow-radius: 4px;
  elevation: 5;
 `;
+
+export const UserImage = styled.Image`
+    width: 100%;
+    height: 180px;
+
+    border-radius: 10px;
+
+    margin-bottom: 25px
+`
