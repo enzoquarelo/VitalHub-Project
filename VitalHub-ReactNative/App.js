@@ -50,100 +50,98 @@ export default function App() {
 
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <NavigationContainer>
+          <Stack.Navigator initialRouteName="ViewPrescription">
+              <Stack.Screen
+                  name="Main"
+                  component={Main}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="Main"
-          component={Main}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="SplashScreen"
+                  component={SplashScreen}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="SplashScreen"
-          component={SplashScreen}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="Login"
+                  component={Login}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="RecoverPassword"
+                  component={RecoverPassword}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="RecoverPassword"
-          component={RecoverPassword}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="VerifyEmail"
+                  component={VerifyEmail}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="VerifyEmail"
-          component={VerifyEmail}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="RedefinePassword"
+                  component={RedefinePassword}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="RedefinePassword"
-          component={RedefinePassword}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="CreateAccount"
+                  component={CreateAccount}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="CreateAccount"
-          component={CreateAccount}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="CompleteDataProfile"
+                  component={CompleteDataProfile}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="CompleteDataProfile"
-          component={CompleteDataProfile}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="Home"
+                  component={Home}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="Profile"
+                  component={Profile}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="Profile"
-          component={Profile}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="AppointmentLocation"
+                  component={AppointmentLocation}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="AppointmentLocation"
-          component={AppointmentLocation}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="ViewPrescription"
+                  component={ViewPrescription}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="ViewPrescription"
-          component={ViewPrescription}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="SelectClinic"
+                  component={SelectClinic}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="SelectClinic"
-          component={SelectClinic}
-          options={{ headerShown: false }}
-        />
+              <Stack.Screen
+                  name="SelectDoctor"
+                  component={SelectDoctor}
+                  options={{ headerShown: false }}
+              />
 
-        <Stack.Screen
-          name="SelectDoctor"
-          component={SelectDoctor}
-          options={{ headerShown: false }}
-        />
-
-        <Stack.Screen
-          name="SelectDate"
-          component={SelectDate}
-          options={{ headerShown: false }}
-        />
-
-      </Stack.Navigator>
-    </NavigationContainer>
+              <Stack.Screen
+                  name="SelectDate"
+                  component={SelectDate}
+                  options={{ headerShown: false }}
+              />
+          </Stack.Navigator>
+      </NavigationContainer>
   );
 }
