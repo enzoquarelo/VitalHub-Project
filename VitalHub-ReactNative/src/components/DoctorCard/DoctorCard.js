@@ -7,12 +7,13 @@ import {
     ImageDoctor
 } from "./style";
 
-export const DoctorCard = ({ nameDoctor, aboutDoctor, imageDoctor }) => {
+export const DoctorCard = ({ doctor, imageDoctor }) => {
     return (
         <ContainerDoctorCard>
             <ContainerTextCard>
-                <Title style={{marginTop: 8}} fontSize={20}>{nameDoctor}</Title>
-                <TextAboutDoctor>{aboutDoctor}</TextAboutDoctor>
+                <Title style={{marginTop: 8}} fontSize={20}>{doctor.idNavigation.nome}</Title>
+                
+                <TextAboutDoctor>{doctor.especialidade.especialidade1}</TextAboutDoctor>
             </ContainerTextCard>
 
             <ImageDoctor source={{ uri: imageDoctor}}/>
