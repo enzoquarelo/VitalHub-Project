@@ -160,6 +160,7 @@ export const Home = ({ navigation }) => {
                         setShowPrescription={setShowPrescription}
 
                         onPressClose={() => setShowPrescription(false)}
+                        userRole={userRole} 
                     />
 
                 </Container>
@@ -252,6 +253,7 @@ export const Home = ({ navigation }) => {
                         setShowPrescription={setShowPrescription}
 
                         onPressClose={() => setShowPrescription(false)}
+                        userRole={userRole} 
                     />
 
                 </Container>
