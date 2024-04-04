@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Image, StyleSheet } from 'react-native';
 import { DefaultText } from '../DefaultText/DefaultText';
 import { Title } from '../Title/style';
 import { Container } from '../Container/style';
@@ -8,9 +9,7 @@ import { CancelAppointmentModal } from '../Modais/CancelAppointmentModal/CancelA
 
 import { AntDesign } from '@expo/vector-icons';
 
-import api from "../../service/service"
-
-export const Cards = ({ imageHeader, profileName, profileData, appointmentHour,onCardPress }) => {
+export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, onCardPress }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const handleCancelPress = () => {

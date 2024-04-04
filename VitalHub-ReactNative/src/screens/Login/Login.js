@@ -10,7 +10,7 @@ import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { DefaultText } from "../../components/DefaultText/DefaultText";
 
 //imports de bibliotecas
-import { View, TouchableWithoutFeedback } from "react-native";
+import { ActivityIndicator, TouchableWithoutFeedback } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,8 +26,25 @@ export const Login = ({ navigation }) => {
     const [senha, setSenha] = useState('paciente123');
 
     const [textWarning, setTextWarning] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Função de validação
+    const validateFields = () => {
+        if (!email || !senha) {
+            setTextWarning('Por favor, preencha todos os campos.');
+            return false;
+        }
+        setTextWarning('');
+        return true;
+    };
 
     async function Login() {
+        if (!validateFields()) {
+            return;
+        }
+
+        setIsLoading(true);
+
         try {
             //chama afunção de login pela url da api
             const response = await api.post('/Login', {
@@ -47,7 +64,9 @@ export const Login = ({ navigation }) => {
             }
 
         } catch (e) {
-            setTextWarning('Usuário o Senha inválidos !')
+            setTextWarning('Usuário ou Senha inválidos !')
+        } finally {
+            setIsLoading(false); // Finaliza o carregamento
         }
     }
 
@@ -107,8 +126,12 @@ export const Login = ({ navigation }) => {
 
             <Links style={{ marginTop: 8, marginBottom: 35, textAlign: 'start' }} onPress={() => { navigation.navigate("RecoverPassword") }}>Esqueceu a senha?</Links>
 
-            <CustomButton onPress={() => { Login() }}>
-                <TitleButton>ENTRAR</TitleButton>
+            <CustomButton onPress={() => { Login() }} disabled={isLoading}>
+                {isLoading ? (
+                    <ActivityIndicator size="small" color="#fff" /> // Indicador de carregamento
+                ) : (
+                    <TitleButton>ENTRAR</TitleButton>
+                )}
             </CustomButton>
 
             <CustomButton backgroundBtn={"#FFFFFF"} style={{ marginTop: 15, }}>

@@ -10,18 +10,12 @@ import { StyledCalendarStrip } from './style';
 import { useFonts, MontserratAlternates_600SemiBold } from '@expo-google-fonts/montserrat-alternates';
 
 //component CalendarHome
-const CalendarHome = ({ setDataConsulta, setDiaSelecionado }) => {
-  
-   // Função para lidar com a seleção de data
-   const handleDateSelected = (date) => {
-    // Usando setDataConsulta para definir a data selecionada
-    setDataConsulta(date);
-};
+const CalendarHome = ({ setDiaSelecionado }) => {
 
   //hook useFonts
   const [fontsLoaded, fontsError] = useFonts({
     MontserratAlternates_600SemiBold
-  }); 
+  });
 
   //fontsLoaded
   if (!fontsLoaded && !fontsError) {
@@ -50,9 +44,9 @@ const CalendarHome = ({ setDataConsulta, setDiaSelecionado }) => {
     weekdaysShort: "Dom_Seg_Ter_Qua_Qui_Sex_Sáb".split("_"),
 
     //abreviação dias da semana 
-    weekdaysMin : 'dom_2ª_3ª_4ª_5ª_6ª_sáb'.split('_'),
+    weekdaysMin: 'dom_2ª_3ª_4ª_5ª_6ª_sáb'.split('_'),
   });
-  
+
   //instância da data atual
   const currentDate = new Date();
 
@@ -65,21 +59,15 @@ const CalendarHome = ({ setDataConsulta, setDiaSelecionado }) => {
   //retorna o componente StyleCalendarStrip
   return (
     <StyledCalendarStrip
-
-    onDateSelected={day => setDiaSelecionado(moment(day).format("YYYY-MM-DD"))}  
-
-    
-    // onDateSelected={date => setDataConsulta(moment(date).format('yyyy-MM-DD'))}
+      onDateSelected={day => setDiaSelecionado(moment(day).format("YYYY-MM-DD"))}
 
       // animação e seleção de cada data
       calendarAnimation={{ type: "sequence", duration: 30 }}
-      daySelectionAnimation={ styles.selectedAnimationStyle }
+      daySelectionAnimation={styles.selectedAnimationStyle}
 
       // seta esquerda e direita para avançar e voltar(aqui como display none)
       iconLeftStyle={styles.iconsStyle}
       iconRightStyle={styles.iconsStyle}
-
-      
 
       // deixa uma marcação default - data atual
       selectedDate={currentDate}
@@ -89,20 +77,20 @@ const CalendarHome = ({ setDataConsulta, setDiaSelecionado }) => {
       //data min e max - início do mês e final do mês
       minDate={startingDate}
       maxDate={endingDate}
-      
+
       //estilização dos itens que não estão selecionados
-      calendarHeaderStyle={ styles.calendarHeaderStyle }
-      dateNumberStyle={ styles.numberDateStyle }
-      dateNameStyle={ styles.nameDateStyle }
+      calendarHeaderStyle={styles.calendarHeaderStyle}
+      dateNumberStyle={styles.numberDateStyle}
+      dateNameStyle={styles.nameDateStyle}
 
       // estilização do item que está selecionado - efeito do item marcado
-      highlightDateNameStyle={ styles.selectedDateNameStyle }
-      highlightDateNumberStyle={ styles.selectedDateNumberStyle }
-      highlightDateContainerStyle={ styles.selectedContainerStyle }
+      highlightDateNameStyle={styles.selectedDateNameStyle}
+      highlightDateNumberStyle={styles.selectedDateNumberStyle}
+      highlightDateContainerStyle={styles.selectedContainerStyle}
 
       //tamanho do container
       iconContainer={{ flex: 0.1 }}
-      
+
       //scroll da barra
       scrollable={true}
     />
@@ -110,40 +98,40 @@ const CalendarHome = ({ setDataConsulta, setDiaSelecionado }) => {
 };
 
 const styles = StyleSheet.create({
-  iconsStyle : {
-    display : 'none'
+  iconsStyle: {
+    display: 'none'
   },
-  calendarHeaderStyle : {
+  calendarHeaderStyle: {
     fontSize: 22,
     textAlign: "center",
-    alignSelf : 'flex-start',
-    color : '#4E4B59',
+    alignSelf: 'flex-start',
+    color: '#4E4B59',
     fontFamily: "MontserratAlternates_600SemiBold",
     paddingHorizontal: 30,
   },
-  nameDateStyle : {
+  nameDateStyle: {
     color: "#ACABB7",
     fontSize: 12,
-    textTransform : 'capitalize'
+    textTransform: 'capitalize'
   },
-  numberDateStyle : {
+  numberDateStyle: {
     color: "#5F5C6B",
     fontSize: 16
   },
-  selectedDateNameStyle : {
+  selectedDateNameStyle: {
     color: "white",
     fontSize: 12,
     fontWeight: "bold",
-    textTransform : 'capitalize'
+    textTransform: 'capitalize'
   },
-  selectedDateNumberStyle : {
+  selectedDateNumberStyle: {
     color: "white",
     fontSize: 14
   },
-  selectedContainerStyle : {
+  selectedContainerStyle: {
     backgroundColor: `#67BFC5`
   },
-  selectedAnimationStyle : {
+  selectedAnimationStyle: {
     type: "border",
     duration: 200,
     borderWidth: 2,
