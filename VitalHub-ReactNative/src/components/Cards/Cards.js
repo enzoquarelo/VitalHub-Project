@@ -9,7 +9,7 @@ import { CancelAppointmentModal } from '../Modais/CancelAppointmentModal/CancelA
 
 import { AntDesign } from '@expo/vector-icons';
 
-export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, onCardPress }) => {
+export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, onCardPress, buttonSelected }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const handleCancelPress = () => {
@@ -18,6 +18,35 @@ export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, 
 
     const handleCloseModal = () => {
         setIsModalVisible(false);
+    };
+
+    let buttonText, colorTxt, clockColor, timeColor, boxColor;
+    if (buttonSelected === 'Realizadas') {
+        buttonText = 'Ver Prontuário';
+        colorTxt = '#344F8F'
+
+        clockColor = '#4E4B59'
+        timeColor = '#4E4B59'
+        boxColor = '#F1F0F5'
+    }
+    else if (buttonSelected === 'Canceladas') {
+        buttonText = null;
+
+        clockColor = '#4E4B59'
+        timeColor = '#4E4B59'
+        boxColor = '#F1F0F5'
+    }
+    else {
+        buttonText = 'Cancelar'
+        colorTxt = '#C81D25'
+
+        clockColor = '#49B3BA' 
+    }
+
+    const handleCardPress = () => {
+        if (buttonText !== null) {
+            onCardPress();
+        }
     };
 
     return (
@@ -35,14 +64,16 @@ export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, 
                     </Container>
 
                     <Container heightContainer={30} flexDirection={'row'} justifyContent={'space-between'} style={{ marginTop: 8 }}>
-                        <AppointmentTime>
-                            <AntDesign name="clockcircle" size={14} color="#49B3BA" style={{ paddingTop: 3 }} />
-                            <TimeTxt>{appointmentHour}</TimeTxt>
+                        <AppointmentTime backgrounColor={boxColor}>
+                            <AntDesign name="clockcircle" size={14} color={clockColor} style={{ paddingTop: 3 }} />
+                            <TimeTxt color={timeColor}>{appointmentHour}</TimeTxt>
                         </AppointmentTime>
 
-                        <ButtonLinkCancel onPress={handleCancelPress}>
-                            <Links colorLink={'#C81D25'} fontSize={16} underline={true}>Cancelar</Links>
-                        </ButtonLinkCancel>
+                        {buttonText && (
+                            <ButtonLinkCancel onPress={handleCancelPress}>
+                                <Links colorLink={colorTxt} fontSize={16} underline={true}>{buttonText}</Links>
+                            </ButtonLinkCancel>
+                        )}
 
                     </Container>
 

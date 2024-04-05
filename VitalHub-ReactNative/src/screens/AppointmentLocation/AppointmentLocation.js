@@ -36,9 +36,6 @@ export const AppointmentLocation = ({ navigation, route }) => {
     
             const { latitude, longitude } = response.data.endereco;
             setFinalPosition({ latitude, longitude });
-    
-            // Adicionando console.log para verificar os valores de latitude e longitude
-            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
         } catch (error) {
             console.error("Erro ao buscar os dados da clínica:", error);
         }

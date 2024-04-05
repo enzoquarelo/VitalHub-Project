@@ -31,19 +31,19 @@ export const AppointmentTime = styled.View`
     align-items: center;
     justify-content: space-evenly;
 
-    background-color: #E8FCFD;
+    background-color: ${props => props.backgrounColor || '#E8FCFD'};
     border-radius: 5px;
 `
 
 export const TimeTxt = styled.Text`
-    color: #49B3BA;
+    color: ${props => props.color || '#49B3BA'};
 
     font-family: "Quicksand_600SemiBold";
     font-size: 16px;
 `
 
 export const ButtonLinkCancel = styled.TouchableOpacity`
-    width: 40%;
+    width: 100%;
     height: 80%;
     padding: 3px;
 `

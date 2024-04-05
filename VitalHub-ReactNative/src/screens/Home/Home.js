@@ -39,27 +39,27 @@ export const Home = ({ navigation }) => {
         const token = await userDecodeToken();
         const userRoleToken = token.role;
         const userId = token.jti;
-    
+
         const url = (userRoleToken === "Medico" ? "Medicos" : "Pacientes");
-    
+
         await api.get(`/${url}/BuscarPorData?data=${diaSelecionado}&id=${userId}`)
             .then(response => {
                 let filteredConsultas = response.data;
-    
+
                 if (selectedAgendadas) {
                     filteredConsultas = response.data.filter(consulta => consulta.situacao.situacao === "Pendentes");
                 } else if (selectedRealizadas) {
-                    filteredConsultas = response.data.filter(consulta => consulta.situacao.situacao === "Realizadas");
+                    filteredConsultas = response.data.filter(consulta => consulta.situacao.situacao === "Realizados");
                 } else if (selectedCanceladas) {
-                    filteredConsultas = response.data.filter(consulta => consulta.situacao.situacao === "Canceladas");
+                    filteredConsultas = response.data.filter(consulta => consulta.situacao.situacao === "Cancelados");
                 }
-    
+
                 setConsultas(filteredConsultas);
             }).catch(error => {
                 console.log(error);
             });
     }
-    
+
 
 
     useEffect(() => {
@@ -99,10 +99,10 @@ export const Home = ({ navigation }) => {
             <>
                 <Container justifyContent={'start'}>
                     <StatusBar style="light" />
-                    <Header imageHeader="https://avatars.githubusercontent.com/u/29419052?v=4" profileName="Dr. Eduardo" />
+                    <Header imageHeader="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1" />
 
                     <CalendarHome setDiaSelecionado={setDiaSelecionado} />
-                    <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-around"}>
+                    <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-between"}>
                         <SelectableButton
                             widthButton={28}
                             heightButton={40}
@@ -150,7 +150,17 @@ export const Home = ({ navigation }) => {
                         const idadePaciente = moment().diff(consulta.paciente.dataNascimento, 'years');
                         const situacaoConsulta = consulta.situacao.situacao;
 
+                        let buttonSelected = '';
+                        if (selectedAgendadas) {
+                            buttonSelected = 'Agendadas';
+                        } else if (selectedRealizadas) {
+                            buttonSelected = 'Realizadas';
+                        } else if (selectedCanceladas) {
+                            buttonSelected = 'Canceladas';
+                        }
+                        
                         return (
+                            
                             <Cards
                                 key={index}
                                 imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
@@ -158,6 +168,8 @@ export const Home = ({ navigation }) => {
                                 profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
                                 appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
                                 onCardPress={() => handleCardPress(consulta)}
+
+                                buttonSelected={buttonSelected}
                             />
                         );
                     })}
@@ -177,11 +189,11 @@ export const Home = ({ navigation }) => {
             <>
                 <Container justifyContent={'start'}>
                     <StatusBar style="light" />
-                    <Header imageHeader="https://avatars.githubusercontent.com/u/29419052?v=4" profileName="Dr. Eduardo" />
+                    <Header imageHeader="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1" />
 
                     <CalendarHome setDiaSelecionado={setDiaSelecionado} />
 
-                    <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-around"}>
+                    <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-between"}>
                         <SelectableButton
                             widthButton={28}
                             heightButton={40}
@@ -228,15 +240,27 @@ export const Home = ({ navigation }) => {
                     {consultas.map((consulta, index) => {
                         const crmDoctor = consulta.medicoClinica.medico.crm;
                         const doctorName = consulta.medicoClinica.medico.idNavigation.nome;
+                        const doctorSpecialty = consulta.medicoClinica.medico.especialidade.especialidade1;
+
+                        // Determine qual botão está selecionado
+                        let buttonSelected = '';
+                        if (selectedAgendadas) {
+                            buttonSelected = 'Agendadas';
+                        } else if (selectedRealizadas) {
+                            buttonSelected = 'Realizadas';
+                        } else if (selectedCanceladas) {
+                            buttonSelected = 'Canceladas';
+                        }
 
                         return (
                             <Cards
                                 key={index}
-                                imageHeader={'imageHeader'} // Substitua 'imageHeader' pela imagem real do médico, se disponível
-                                profileName={`Dr(a) ${doctorName}`}
-                                profileData={`CRM ${crmDoctor} `}
+                                imageHeader={'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1'}
+                                profileName={`Dr. ${doctorName}`}
+                                profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
                                 appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
                                 onCardPress={() => handleCardPress(consulta)}
+                                buttonSelected={buttonSelected} // Passe a propriedade buttonSelected para o componente Cards
                             />
                         );
                     })}

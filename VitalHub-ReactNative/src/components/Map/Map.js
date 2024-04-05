@@ -10,20 +10,6 @@ export default function Map({ setFinalPosition, finalPosition }) {
     const mapReference = useRef(null);
     const [initialPosition, setInitialPosition] = useState(null);
 
-    useEffect(() => {
-        RechargeVisuzualization()
-    }, [initialPosition, finalPosition])
-
-    async function CaptureLocation() {
-        const { granted } = await requestForegroundPermissionsAsync()
-
-        if (granted) {
-            const captureLocation = await getCurrentPositionAsync()
-
-            setInitialPosition(captureLocation);
-        }
-    }
-
     async function RechargeVisuzualization() {
         if (mapReference.current && initialPosition) {
             await mapReference.current.fitToCoordinates(
@@ -40,6 +26,20 @@ export default function Map({ setFinalPosition, finalPosition }) {
                     animated: true
                 }
             )
+        }
+    }
+
+    useEffect(() => {
+        RechargeVisuzualization()
+    }, [initialPosition, finalPosition])
+
+    async function CaptureLocation() {
+        const { granted } = await requestForegroundPermissionsAsync()
+
+        if (granted) {
+            const captureLocation = await getCurrentPositionAsync()
+
+            setInitialPosition(captureLocation);
         }
     }
 

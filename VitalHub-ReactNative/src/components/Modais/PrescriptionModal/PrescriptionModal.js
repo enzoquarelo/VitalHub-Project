@@ -37,7 +37,7 @@ export const PrescriptionModal = ({ visible, onPressClose, userRole, doctorCRM, 
             <DefaultText fontSize={16} widthText={"100%"}>idade  -  email do usuário</DefaultText>
 
 
-            <CustomButton style={{ marginTop: 15 }}>
+            <CustomButton style={{ marginTop: 15 }} widthButton={100}>
               <TitleButton>Inserir Prontuário</TitleButton>
             </CustomButton>
 
@@ -67,7 +67,7 @@ export const PrescriptionModal = ({ visible, onPressClose, userRole, doctorCRM, 
               CRM {doctorCRM} - {specialtyName}
             </DefaultText>
 
-            <CustomButton style={{ marginTop: 30 }} onPress={() => handleClose("AppointmentLocation")}>
+            <CustomButton style={{ marginTop: 30 }} onPress={() => handleClose("AppointmentLocation")} widthButton={100}>
               <TitleButton>VER LOCAL DA CONSULTA</TitleButton>
             </CustomButton>
 
