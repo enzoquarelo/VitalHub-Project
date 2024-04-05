@@ -39,23 +39,35 @@ export const Home = ({ navigation }) => {
         const token = await userDecodeToken();
         const userRoleToken = token.role;
         const userId = token.jti;
-
+    
         const url = (userRoleToken === "Medico" ? "Medicos" : "Pacientes");
-
+    
         await api.get(`/${url}/BuscarPorData?data=${diaSelecionado}&id=${userId}`)
             .then(response => {
-                setConsultas(response.data);
+                let filteredConsultas = response.data;
+    
+                if (selectedAgendadas) {
+                    filteredConsultas = response.data.filter(consulta => consulta.situacao.situacao === "Pendentes");
+                } else if (selectedRealizadas) {
+                    filteredConsultas = response.data.filter(consulta => consulta.situacao.situacao === "Realizadas");
+                } else if (selectedCanceladas) {
+                    filteredConsultas = response.data.filter(consulta => consulta.situacao.situacao === "Canceladas");
+                }
+    
+                setConsultas(filteredConsultas);
             }).catch(error => {
                 console.log(error);
             });
     }
+    
+
 
     useEffect(() => {
         loadUserRole();
     }, [])
     useEffect(() => {
         ListarConsulta();
-    }, [diaSelecionado])
+    }, [diaSelecionado, selectedAgendadas, selectedRealizadas, selectedCanceladas])
 
     const handleButtonClick = (buttonName) => {
         setSelectedAgendadas(false);
