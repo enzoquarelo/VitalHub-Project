@@ -10,14 +10,14 @@ import { Links } from "../../Links/style"
 
 import { useNavigation } from '@react-navigation/native';
 
-export const PrescriptionModal = ({ visible, onPressClose, userRole, doctorCRM, specialtyName, doctorName }) => {
+export const PrescriptionModal = ({ visible, onPressClose, userRole, doctorCRM, specialtyName, doctorName, clinicId }) => {
 
   const navigation = useNavigation();
+  
 
   async function handleClose(screen) {
     onPressClose();
-
-    navigation.replace("AppointmentLocation");
+    navigation.replace(screen, { clinicId: clinicId });
   };
 
 

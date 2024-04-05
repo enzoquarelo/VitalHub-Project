@@ -128,15 +128,10 @@ export const SelectDate = ({ navigation }) => {
 
     LocaleConfig.defaultLocale = "pt-br";
 
-
-    //Chamar a função PatientConsultations
     async function PatientConsultations() {
         navigation.replace("PatientConsultations");
     }
-    // //Chamar a função ConfirmAppointment
-    // async function ConfirmAppointment() {
-    //     navigation.replace("ConfirmAppointment");
-    // }
+
 
     return (
         <Container>

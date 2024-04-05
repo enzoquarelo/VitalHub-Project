@@ -249,6 +249,7 @@ export const Home = ({ navigation }) => {
                         specialtyName={consultaSelecionada?.medicoClinica?.medico?.especialidade?.especialidade1}
                         doctorName={consultaSelecionada?.medicoClinica?.medico?.idNavigation?.nome}
                         consulta={consultaSelecionada}
+                        clinicId={consultaSelecionada?.medicoClinica?.clinicaId}
                     />
 
                 </Container>

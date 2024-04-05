@@ -45,13 +45,7 @@ export default function Map({ setFinalPosition, finalPosition }) {
 
     useEffect(() => {
         CaptureLocation();
-
-        setFinalPosition({
-            latitude: -23.623804,
-            longitude: -46.577194,
-        })
-    }, [1000])
-
+    }, [])
 
     return (
         <>{initialPosition != null ? (
@@ -84,8 +78,8 @@ export default function Map({ setFinalPosition, finalPosition }) {
 
                     <Marker
                         coordinate={{
-                            latitude: -23.623804,
-                            longitude: -46.577194,
+                            latitude: finalPosition.latitude,
+                            longitude: finalPosition.longitude,
                         }}
                         image={require('../../../assets/images/grayMarker.png')}
                     />
@@ -93,10 +87,8 @@ export default function Map({ setFinalPosition, finalPosition }) {
                     <MapViewDirections
                         origin={initialPosition.coords}
                         destination={{
-                            latitude: -23.623804,
-                            longitude: -46.577194,
-                            latitudeDelta: 0.005,
-                            longitudeDelta: 0.005,
+                            latitude: finalPosition.latitude,
+                            longitude: finalPosition.longitude,
                         }}
                         apikey={mapskey}
                         strokeWidth={3}
