@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 
 import { Container } from "../../components/Container/style"
 import { Title } from "../../components/Title/style";
@@ -17,9 +17,16 @@ import { ScrollView } from "react-native";
 import ModalCamera from "../../components/Modais/CameraModal/CameraModal";
 
 
-export const ViewPrescription = ({ navigation }) => {
+export const ViewPrescription = ({ route }) => {
+    const [finalPosition, setFinalPosition] = useState();
 
     const [modalVisible, setModalVisible] = useState(false);
+
+    const { appointmentId } = route.params;
+
+    useEffect(() => {
+        console.log(appointmentId)
+    }, []);
 
     return (
         <ScrollView>

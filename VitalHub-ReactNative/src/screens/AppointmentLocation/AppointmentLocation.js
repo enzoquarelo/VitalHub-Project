@@ -90,7 +90,6 @@ export const AppointmentLocation = ({ navigation, route }) => {
                     <InputDisable
                         placeholder={finalPosition.bairro}
                         editable={false}
-                        multiline={multiline || false}
                     />
                 </Container>
             </Container>

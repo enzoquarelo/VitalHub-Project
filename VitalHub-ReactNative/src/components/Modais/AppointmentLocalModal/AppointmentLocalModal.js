@@ -10,7 +10,7 @@ import { Links } from "../../Links/style"
 
 import { useNavigation } from '@react-navigation/native';
 
-export const PrescriptionModal = ({ visible, onPressClose, userRole, doctorCRM, specialtyName, doctorName, clinicId }) => {
+export const AppointmentLocalModal = ({ visible, onPressClose, userRole, doctorCRM, specialtyName, doctorName, clinicId }) => {
 
   const navigation = useNavigation();
   

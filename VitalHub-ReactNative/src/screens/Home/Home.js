@@ -8,12 +8,12 @@ import { Cards } from "../../components/Cards/Cards";
 import { ScheduleAppointment } from "../../components/ScheduleAppointment/ScheduleAppointment";
 
 import { QueryModalComponent } from "../../components/Modais/QueryModal/QueryModal";
-import { PrescriptionModal } from "../../components/Modais/PrescriptionModal/PrescriptionModal";
-
+import { AppointmentLocalModal } from "../../components/Modais/AppointmentLocalModal/AppointmentLocalModal";
 import { userDecodeToken } from "../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from "moment"
 import api from "../../service/service"
+
 
 export const Home = ({ navigation }) => {
     const [selectedAgendadas, setSelectedAgendadas] = useState(true);
@@ -158,9 +158,9 @@ export const Home = ({ navigation }) => {
                         } else if (selectedCanceladas) {
                             buttonSelected = 'Canceladas';
                         }
-                        
+
                         return (
-                            
+
                             <Cards
                                 key={index}
                                 imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
@@ -174,12 +174,12 @@ export const Home = ({ navigation }) => {
                         );
                     })}
 
-                    <PrescriptionModal
+                    <AppointmentLocalModal
                         visible={showModalPrescription}
                         setShowPrescription={setShowPrescription}
                         onPressClose={() => setShowPrescription(false)}
                         userRole={userRole}
-                        consulta={consultaSelecionada} // Passa a consulta selecionada para o modal
+                        consulta={consultaSelecionada}
                     />
                 </Container>
             </>
@@ -242,27 +242,55 @@ export const Home = ({ navigation }) => {
                         const doctorName = consulta.medicoClinica.medico.idNavigation.nome;
                         const doctorSpecialty = consulta.medicoClinica.medico.especialidade.especialidade1;
 
+                        const appointmentId = consulta.id
+
                         // Determine qual botão está selecionado
                         let buttonSelected = '';
                         if (selectedAgendadas) {
                             buttonSelected = 'Agendadas';
+
+                            return (
+                                <Cards
+                                    key={index}
+                                    imageHeader={'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1'}
+                                    profileName={`Dr. ${doctorName}`}
+                                    profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
+                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                    onCardPress={() => handleCardPress(consulta)}
+                                    buttonSelected={buttonSelected} // Passe a propriedade buttonSelected para o componente Cards
+                                />
+                            );
+
                         } else if (selectedRealizadas) {
                             buttonSelected = 'Realizadas';
+
+                            return (
+                                <Cards
+                                    key={index}
+                                    imageHeader={'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1'}
+                                    profileName={`Dr. ${doctorName}`}
+                                    profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
+                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                    buttonSelected={buttonSelected}
+
+                                    appointmentId={appointmentId}
+                                />
+                            );
+                            
                         } else if (selectedCanceladas) {
                             buttonSelected = 'Canceladas';
-                        }
 
-                        return (
-                            <Cards
-                                key={index}
-                                imageHeader={'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1'}
-                                profileName={`Dr. ${doctorName}`}
-                                profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
-                                appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
-                                onCardPress={() => handleCardPress(consulta)}
-                                buttonSelected={buttonSelected} // Passe a propriedade buttonSelected para o componente Cards
-                            />
-                        );
+                            return (
+                                <Cards
+                                    key={index}
+                                    imageHeader={'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1'}
+                                    profileName={`Dr. ${doctorName}`}
+                                    profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
+                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                    buttonSelected={buttonSelected}
+                                />
+                            );
+                        }
                     })}
 
                     <ScheduleAppointment
@@ -276,7 +304,7 @@ export const Home = ({ navigation }) => {
                         setShowModalQuery={setShowModalQuery}
                     />
 
-                    <PrescriptionModal
+                    <AppointmentLocalModal
                         visible={showModalPrescription}
                         setShowPrescription={setShowPrescription}
                         onPressClose={() => setShowPrescription(false)}
