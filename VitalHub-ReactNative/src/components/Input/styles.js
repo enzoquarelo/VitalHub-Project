@@ -13,17 +13,17 @@ export const Input = styled.TextInput.attrs(props => ({
     color: #34898F;
     font-family: ${props => (props.fontInput ? props.fontInput : "MontserratAlternates_600SemiBold")};
     font-size: ${props => (props.fontSize ? props.fontSize + "px" : "18px")};
-`
+`;
 
 export const InputDisable = styled(Input).attrs(props => ({
-    placeholderTextColor: "#33303E"
+    placeholderTextColor: "#33303E",
 }))`
     border: none;
     background-color: #F5F3F3;
     color: #33303E;
 
     font-family: ${props => (props.fontInput ? props.fontInput : "MontserratAlternates_500Medium")};
-`
+`;
 
 export const TitleInput = styled.Text`
     width: 90%;

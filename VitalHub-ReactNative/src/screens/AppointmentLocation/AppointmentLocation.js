@@ -17,25 +17,25 @@ import { Linking } from "react-native";
 
 
 export const AppointmentLocation = ({ navigation, route }) => {
-    const [finalPosition, setFinalPosition] = useState({ latitude: null, longitude: null });
+    const [finalPosition, setFinalPosition] = useState({ latitude: null, longitude: null, endereco: '', numero: '', bairro: '' });
 
     const { clinicId } = route.params;
 
 
-    function updateFinalPosition(latitude, longitude) {
-        setFinalPosition({ latitude, longitude });
+    function updateFinalPosition(latitude, longitude, endereco, numero, bairro) {
+        setFinalPosition({ latitude, longitude, endereco, numero, bairro });
     }
 
     async function SearchAddress() {
         const token = await userDecodeToken();
-    
+
         try {
             const response = await api.get(`/Clinica/BuscarPorId?id=${clinicId}`, {
-                headers: { Authorization: `Bearer ${token}` } 
+                headers: { Authorization: `Bearer ${token}` }
             });
-    
-            const { latitude, longitude } = response.data.endereco;
-            setFinalPosition({ latitude, longitude });
+
+            const { latitude, longitude, logradouro, numero, cidade } = response.data.endereco;
+            updateFinalPosition(latitude, longitude, logradouro, numero, cidade);
         } catch (error) {
             console.error("Erro ao buscar os dados da clínica:", error);
         }
@@ -71,20 +71,26 @@ export const AppointmentLocation = ({ navigation, route }) => {
             <DefaultText>São Paulo,SP</DefaultText>
 
             <TitleInput style={{ marginTop: 30 }} fontSize={18}>Endereço</TitleInput>
-            <InputDisable placeholder="Rua Vicenso Silva, 987" />
+            <InputDisable
+                placeholder={finalPosition.endereco}
+                editable={false}
+            />
 
             <Container heightContainer={"80px"} flexDirection={"row"} justifyContent={"space-around"} style={{ marginTop: 8 }}>
                 <Container widthContainer={"40%"} heightContainer={"80px"} alignItems={"start"}>
                     <TitleInput fontSize={18}>Número</TitleInput>
                     <InputDisable
-                        placeholder="578"
+                        placeholder={finalPosition.numero.toString()}
+                        editable={false}
                     />
                 </Container>
 
                 <Container widthContainer={"40%"} heightContainer={"80px"} alignItems={"start"}>
                     <TitleInput fontSize={18}>Bairro</TitleInput>
                     <InputDisable
-                        placeholder="Moema - SP"
+                        placeholder={finalPosition.bairro}
+                        editable={false}
+                        multiline={multiline || false}
                     />
                 </Container>
             </Container>
