@@ -10,28 +10,30 @@ import { DefaultText } from "../../components/DefaultText/DefaultText";
 import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { Links } from "../../components/Links/style";
 
+import api from "../../service/service";
+
 
 export const CreateAccount = ({ navigation }) => {
     const [textWarning, setTextWarning] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [senhaConfirm, setSenhaConfirm] = useState('');
+    const [email, setEmail] = useState('teste@gmail.com');
+    const [senha, setSenha] = useState('teste123');
+    const [senhaConfirm, setSenhaConfirm] = useState('teste123');
 
     const validateFields = () => {
         if (!email || !senha || !senhaConfirm) {
             setTextWarning('Por favor, preencha todos os campos.');
             return false;
         }
-        
+
         if (senha !== senhaConfirm) {
             setTextWarning('As senhas não coincidem.');
             return false;
         }
 
         setTextWarning('');
-        
+
         return true;
     };
 
@@ -43,9 +45,22 @@ export const CreateAccount = ({ navigation }) => {
         setIsLoading(true);
 
         try {
-            navigation.replace("CompleteDataProfile");
+            const response = await api.post('/Pacientes', {
+                email: email,
+                senha: senha,
+                idTipoUsuario: "D3468A23-AF5A-490C-84AD-99C73F017B96"
+            });
+
+            if (response.status === 200) {
+                navigation.replace("CompleteDataProfile");
+            } else {
+                setTextWarning('Erro ao cadastrar. Por favor, tente novamente.');
+            }
         } catch (error) {
-            console.log(error)
+            console.log(error);
+            setTextWarning('Erro ao cadastrar. Por favor, tente novamente.');
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -68,17 +83,18 @@ export const CreateAccount = ({ navigation }) => {
             >
                 {textWarning}
             </DefaultText>
-            
+
             <Input
                 placeholder="Email"
                 value={email}
-                style={{ marginBottom: 15}}
+                style={{ marginBottom: 15 }}
                 onChangeText={(txt) => setEmail(txt)}
             />
 
             <Input
                 placeholder="Senha"
                 value={senha}
+                secureTextEntry={true}
                 style={{ marginBottom: 15 }}
                 onChangeText={(txt) => setSenha(txt)}
             />
@@ -86,13 +102,14 @@ export const CreateAccount = ({ navigation }) => {
             <Input
                 placeholder="Confirmar Senha"
                 value={senhaConfirm}
+                secureTextEntry={true}
                 style={{ marginBottom: 30 }}
                 onChangeText={(txt) => setSenhaConfirm(txt)}
             />
 
-            <CustomButton onPress={() => { Post()}} disabled={isLoading}>
-            {isLoading ? (
-                    <ActivityIndicator size="small" color="#fff" /> // Indicador de carregamento
+            <CustomButton onPress={() => { Post() }} disabled={isLoading}>
+                {isLoading ? (
+                    <ActivityIndicator size="small" color="#fff" />
                 ) : (
                     <TitleButton>CADASTRAR</TitleButton>
                 )}
