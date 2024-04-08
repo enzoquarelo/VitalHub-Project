@@ -29,6 +29,11 @@ export const Home = ({ navigation }) => {
     const [consultas, setConsultas] = useState([]);
     const [consultaSelecionada, setConsultaSelecionada] = useState(null); // Adicionado para armazenar a consulta selecionada
 
+    const [consultaSelecionadaParaCancelamento, setConsultaSelecionadaParaCancelamento] = useState(null);
+    const [showModalCancelAppointment, setShowModalCancelAppointment] = useState(false);
+
+    
+
     async function loadUserRole() {
         const token = await userDecodeToken();
         const userRoleToken = token.role;
@@ -59,8 +64,6 @@ export const Home = ({ navigation }) => {
                 console.log(error);
             });
     }
-
-
 
     useEffect(() => {
         loadUserRole();
@@ -95,19 +98,43 @@ export const Home = ({ navigation }) => {
     };
 
     if (userRole === 'Medico') {
+
+       const cancelAppointment = () => {
+           if (consultaSelecionadaParaCancelamento) {
+               const consultasAtualizadas = consultas.map((consulta) => {
+                   if (consulta.id === consultaSelecionadaParaCancelamento.id) {
+                       return {
+                           ...consulta,
+                           situacao: "Cancelada",
+                       };
+                   } else {
+                       return consulta;
+                   }
+               });
+               setConsultas(consultasAtualizadas);
+               // Feche a modal após cancelar a consulta
+               setShowModalCancelAppointment(false);
+           }
+       };
+
         return (
             <>
-                <Container justifyContent={'start'}>
+                <Container justifyContent={"start"}>
                     <StatusBar style="light" />
                     <Header imageHeader="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1" />
 
                     <CalendarHome setDiaSelecionado={setDiaSelecionado} />
-                    <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-between"}>
+                    <Container
+                        widthContainer={"90%"}
+                        heightContainer={"40px"}
+                        flexDirection={"row"}
+                        justifyContent={"space-between"}
+                    >
                         <SelectableButton
                             widthButton={28}
                             heightButton={40}
                             selected={selectedAgendadas}
-                            onPress={() => handleButtonClick('Agendadas')}
+                            onPress={() => handleButtonClick("Agendadas")}
                         >
                             <SelectableTitleButton
                                 fontSize={14}
@@ -121,7 +148,7 @@ export const Home = ({ navigation }) => {
                             widthButton={28}
                             heightButton={40}
                             selected={selectedRealizadas}
-                            onPress={() => handleButtonClick('Realizadas')}
+                            onPress={() => handleButtonClick("Realizadas")}
                         >
                             <SelectableTitleButton
                                 fontSize={14}
@@ -135,7 +162,7 @@ export const Home = ({ navigation }) => {
                             widthButton={28}
                             heightButton={40}
                             selected={selectedCanceladas}
-                            onPress={() => handleButtonClick('Canceladas')}
+                            onPress={() => handleButtonClick("Canceladas")}
                         >
                             <SelectableTitleButton
                                 fontSize={14}
@@ -147,28 +174,36 @@ export const Home = ({ navigation }) => {
                     </Container>
 
                     {consultas.map((consulta, index) => {
-                        const idadePaciente = moment().diff(consulta.paciente.dataNascimento, 'years');
+                        const idadePaciente = moment().diff(
+                            consulta.paciente.dataNascimento,
+                            "years"
+                        );
                         const situacaoConsulta = consulta.situacao.situacao;
 
-                        let buttonSelected = '';
+                        let buttonSelected = "";
                         if (selectedAgendadas) {
-                            buttonSelected = 'Agendadas';
+                            buttonSelected = "Agendadas";
                         } else if (selectedRealizadas) {
-                            buttonSelected = 'Realizadas';
+                            buttonSelected = "Realizadas";
                         } else if (selectedCanceladas) {
-                            buttonSelected = 'Canceladas';
+                            buttonSelected = "Canceladas";
                         }
-                        
+
                         return (
-                            
                             <Cards
                                 key={index}
-                                imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
-                                profileName={consulta.paciente.idNavigation.nome}
+                                imageHeader={
+                                    consulta.medicoClinica.medico.idNavigation
+                                        .foto
+                                }
+                                profileName={
+                                    consulta.paciente.idNavigation.nome
+                                }
                                 profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
-                                appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                appointmentHour={moment(
+                                    consulta.dataConsulta
+                                ).format("HH:mm")}
                                 onCardPress={() => handleCardPress(consulta)}
-
                                 buttonSelected={buttonSelected}
                             />
                         );
@@ -187,18 +222,23 @@ export const Home = ({ navigation }) => {
     } else if (userRole === 'Paciente') {
         return (
             <>
-                <Container justifyContent={'start'}>
+                <Container justifyContent={"start"}>
                     <StatusBar style="light" />
                     <Header imageHeader="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1" />
 
                     <CalendarHome setDiaSelecionado={setDiaSelecionado} />
 
-                    <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-between"}>
+                    <Container
+                        widthContainer={"90%"}
+                        heightContainer={"40px"}
+                        flexDirection={"row"}
+                        justifyContent={"space-between"}
+                    >
                         <SelectableButton
                             widthButton={28}
                             heightButton={40}
                             selected={selectedAgendadas}
-                            onPress={() => handleButtonClick('Agendadas')}
+                            onPress={() => handleButtonClick("Agendadas")}
                         >
                             <SelectableTitleButton
                                 fontSize={14}
@@ -212,7 +252,7 @@ export const Home = ({ navigation }) => {
                             widthButton={28}
                             heightButton={40}
                             selected={selectedRealizadas}
-                            onPress={() => handleButtonClick('Realizadas')}
+                            onPress={() => handleButtonClick("Realizadas")}
                         >
                             <SelectableTitleButton
                                 fontSize={14}
@@ -226,7 +266,7 @@ export const Home = ({ navigation }) => {
                             widthButton={28}
                             heightButton={40}
                             selected={selectedCanceladas}
-                            onPress={() => handleButtonClick('Canceladas')}
+                            onPress={() => handleButtonClick("Canceladas")}
                         >
                             <SelectableTitleButton
                                 fontSize={14}
@@ -239,31 +279,50 @@ export const Home = ({ navigation }) => {
 
                     {consultas.map((consulta, index) => {
                         const crmDoctor = consulta.medicoClinica.medico.crm;
-                        const doctorName = consulta.medicoClinica.medico.idNavigation.nome;
-                        const doctorSpecialty = consulta.medicoClinica.medico.especialidade.especialidade1;
+                        const doctorName =
+                            consulta.medicoClinica.medico.idNavigation.nome;
+                        const doctorSpecialty =
+                            consulta.medicoClinica.medico.especialidade
+                                .especialidade1;
 
                         // Determine qual botão está selecionado
-                        let buttonSelected = '';
+                        let buttonSelected = "";
                         if (selectedAgendadas) {
-                            buttonSelected = 'Agendadas';
+                            buttonSelected = "Agendadas";
                         } else if (selectedRealizadas) {
-                            buttonSelected = 'Realizadas';
+                            buttonSelected = "Realizadas";
                         } else if (selectedCanceladas) {
-                            buttonSelected = 'Canceladas';
+                            buttonSelected = "Canceladas";
                         }
 
                         return (
                             <Cards
                                 key={index}
-                                imageHeader={'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1'}
+                                imageHeader={
+                                    "https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1"
+                                }
                                 profileName={`Dr. ${doctorName}`}
                                 profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
-                                appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                appointmentHour={moment(
+                                    consulta.dataConsulta
+                                ).format("HH:mm")}
                                 onCardPress={() => handleCardPress(consulta)}
                                 buttonSelected={buttonSelected} // Passe a propriedade buttonSelected para o componente Cards
+                                onCancelAppointment={() => {
+                                    setConsultaSelecionadaParaCancelamento(
+                                        consulta
+                                    );
+                                    setShowModalCancelAppointment(true);
+                                }}
                             />
                         );
                     })}
+
+                    <CancelAppointmentModal
+                        visible={showModalCancelAppointment}
+                        onClose={() => setShowModalCancelAppointment(false)}
+                        onCancelAppointment={cancelAppointment}
+                    />
 
                     <ScheduleAppointment
                         onPress={() => {
@@ -281,13 +340,20 @@ export const Home = ({ navigation }) => {
                         setShowPrescription={setShowPrescription}
                         onPressClose={() => setShowPrescription(false)}
                         userRole={userRole}
-                        doctorCRM={consultaSelecionada?.medicoClinica?.medico?.crm}
-                        specialtyName={consultaSelecionada?.medicoClinica?.medico?.especialidade?.especialidade1}
-                        doctorName={consultaSelecionada?.medicoClinica?.medico?.idNavigation?.nome}
+                        doctorCRM={
+                            consultaSelecionada?.medicoClinica?.medico?.crm
+                        }
+                        specialtyName={
+                            consultaSelecionada?.medicoClinica?.medico
+                                ?.especialidade?.especialidade1
+                        }
+                        doctorName={
+                            consultaSelecionada?.medicoClinica?.medico
+                                ?.idNavigation?.nome
+                        }
                         consulta={consultaSelecionada}
                         clinicId={consultaSelecionada?.medicoClinica?.clinicaId}
                     />
-
                 </Container>
             </>
         );

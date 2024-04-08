@@ -7,30 +7,43 @@ import { DefaultText } from "../../DefaultText/DefaultText"
 import { CustomButton, TitleButton } from "../../Button/styles"
 import { Links } from "../../Links/style"
 
-export const CancelAppointmentModal = ({ visible, onClose }) => {
- return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={visible}
-      onRequestClose={onClose}
-    >
-      <ModalContainer>
-        <ModalView>
+export const CancelAppointmentModal = ({ visible, onClose, onCancelAppointment }) => {
+    return (
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={visible}
+            onRequestClose={onClose}
+        >
+            <ModalContainer>
+                <ModalView>
+                    <Title>Cancelar consulta</Title>
 
-          <Title>Cancelar consulta</Title>
-          
-          <DefaultText fontSize={16} widthText={"100%"}>Ao cancelar essa consulta, abrirá uma possível disponibilidade no seu horário, deseja mesmo cancelar essa consulta?</DefaultText>
-          
-          <CustomButton style={{marginTop: 15}}>
-            <TitleButton>CONFIRMAR</TitleButton>
-          </CustomButton>
+                    <DefaultText fontSize={16} widthText={"100%"}>
+                        Ao cancelar essa consulta, abrirá uma possível
+                        disponibilidade no seu horário, deseja mesmo cancelar
+                        essa consulta?
+                    </DefaultText>
 
-          <Links colorLink={'#496BBA'} fontLink={'MontserratAlternates_600SemiBold'} fontSize={16} style={{marginTop: 12}} onPress={() => onClose()}>Voltar</Links>
+                    <CustomButton
+                        style={{ marginTop: 15 }}
+                        onPress={onCancelAppointment}
+                    >
+                        <TitleButton>CONFIRMAR</TitleButton>
+                    </CustomButton>
 
-        </ModalView>
-      </ModalContainer>
-    </Modal>
- );
+                    <Links
+                        colorLink={"#496BBA"}
+                        fontLink={"MontserratAlternates_600SemiBold"}
+                        fontSize={16}
+                        style={{ marginTop: 12 }}
+                        onPress={() => onClose()}
+                    >
+                        Voltar
+                    </Links>
+                </ModalView>
+            </ModalContainer>
+        </Modal>
+    );
 };
 
