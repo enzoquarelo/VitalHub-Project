@@ -15,17 +15,31 @@ import { StatusBar } from "expo-status-bar";
 import { ScrollView } from "react-native";
 
 import ModalCamera from "../../components/Modais/CameraModal/CameraModal";
+import api from "../../service/service";
 
 
 export const ViewPrescription = ({ route }) => {
-    const [finalPosition, setFinalPosition] = useState();
-
+    const [appointment, setAppointment] = useState({ descricao: '', diagnostico: '', medicamento: '', observacoes: '' });
     const [modalVisible, setModalVisible] = useState(false);
 
     const { appointmentId } = route.params;
 
+    async function SearchAppointment() {
+        try {
+            const response = await api.get(`/Consultas/BuscarPorId?id=${appointmentId}`);
+            const { descricao, diagnostico } = response.data;
+            const { medicamento, observacoes } = response.data.receita
+
+            console.log(response.data)
+
+            setAppointment({ descricao, diagnostico, medicamento, observacoes });
+        } catch (error) {
+            console.error("Erro ao buscar os dados da consulta:", error);
+        }
+    }
+
     useEffect(() => {
-        console.log(appointmentId)
+        SearchAppointment();
     }, []);
 
     return (
@@ -43,7 +57,7 @@ export const ViewPrescription = ({ route }) => {
                     heightInput={"120px"}
                     fontSize={16}
                     textAlignVertical="top"
-                    placeholder="O paciente possuí uma infecção no ouvido. Necessário repouse de 2 dias e acompanhamento médico constante"
+                    placeholder={appointment.descricao}
                     editable={false}
                     multiline={true}
                     style={{ marginBottom: 20, marginTop: 8 }}
@@ -53,7 +67,7 @@ export const ViewPrescription = ({ route }) => {
                 <InputDisable
                     fontSize={16}
                     textAlignVertical="top"
-                    placeholder="Infecção no ouvido"
+                    placeholder={appointment.diagnostico}
                     editable={false}
                     multiline={true}
                     style={{ marginBottom: 20, marginTop: 8 }}
@@ -64,10 +78,7 @@ export const ViewPrescription = ({ route }) => {
                     heightInput={"120px"}
                     fontSize={16}
                     textAlignVertical="top"
-                    placeholder="Medicamento: Advil
-Dosagem: 50 mg
-Frequência: 3 vezes ao dia
-Duração: 3 dias"
+                    placeholder={`${appointment.medicamento}: ${appointment.observacoes}`}
                     editable={false}
                     multiline={true}
                     style={{ marginBottom: 20, marginTop: 8 }}

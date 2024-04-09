@@ -14,7 +14,11 @@ namespace WebAPI.Repositories
 
         public Consulta BuscarPorId(Guid id)
         {
-            return ctx.Consultas.Find(id);
+            Consulta consultaBuscada = ctx.Consultas.
+                Include(c => c.Receita).
+                FirstOrDefault(c => c.Id == id)!;
+
+            return consultaBuscada;
         }
 
         public void Cadastrar(Consulta clinica)
