@@ -61,8 +61,8 @@ namespace WebAPI.Controllers
                 user.Senha = pacienteModel.Senha;
                 user.TipoUsuarioId = pacienteModel.IdTipoUsuario;
 
-                var containerName = "blobvitalhubg10container";
-                var conectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubg10;AccountKey=k5Bd++jfvtkwYcpwZHaxHG8QUu/BmvyMtHTBWfr9eSO6e/upmPrhyCKSBO8xpZLBQO0sapRdA3ZI+AStOn3h5Q==;EndpointSuffix=core.windows.net";
+                var containerName = "";
+                var conectionString = "";
 
                 user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(pacienteModel.ArquivoFoto, conectionString, containerName);
 
