@@ -50,7 +50,7 @@ export default function App() {
 
   return (
       <NavigationContainer>
-          <Stack.Navigator initialRouteName="RecoverPassword">
+          <Stack.Navigator initialRouteName="Login">
               <Stack.Screen
                   name="Main"
                   component={Main}

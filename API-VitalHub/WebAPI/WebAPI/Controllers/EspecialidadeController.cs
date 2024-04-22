@@ -18,32 +18,18 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public IActionResult Get() 
         {
-            try
-            {
-                return Ok(_repository.Listar());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(_repository.Listar());
         }
 
-        [HttpPost]
-        public ActionResult Post(Especialidade especialidade)
+        [HttpPost] 
+        public IActionResult Post(Especialidade especialidade)
         {
-            try
-            {
-                _repository.Cadastrar(especialidade);
-
-                return StatusCode(201, especialidade);
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _repository.Cadastrar(especialidade);
+            
+            return StatusCode(201);
         }
+
     }
 }

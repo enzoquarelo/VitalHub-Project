@@ -17,8 +17,6 @@ public partial class Usuario
 
     public string? Foto { get; set; }
 
-    public int? CodRecupSenha { get; set; }
-
     public virtual Medico? Medico { get; set; }
 
     public virtual Paciente? Paciente { get; set; }

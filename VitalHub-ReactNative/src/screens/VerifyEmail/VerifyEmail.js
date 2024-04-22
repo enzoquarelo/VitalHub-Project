@@ -8,6 +8,7 @@ import { DefaultText } from "../../components/DefaultText/DefaultText";
 import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { Links } from "../../components/Links/style";
 import { useRef } from "react-native";
+import api from "../../service/service";
 
 import { TouchableOpacity } from "react-native";
 
@@ -39,7 +40,7 @@ export const VerifyEmail = ({ navigation, route }) => {
         `/RecuperarSenha/ValidarCodigoRecuperarSenha?email=${route.params.emailRecuparecao}&codigo=${codigo}`
       )
       .then(() => {
-        navigation.replace("RedefinePassword");
+        navigation.replace("RedefinePassword", {emailRecuparecao : route.params.emailRecuparecao});
       })
       .catch((error) => {
         console.log(error);

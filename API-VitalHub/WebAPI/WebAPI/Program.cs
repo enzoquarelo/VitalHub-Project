@@ -2,7 +2,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using System.Reflection;
-using WebAPI.Utils.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -99,15 +98,6 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-
-
-// Configure EmailSettings
-builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(nameof(EmailSettings)));
-
-// Registrando o serviço de e-mail como uma instância transitória, que é criada cada vez que é solicitada
-builder.Services.AddTransient<IEmailService, EmailService>();
-
-builder.Services.AddScoped<EmailSendingService>();
 
 // CORS
 builder.Services.AddCors(options =>

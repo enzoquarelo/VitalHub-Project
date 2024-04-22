@@ -9,6 +9,7 @@ import { CustomButton, TitleButton } from "../../components/Button/styles";
 
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity, ActivityIndicator } from "react-native";
+import api from "../../service/service";
 
 
 export const RecoverPassword = ({ navigation }) => {
