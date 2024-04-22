@@ -1,6 +1,5 @@
 import { React, useState } from "react";
 
-
 import { Container } from "../../components/Container/style"
 import { Logo } from "../../components/Logo/Logo";
 import { Title } from "../../components/Title/style";
@@ -13,10 +12,24 @@ import { TouchableOpacity, ActivityIndicator } from "react-native";
 
 
 export const RecoverPassword = ({ navigation }) => {
+
     const [textWarning, setTextWarning] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     const [userData, setUserData] = useState('');
+
+    const [email, setEmail] = useState("")
+
+    //enviar o email
+    async function EnviarEmail() {
+        await api.post(`/RecuperarSenha?email=${email}`)
+
+        .then(() => {
+            navigation.replace("VerifyEmail, {emailRecuparecao : email}")
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 
     const validateFields = () => {
         if (userData === '') {
@@ -56,10 +69,10 @@ export const RecoverPassword = ({ navigation }) => {
             <Input
                 placeholder="Usuário ou E-mail"
                 style={{ marginBottom: 30 }}
-                value={userData} 
-                onChangeText={(text) => setUserData(text)}
+                value={email} 
+                onChangeText={(text) => setEmail(text)}
             />
-            <CustomButton onPress={() => { validateFields() }}>
+            <CustomButton onPress={() => EnviarEmail() }>
                 <TitleButton>CONTINUAR  </TitleButton>
             </CustomButton>
         </Container>
