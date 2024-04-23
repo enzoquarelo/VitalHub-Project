@@ -2,6 +2,7 @@ import { React, useState } from "react";
 
 import { ActivityIndicator } from "react-native";
 
+import { StatusBar } from "expo-status-bar";
 import { Container } from "../../components/Container/style"
 import { Logo } from "../../components/Logo/Logo";
 import { Title } from "../../components/Title/style";
@@ -17,9 +18,9 @@ export const CreateAccount = ({ navigation }) => {
     const [textWarning, setTextWarning] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const [email, setEmail] = useState('teste@gmail.com');
-    const [senha, setSenha] = useState('teste123');
-    const [senhaConfirm, setSenhaConfirm] = useState('teste123');
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [senhaConfirm, setSenhaConfirm] = useState('');
 
     const validateFields = () => {
         if (!email || !senha || !senhaConfirm) {
@@ -66,6 +67,8 @@ export const CreateAccount = ({ navigation }) => {
 
     return (
         <Container>
+            <StatusBar/>
+
             <Logo />
 
             <Title style={{ marginTop: 45 }}>Criar conta</Title>

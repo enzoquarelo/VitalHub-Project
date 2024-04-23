@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 
-
+import { StatusBar } from "expo-status-bar";
 import { Container } from "../../components/Container/style"
 import { Logo } from "../../components/Logo/Logo";
 import { Title } from "../../components/Title/style";
@@ -32,7 +32,9 @@ export const RecoverPassword = ({ navigation }) => {
 
     return (
         <Container>
-            <TouchableOpacity style={{ width: 40, height: 40, backgroundColor: "#49B3BA15", borderRadius: 50, display: "flex", alignItems: "center", justifyContent: "center", position: "absolute", top: 60, left: 20 }} onPress={() => { navigation.navigate("Login") }}>
+            <StatusBar />
+
+            <TouchableOpacity style={{ width: 40, height: 40, backgroundColor: "#49B3BA15", borderRadius: 50, display: "flex", alignItems: "center", justifyContent: "center", position: "absolute", top: 40, left: 20 }} onPress={() => { navigation.navigate("Login") }}>
                 <AntDesign name="arrowleft" size={24} color="#34898F" />
             </TouchableOpacity>
 
@@ -56,7 +58,7 @@ export const RecoverPassword = ({ navigation }) => {
             <Input
                 placeholder="Usuário ou E-mail"
                 style={{ marginBottom: 30 }}
-                value={userData} 
+                value={userData}
                 onChangeText={(text) => setUserData(text)}
             />
             <CustomButton onPress={() => { validateFields() }}>
