@@ -22,7 +22,7 @@ namespace WebAPI.Repositories
                     .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
                     .Include(x => x.Paciente!.IdNavigation)
                     .Include(x => x.Prioridade)
-                    .Include(x => x.SituacaoId)
+                    .Include(x => x.Situacao)
                     .Include(x => x.Receita)
                     .FirstOrDefault(x => x.Id == id)!;
 
@@ -95,7 +95,7 @@ namespace WebAPI.Repositories
             {
                 List<Consulta> listaConsultas = ctx.Consultas
                     .Include(x => x.Paciente!.IdNavigation)
-                    .Include(x => x.SituacaoId)
+                    .Include(x => x.Situacao)
                     .Include(x => x.Prioridade)
                     .Where(x => x.MedicoClinica != null && x.MedicoClinica.MedicoId == IdMedico)
                     .ToList();
@@ -115,7 +115,7 @@ namespace WebAPI.Repositories
             {
                 List<Consulta> listaConsultas = ctx.Consultas
                     .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
-                    .Include(x => x.SituacaoId)
+                    .Include(x => x.Situacao)
                     .Include(x => x.Prioridade)
                     .Where(x => x.PacienteId != null && x.PacienteId == IdPaciente)
                     .ToList();
