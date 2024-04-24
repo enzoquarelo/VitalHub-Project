@@ -18,6 +18,8 @@ import { Main } from './src/screens/Main/Main';
 import { SelectClinic } from './src/screens/SelectClinic/SelectClinic';
 import { SelectDoctor } from './src/screens/SelectDoctor/SelectDoctor';
 import { SelectDate } from './src/screens/SelectDate/SelectDate';
+import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from 'expo-image-picker';
 
 // Importe das Fontes
 import {
@@ -47,10 +49,15 @@ export default function App() {
     return null;
   }
 
+  async function requestGaleria() {
+    await MediaLibrary.requestPermissionsAsync();
+
+    await ImagePicker.requestMediaLibraryPermissionsAsync();
+  }
 
   return (
       <NavigationContainer>
-          <Stack.Navigator initialRouteName="Login">
+          <Stack.Navigator initialRouteName="Profile">
               <Stack.Screen
                   name="Main"
                   component={Main}

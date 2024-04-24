@@ -26,7 +26,7 @@ export const RecoverPassword = ({ navigation }) => {
         await api.post(`/RecuperarSenha?email=${email}`)
 
         .then(() => {
-            navigation.replace("VerifyEmail, {emailRecuparecao : email}")
+            navigation.replace("VerifyEmail, {emailRecuperacao : email}")
         }).catch(error => {
             console.log(error)
         })

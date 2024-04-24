@@ -37,10 +37,12 @@ export const VerifyEmail = ({ navigation, route }) => {
 
     await api
       .post(
-        `/RecuperarSenha/ValidarCodigoRecuperarSenha?email=${route.params.emailRecuparecao}&codigo=${codigo}`
+        `/RecuperarSenha/ValidarCodigoRecuperarSenha?email=${route.params.emailRecuperacao}&codigo=${codigo}`
       )
       .then(() => {
-        navigation.replace("RedefinePassword", {emailRecuparecao : route.params.emailRecuparecao});
+        navigation.replace("RedefinePassword", {
+          emailRecuperacao: route.params.emailRecuperacao,
+        });
       })
       .catch((error) => {
         console.log(error);
