@@ -11,15 +11,14 @@ import { DoctorImage, RowGray } from "./style";
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { StatusBar } from "expo-status-bar";
-import { ScrollView } from "react-native";
+import { ScrollView, StatusBar} from "react-native";
 
 import ModalCamera from "../../components/Modais/CameraModal/CameraModal";
 import api from "../../service/service";
 
 
 export const ViewPrescription = ({ route }) => {
-    const [appointment, setAppointment] = useState({ descricao: '', diagnostico: '', medicamento: '', observacoes: '' });
+    const [appointment, setAppointment] = useState({ descricao: '', diagnostico: '', medicamento: '', foto: '', nome: '', crm: '', especialidade1: '' });
     const [modalVisible, setModalVisible] = useState(false);
 
     const { appointmentId } = route.params;
@@ -28,11 +27,12 @@ export const ViewPrescription = ({ route }) => {
         try {
             const response = await api.get(`/Consultas/BuscarPorId?id=${appointmentId}`);
             const { descricao, diagnostico } = response.data;
-            const { medicamento, observacoes } = response.data.receita
+            const { medicamento } = response.data.receita;
+            const {foto, nome} = response.data.medicoClinica.medico.idNavigation;
+            const { crm } = response.data.medicoClinica.medico;
+            const { especialidade1 } = response.data.medicoClinica.medico.especialidade;
 
-            console.log(response.data)
-
-            setAppointment({ descricao, diagnostico, medicamento, observacoes });
+            setAppointment({ descricao, diagnostico, medicamento, foto, nome, crm, especialidade1 });
         } catch (error) {
             console.error("Erro ao buscar os dados da consulta:", error);
         }
@@ -42,15 +42,16 @@ export const ViewPrescription = ({ route }) => {
         SearchAppointment();
     }, []);
 
+    console.log(appointment.foto);
     return (
         <ScrollView>
             <Container>
-                <StatusBar />
+            <StatusBar barStyle="light-content" />
 
-                <DoctorImage source={require('../../../assets/images/doctorImage_temp.png')} />
+                <DoctorImage source={{ uri: appointment.foto }} />
 
-                <Title style={{ marginBottom: 4, marginTop: 15 }}>Nome do(a) Dr.(a)</Title>
-                <DefaultText>Área de atuação  -  CRM</DefaultText>
+                <Title style={{ marginBottom: 4, marginTop: 15 }}>Dr(a) {appointment.nome}</Title>
+                <DefaultText>{appointment.especialidade1}  -  CRM{appointment.crm}</DefaultText>
 
                 <TitleInput style={{ marginTop: 30 }} fontSize={18}>Descrição da consulta</TitleInput>
                 <InputDisable
@@ -78,7 +79,7 @@ export const ViewPrescription = ({ route }) => {
                     heightInput={"120px"}
                     fontSize={16}
                     textAlignVertical="top"
-                    placeholder={`${appointment.medicamento}: ${appointment.observacoes}`}
+                    placeholder={appointment.medicamento}
                     editable={false}
                     multiline={true}
                     style={{ marginBottom: 20, marginTop: 8 }}

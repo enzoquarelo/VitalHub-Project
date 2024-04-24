@@ -99,7 +99,7 @@ export const Home = ({ navigation }) => {
             <>
                 <Container justifyContent={'start'}>
                     <StatusBar style="light" />
-                    <Header imageHeader="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1" />
+                    <Header />
 
                     <CalendarHome setDiaSelecionado={setDiaSelecionado} />
                     <Container widthContainer={"90%"} heightContainer={"40px"} flexDirection={"row"} justifyContent={"space-between"}>
@@ -189,7 +189,7 @@ export const Home = ({ navigation }) => {
             <>
                 <Container justifyContent={'start'}>
                     <StatusBar style="light" />
-                    <Header imageHeader="https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1" />
+                    <Header />
 
                     <CalendarHome setDiaSelecionado={setDiaSelecionado} />
 
@@ -252,7 +252,7 @@ export const Home = ({ navigation }) => {
                             return (
                                 <Cards
                                     key={index}
-                                    imageHeader={'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1'}
+                                    imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
                                     profileName={`Dr. ${doctorName}`}
                                     profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
                                     appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
@@ -267,7 +267,7 @@ export const Home = ({ navigation }) => {
                             return (
                                 <Cards
                                     key={index}
-                                    imageHeader={'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1'}
+                                    imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
                                     profileName={`Dr. ${doctorName}`}
                                     profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
                                     appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
@@ -276,14 +276,14 @@ export const Home = ({ navigation }) => {
                                     appointmentId={appointmentId}
                                 />
                             );
-                            
+
                         } else if (selectedCanceladas) {
                             buttonSelected = 'Canceladas';
 
                             return (
                                 <Cards
                                     key={index}
-                                    imageHeader={'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1'}
+                                    imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
                                     profileName={`Dr. ${doctorName}`}
                                     profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
                                     appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
@@ -309,6 +309,7 @@ export const Home = ({ navigation }) => {
                         setShowPrescription={setShowPrescription}
                         onPressClose={() => setShowPrescription(false)}
                         userRole={userRole}
+                        doctorPhoto={consultaSelecionada?.medicoClinica?.medico?.idNavigation.foto}
                         doctorCRM={consultaSelecionada?.medicoClinica?.medico?.crm}
                         specialtyName={consultaSelecionada?.medicoClinica?.medico?.especialidade?.especialidade1}
                         doctorName={consultaSelecionada?.medicoClinica?.medico?.idNavigation?.nome}

@@ -10,7 +10,7 @@ import { Links } from "../../Links/style"
 
 import { useNavigation } from '@react-navigation/native';
 
-export const AppointmentLocalModal = ({ visible, onPressClose, userRole, doctorCRM, specialtyName, doctorName, clinicId }) => {
+export const AppointmentLocalModal = ({ visible, setShowPrescription, onPressClose, userRole, doctorPhoto, doctorCRM, specialtyName, doctorName, consulta, clinicId }) => {
 
   const navigation = useNavigation();
   
@@ -59,7 +59,7 @@ export const AppointmentLocalModal = ({ visible, onPressClose, userRole, doctorC
         <ModalContainer>
           <ModalView>
 
-            <UserImage source={require('../../../../assets/images/doctorImage_temp.png')} />
+            <UserImage source={{ uri: doctorPhoto }} />
 
             <Title>Dr(a) {doctorName}</Title>
 
