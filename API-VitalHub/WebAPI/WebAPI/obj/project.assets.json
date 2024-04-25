@@ -8176,19 +8176,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\32784630803\\.nuget\\packages\\": {}
+    "C:\\Users\\49470161831\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\32784630803\\Desktop\\VitalHub-Project\\API-VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\49470161831\\Desktop\\VitalHub-Project\\API-VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
       "projectName": "WebAPI",
-      "projectPath": "C:\\Users\\32784630803\\Desktop\\VitalHub-Project\\API-VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
-      "packagesPath": "C:\\Users\\32784630803\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\32784630803\\Desktop\\VitalHub-Project\\API-VitalHub\\WebAPI\\WebAPI\\obj\\",
+      "projectPath": "C:\\Users\\49470161831\\Desktop\\VitalHub-Project\\API-VitalHub\\WebAPI\\WebAPI\\WebAPI.csproj",
+      "packagesPath": "C:\\Users\\49470161831\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\49470161831\\Desktop\\VitalHub-Project\\API-VitalHub\\WebAPI\\WebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\32784630803\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\49470161831\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8289,6 +8289,12 @@
     }
   },
   "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problema ao ler o arquivo de cache C:\\Users\\49470161831\\Desktop\\VitalHub-Project\\API-VitalHub\\WebAPI\\WebAPI\\obj\\project.nuget.cache: Invalid property identifier character: <. Path 'version', line 3, position 0."
+    },
     {
       "code": "NU1902",
       "level": "Warning",
