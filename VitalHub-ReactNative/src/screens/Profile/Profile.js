@@ -67,6 +67,35 @@ export const Profile = ({ navigation }) => {
         }
     }
 
+    async function salvarAlteracoes() {
+        const token = await userDecodeToken();
+        const userRoleToken = token.role;
+        const userId = token.jti;
+        const url = (userRoleToken === "Medico" ? "Medicos" : "Pacientes");
+
+        try {
+            const response = await api.put(`/${url}?idUsuario=${userId}`, {
+                rg: userRg,
+                cpf: userCPF,
+                dataNascimento: userDataNascimento,
+                cep: userCep,
+                logradouro: userLogradouro,
+                numero: userNumero,
+                cidade: userCidade,
+                foto: userFoto
+            });
+
+
+            console.log("Alterações salvas com sucesso:", response.data);
+
+            setIsEditing(false);
+
+        } catch (error) {
+            console.error("Erro ao salvar alterações:", error);
+        }
+    }
+
+
     function formatDate(dateString) {
         const date = new Date(dateString);
         const formattedDate = date.toLocaleDateString('pt-BR');
@@ -118,6 +147,8 @@ export const Profile = ({ navigation }) => {
                 <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>CPF</TitleInput>
                 {isEditing ? (
                     <Input
+                        value={userCPF}
+                        onChangeText={setUserCPF}
                         editable={true}
                     />
                 ) : (
@@ -130,6 +161,12 @@ export const Profile = ({ navigation }) => {
                 <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Endereço</TitleInput>
                 {isEditing ? (
                     <Input
+                        value={`${userLogradouro}, ${userNumero}`}
+                        onChangeText={text => {
+                            const [logradouro, numero] = text.split(',');
+                            setUserLogradouro(logradouro.trim());
+                            setUserNumero(numero.trim()); 
+                        }}
                         editable={true}
                         multiline={false}
                         numberOfLines={1}
@@ -148,6 +185,8 @@ export const Profile = ({ navigation }) => {
                         <TitleInput>CEP</TitleInput>
                         {isEditing ? (
                             <Input
+                                value={userCep}
+                                onChangeText={setUserCep}
                                 editable={false}
                             />
                         ) : (
@@ -162,7 +201,8 @@ export const Profile = ({ navigation }) => {
                         <TitleInput>Cidade</TitleInput>
                         {isEditing ? (
                             <Input
-
+                                value={userCidade}
+                                onChangeText={setUserCidade}
                                 editable={true}
                             />
                         ) : (
@@ -174,7 +214,7 @@ export const Profile = ({ navigation }) => {
                     </ContainerInputAndTitle>
                 </Container>
 
-                <CustomButton style={{ marginBottom: 20 }}>
+                <CustomButton style={{ marginBottom: 20 }} onPress={salvarAlteracoes}>
                     <TitleButton>SALVAR</TitleButton>
                 </CustomButton>
 

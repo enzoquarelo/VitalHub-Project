@@ -51,7 +51,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="SplashScreen">
 
         <Stack.Screen
           name="Main"

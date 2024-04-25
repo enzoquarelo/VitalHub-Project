@@ -9,7 +9,8 @@ namespace WebAPI.Utils.BlobStorage
         {
             try
             {
-           
+              
+              
 
                 //verifica se existe o arquivo
                 if (arquivo != null)
