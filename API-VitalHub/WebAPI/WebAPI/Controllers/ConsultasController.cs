@@ -39,7 +39,18 @@ namespace WebAPI.Controllers
             }
         }
 
+<<<<<<< HEAD
         [Authorize(Roles = "Medico")]
+=======
+        [HttpGet("BuscarPorId")]
+        public IActionResult GetById(Guid id)
+        {
+
+            return Ok(consultaRepository.BuscarPorId(id)); ;
+        }
+
+        //[Authorize(Roles ="Medico")]
+>>>>>>> lucaslacerda
         [HttpGet("ConsultasMedico")]
         public IActionResult GetByIdDoctor()
         {

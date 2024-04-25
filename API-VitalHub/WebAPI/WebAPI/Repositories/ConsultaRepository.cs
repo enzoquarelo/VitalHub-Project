@@ -14,6 +14,7 @@ namespace WebAPI.Repositories
 
         public Consulta BuscarPorId(Guid id)
         {
+<<<<<<< HEAD
             try
             {
                 return ctx.Consultas
@@ -31,6 +32,13 @@ namespace WebAPI.Repositories
             {
                 throw;
             }
+=======
+            Consulta consultaBuscada = ctx.Consultas.
+                Include(c => c.Receita).
+                FirstOrDefault(c => c.Id == id)!;
+
+            return consultaBuscada;
+>>>>>>> lucaslacerda
         }
 
         public void Cadastrar(Consulta clinica)

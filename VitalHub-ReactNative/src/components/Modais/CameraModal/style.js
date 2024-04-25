@@ -31,7 +31,6 @@ export const BtnCapture = styled.TouchableOpacity`
     background-color: white;
     border: 5px solid white;
 
-    margin-left: 35%;
 
     align-items: 'center';
     justify-content: 'center';
