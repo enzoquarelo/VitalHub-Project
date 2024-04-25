@@ -237,6 +237,7 @@ export const Profile = ({ navigation }) => {
         </ButtonDisable>
 
         <ModalCamera
+        getMediaLibrary={true}
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
           title="Título do Modal"

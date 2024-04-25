@@ -41,19 +41,20 @@ const ModalCamera = ({
   const [latesPhoto, setLatesPhoto] = useState(null); //salva a ultima foto
 
   async function SelectImageGallery() {
-    console.log("SelectImageGallery function called"); 
-  
+    console.log("SelectImageGallery function called");
+
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 1
+        quality: 1,
       });
-  
+
       if (!result.canceled) {
-        setPhoto(result.uri);
+        setPhoto(result.assets[0].uri);
+        setOpenModal(true);
       }
     } catch (error) {
-      console.error("Error in SelectImageGallery:", error); 
+      console.error("Error in SelectImageGallery:", error);
     }
   }
 
@@ -71,25 +72,16 @@ const ModalCamera = ({
   }
 
   async function GetLastPhoto() {
-    const {assets} = await MediaLibrary.getAssetsAsync({
+    const { assets } = await MediaLibrary.getAssetsAsync({
       sortBy: [[MediaLibrary.SortBy.creationTime, false]],
       first: 1,
     });
 
     console.log(assets);
-    if (assets.lenght > 0) {
+    if (assets.length > 0) {
       setLatesPhoto(assets[0].uri);
     }
   }
-
-  useEffect(() => {
-    (async () => {
-      const { status: cameraStatus } =
-        await Camera.requestCameraPermissionsAsync();
-      const { status: mediaStatus } =
-        await MediaLibrary.requestPermissionsAsync();
-    })();
-  }, []);
 
   useEffect(() => {
     setPhoto(null);
@@ -115,6 +107,12 @@ const ModalCamera = ({
           ratio={"16:9"}
         >
           <ContainerButtonsCamera>
+            <ButtonGaleria onPress={() => SelectImageGallery()}>
+              {latesPhoto != null ? (
+                <LastPhoto source={{ uri: latesPhoto }} />
+              ) : null}
+            </ButtonGaleria>
+
             <BtnCapture onPress={CapturePhoto} />
             <BtnFlip
               onPress={() =>
@@ -132,14 +130,8 @@ const ModalCamera = ({
               />
             </BtnFlip>
           </ContainerButtonsCamera>
-          <ButtonGaleria onPress={() => SelectImageGallery()}>
-          {latesPhoto != null ? (
-            <LastPhoto source={{ uri: latesPhoto }} />
-          ) : null}
-        </ButtonGaleria>
         </Camera>
         <StatusBar hidden={true} />
-
       </Modal>
 
       {openModal && (
