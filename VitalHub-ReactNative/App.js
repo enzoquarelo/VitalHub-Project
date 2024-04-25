@@ -57,7 +57,7 @@ export default function App() {
 
   return (
       <NavigationContainer>
-          <Stack.Navigator initialRouteName="Profile">
+          <Stack.Navigator initialRouteName="ViewPrescription">
               <Stack.Screen
                   name="Main"
                   component={Main}

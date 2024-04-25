@@ -37,7 +37,6 @@ const ModalCamera = ({
   const [openModal, setOpenModal] = useState(false);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
-  // const [capturePhoto, setCapturePhoto] = useState(null)
   const [latesPhoto, setLatesPhoto] = useState(null); //salva a ultima foto
 
   async function SelectImageGallery() {
