@@ -13,12 +13,15 @@ import { ButtonDisable, CustomButton, TitleButton } from "../../components/Butto
 import { userDecodeToken } from "../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { UseMask } from "../../utils/formater";
+
 import api from "../../service/service";
 
 export const Profile = ({ navigation }) => {
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
 
+    //states para os inputs
     const [userDataNascimento, setUserDataNascimento] = useState('');
     const [userRg, setUserRg] = useState('');
     const [userCPF, setUserCPF] = useState('');
@@ -28,9 +31,10 @@ export const Profile = ({ navigation }) => {
     const [userNumero, setUserNumero] = useState('');
     const [userFoto, setUserFoto] = useState('');
 
-
+    //state para manipular edição dos inputs
     const [isEditing, setIsEditing] = useState(false);
 
+    //captura nome e email do token
     async function profileLoad() {
         const token = await userDecodeToken();
         const userNameToken = token.name;
@@ -39,11 +43,14 @@ export const Profile = ({ navigation }) => {
         setUserEmail(userEmailToken);
     }
 
+    //LOGOUT - deleta o token da AsyncStorage
     async function deleteToken() {
         await AsyncStorage.removeItem('token');
         navigation.navigate("Login");
     }
 
+
+    //Get - Procura o Usuário para inserir os dados nos inputs
     async function BuscarUsuario() {
         const token = await userDecodeToken();
         const userRoleToken = token.role;
@@ -67,6 +74,7 @@ export const Profile = ({ navigation }) => {
         }
     }
 
+    //Put - Ativa os botões e salva os novos valores
     async function salvarAlteracoes() {
         const token = await userDecodeToken();
         const userRoleToken = token.role;
@@ -95,24 +103,21 @@ export const Profile = ({ navigation }) => {
         }
     }
 
-
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const formattedDate = date.toLocaleDateString('pt-BR');
-        return formattedDate;
-    }
-
+    //edição
     function toggleEditing() {
         setIsEditing(!isEditing);
     }
 
+    //carrega os dados do usuário para chamada na api
     useEffect(() => {
         profileLoad();
     }, []);
 
+    //carrega dados para inserção dos inputs
     useEffect(() => {
         BuscarUsuario();
     }, []);
+
 
     return (
         <ScrollView>
@@ -126,7 +131,7 @@ export const Profile = ({ navigation }) => {
 
                 <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Data de Nascimento</TitleInput>
                 <InputDisable
-                    value={formatDate(userDataNascimento)}
+                    value={userDataNascimento}
                     editable={false}
                 />
 
@@ -139,7 +144,13 @@ export const Profile = ({ navigation }) => {
                     />
                 ) : (
                     <InputDisable
-                        value={userRg}
+                        value={
+                            isEditing
+                                ?
+                                userRg
+                                :
+                                UseMask('##.###.###-#', userRg)
+                        }
                         editable={false}
                     />
                 )}
@@ -153,34 +164,18 @@ export const Profile = ({ navigation }) => {
                     />
                 ) : (
                     <InputDisable
-                        value={userCPF}
+                    value={
+                        isEditing
+                            ?
+                            userCPF
+                            :
+                            UseMask('#########-##', userCPF)
+                    }
                         editable={false}
                     />
                 )}
 
-                <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Endereço</TitleInput>
-                {isEditing ? (
-                    <Input
-                        value={`${userLogradouro}, ${userNumero}`}
-                        onChangeText={text => {
-                            const [logradouro, numero] = text.split(',');
-                            setUserLogradouro(logradouro.trim());
-                            setUserNumero(numero.trim()); 
-                        }}
-                        editable={true}
-                        multiline={false}
-                        numberOfLines={1}
-                    />
-                ) : (
-                    <InputDisable
-                        value={`${userLogradouro}, ${userNumero}`}
-                        editable={false}
-                        multiline={false}
-                        numberOfLines={1}
-                    />
-                )}
-
-                <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14, marginBottom: 40 }}>
+                <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14 }}>
                     <ContainerInputAndTitle>
                         <TitleInput>CEP</TitleInput>
                         {isEditing ? (
@@ -191,7 +186,13 @@ export const Profile = ({ navigation }) => {
                             />
                         ) : (
                             <InputDisable
-                                value={userCep}
+                            value={
+                                isEditing
+                                    ?
+                                    userCep
+                                    :
+                                    UseMask('#####-###', userCep)
+                            }
                                 editable={false}
                             />
                         )}
@@ -204,11 +205,53 @@ export const Profile = ({ navigation }) => {
                                 value={userCidade}
                                 onChangeText={setUserCidade}
                                 editable={true}
+                                widthInput={"180px"}
                             />
                         ) : (
                             <InputDisable
                                 value={userCidade}
                                 editable={false}
+                                widthInput={"180px"}
+                            />
+                        )}
+                    </ContainerInputAndTitle>
+                </Container>
+
+                <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14, marginBottom: 40 }}>
+                    <ContainerInputAndTitle widthContainer={"280"}>
+                        <TitleInput>Logradouro</TitleInput>
+                        {isEditing ? (
+                            <Input
+                                value={userLogradouro}
+                                onChangeText={setUserLogradouro}
+                                editable={true}
+                                multiline={false}
+                                numberOfLines={1}
+                            />
+                        ) : (
+                            <InputDisable
+                                value={userLogradouro}
+                                editable={false}
+                                multiline={false}
+                                numberOfLines={1}
+                            />
+                        )}
+                    </ContainerInputAndTitle>
+
+                    <ContainerInputAndTitle widthContainer={"100"}>
+                        <TitleInput>N°</TitleInput>
+                        {isEditing ? (
+                            <Input
+                                value={userNumero}
+                                onChangeText={setUserNumero}
+                                editable={true}
+                                widthInput={"80px"}
+                            />
+                        ) : (
+                            <InputDisable
+                                value={userNumero}
+                                editable={false}
+                                widthInput={"80px"}
                             />
                         )}
                     </ContainerInputAndTitle>

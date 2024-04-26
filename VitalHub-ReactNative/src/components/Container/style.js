@@ -13,8 +13,8 @@ export const Container = styled.View`
 `
 
 export const ContainerInputAndTitle = styled.View`
-    width: 150px;
-    height: 83px;
+    width: ${props => (props.widthContainer ? props.widthContainer : "180px")};
+    height: 85px;
 
     display: flex;
     justify-content: space-between;

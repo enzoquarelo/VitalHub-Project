@@ -48,9 +48,36 @@ export const VerifyEmail = ({ navigation, route }) => {
             });
     }
 
+    const [timer, setTimer] = useState(10);
+    const [linkDisable, setLinkDisable] = useState(true);
+
+
+    async function EnviarEmail() {
+        await api.post(`/RecuperarSenha?email=${route.params.emailRecuperacao}`)
+
+            .then(() => {
+                setLinkDisable(true);
+                setTimer(60)
+            }).catch(error => {
+                console.log(error)
+            })
+    }
+
+    function TimeReenviarCodigo() {
+        if (timer > 0) {
+            setTimer(timer - 1);
+        } else {
+            setLinkDisable(false);
+        }
+    }
+
     useEffect(() => {
-        inputs[0].current.focus();
-    }, []);
+        const interval = setInterval(() => {
+            TimeReenviarCodigo();
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [timer]);
 
     return (
         <Container>
@@ -130,12 +157,21 @@ export const VerifyEmail = ({ navigation, route }) => {
             </CustomButton>
 
             <Links
-                colorLink={"#344F8F"}
+                colorLink={
+                    linkDisable
+                        ? "#CCCCCC"
+                        : "#344F8F"
+                }
                 fontLink={"MontserratAlternates_600SemiBold"}
                 fontSize={18}
                 style={{ textAlign: "center", marginTop: 30 }}
+                onPress={() => {
+                    if (!linkDisable) {
+                        EnviarEmail();
+                    }
+                }}
             >
-                Reenviar Código
+                Reenviar Código ({timer})
             </Links>
         </Container>
     );
