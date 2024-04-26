@@ -19,3 +19,10 @@ export const ContainerInputAndTitle = styled.View`
     display: flex;
     justify-content: space-between;
 `
+export const ContainerImageExame = styled.View`
+  width: 90%;
+  height: 204px;
+  border: 2px solid #49b3ba;
+  border-radius: 5px;
+  
+`;

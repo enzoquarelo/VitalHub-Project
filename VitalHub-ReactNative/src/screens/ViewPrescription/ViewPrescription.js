@@ -8,19 +8,22 @@ import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { DefaultText } from "../../components/DefaultText/DefaultText";
 
 import { DoctorImage, RowGray } from "./style";
+import {ContainerImageExame} from "../../components/Container/style"
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { StatusBar } from "expo-status-bar";
-import { ScrollView } from "react-native";
+import { Image, ScrollView, StyleSheet } from "react-native";
 
 import ModalCamera from "../../components/Modais/CameraModal/CameraModal";
 import api from "../../service/service";
+
 
 export const ViewPrescription = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [capturePhoto, setCapturePhoto] = useState(null);
   const [descricaoExame, setDescricaoExame] = useState(null);
+  const [photo, setPhoto] = useState(null);
 
   async function InserirExame() {
     const formData = new FormData();
@@ -72,10 +75,15 @@ export const ViewPrescription = ({ navigation }) => {
         />
 
         <TitleInput fontSize={18}>Diagnóstico do paciente</TitleInput>
+        
         <InputDisable
+          heightInput={"120px"}
           fontSize={16}
           textAlignVertical="top"
-          placeholder="Infecção no ouvido"
+          placeholder="Medicamento: Advil
+Dosagem: 50 mg
+Frequência: 3 vezes ao dia
+Duração: 3 dias"
           editable={false}
           multiline={true}
           style={{ marginBottom: 20, marginTop: 8 }}
@@ -96,16 +104,14 @@ Duração: 3 dias"
         />
 
         <TitleInput fontSize={18}>Exames Médicos</TitleInput>
-        <InputDisable
-          value={descricaoExame}
-          heightInput={"120px"}
-          fontSize={16}
-          textAlignVertical="center"
-          placeholder=" | ! |  Nenhuma Foto Informada"
-          editable={false}
-          multiline={true}
-          style={{ marginBottom: 8, marginTop: 8 }}
-        />
+        <ContainerImageExame>
+            {photo && (
+              <Image
+                source={{ uri: photo }}
+                style={styles.capturedImage}
+              />
+            )}
+          </ContainerImageExame>
 
         <Container
           widthContainer={"90%"}
@@ -166,6 +172,25 @@ Duração: 3 dias"
         setCapturePhoto={setCapturePhoto}
         setModalVisible={setModalVisible}
       />
+
     </ScrollView>
   );
+  
 };
+
+const styles = StyleSheet.create({
+  cameraButtonText: {
+    color: "white",
+    fontSize: 18,
+    backgroundColor: "#496BBA",
+    padding: 10,
+    borderRadius: 5,
+  },
+  capturedImage: {
+    width: 100,
+    height: 200,
+    resizeMode: "contain",
+  },
+})
+
+

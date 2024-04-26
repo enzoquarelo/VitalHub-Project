@@ -59,3 +59,4 @@ export const Photo = styled.Image`
 
     margin-top: 5%;
 `
+
