@@ -339,6 +339,7 @@ export const Home = ({ navigation }) => {
           />
 
           <QueryModalComponent
+          navigation={navigation}
             visible={showModalQuery}
             setShowModalQuery={setShowModalQuery}
           />

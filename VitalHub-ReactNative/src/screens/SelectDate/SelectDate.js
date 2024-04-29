@@ -2,8 +2,7 @@ import { React, useState, useEffect } from "react";
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { SelectList } from "react-native-dropdown-select-list";
-import { FontAwesome } from '@expo/vector-icons';
-
+import { FontAwesome } from "@expo/vector-icons";
 
 //import Components
 import { Container } from "../../components/Container/style";
@@ -22,16 +21,16 @@ import {
 } from "@expo-google-fonts/quicksand";
 import { View } from "react-native";
 
-export const SelectDate = ({ navigation }) => {
+export const SelectDate = ({ navigation, route }) => {
     const [selected, setSelected] = useState("");
 
     const [category, setCategory] = useState(null);
     const [subcategory, setSubCategory] = useState("");
 
     const categories = [
-        { key: '9h', value: '09:00' },
-        { key: '10h', value: '10:00' },
-    ]
+        { key: "9h", value: "09:00" },
+        { key: "10h", value: "10:00" },
+    ];
 
     const [fontsLoaded, fontsError] = useFonts({
         MontserratAlternates_600SemiBold,
@@ -132,7 +131,6 @@ export const SelectDate = ({ navigation }) => {
         navigation.replace("PatientConsultations");
     }
 
-
     return (
         <Container>
             <Title style={{ marginBottom: 20 }}>Selecionar Data</Title>
@@ -162,31 +160,37 @@ export const SelectDate = ({ navigation }) => {
                 placeholder="Selecione o Horário"
                 fontFamily="MontserratAlternates_600SemiBold"
                 boxStyles={{
-                    width: '90%',
-                    borderColor: '#34898F',
+                    width: "90%",
+                    borderColor: "#34898F",
                     borderWidth: 1,
                     borderRadius: 5,
                     padding: 10,
-                    display: 'flex',
-                    alignItems: 'center'
+                    display: "flex",
+                    alignItems: "center",
                 }}
                 dropdownStyles={{
-                    borderColor: '#34898F',
+                    borderColor: "#34898F",
                     borderWidth: 1,
                     borderRadius: 5,
                     padding: 10,
-                    display: 'flex',
-                    alignItems: 'start'
+                    display: "flex",
+                    alignItems: "start",
                 }}
                 inputStyles={{
-                    color: '#34898F',
+                    color: "#34898F",
                     fontSize: 16,
                 }}
                 dropdownTextStyles={{
-                    color: '#34898F',
+                    color: "#34898F",
                     fontSize: 16,
                 }}
-                arrowicon={<FontAwesome name="chevron-down" size={14} color={'#34898F'} />}
+                arrowicon={
+                    <FontAwesome
+                        name="chevron-down"
+                        size={14}
+                        color={"#34898F"}
+                    />
+                }
                 search={false}
             />
         </Container>
