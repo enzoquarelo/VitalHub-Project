@@ -12,6 +12,13 @@ import { Container } from '../../Container/style';
 export const FinalDataQueryModal = ({ visible, setShowModalQuery, ...rest }) => {
     const navigation = useNavigation();
 
+    const handleConfirm = () => {
+        // Fechar o modal
+        setShowModalQuery(false);
+        // Navegar para a tela Main
+        navigation.navigate('Main');
+    };
+
     return (
         <Modal {...rest} visible={visible} transparent={true} animationType="fade">
             <QueryDaraModal>
@@ -47,7 +54,7 @@ export const FinalDataQueryModal = ({ visible, setShowModalQuery, ...rest }) => 
                     </Container>
 
 
-                    <CustomButton>
+                    <CustomButton onPress={handleConfirm}>
                         <TitleButton>CONFIRMAR</TitleButton>
                     </CustomButton>
 
