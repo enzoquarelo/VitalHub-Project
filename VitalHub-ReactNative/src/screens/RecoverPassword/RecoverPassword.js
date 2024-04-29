@@ -16,32 +16,23 @@ export const RecoverPassword = ({ navigation }) => {
     const [textWarning, setTextWarning] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const [userData, setUserData] = useState('');
-
     const [email, setEmail] = useState("enzo.quarelo@gmail.com")
 
     //enviar o email
     async function EnviarEmail() {
+        if (email === '') {
+            setTextWarning('Por favor, preencha o campo.');
+            return false;
+        }
+
         await api.post(`/RecuperarSenha?email=${email}`)
 
             .then(() => {
                 navigation.replace("VerifyEmail", { emailRecuperacao: email });
             }).catch(error => {
-                console.log(error)
+                setTextWarning('Email não encontrado');
             })
     }
-
-    const validateFields = () => {
-        if (userData === '') {
-            setTextWarning('Por favor, preencha o campo.');
-            return false;
-        }
-
-        setTextWarning('');
-        navigation.replace("VerifyEmail");
-
-        return true;
-    };
 
     return (
         <Container>

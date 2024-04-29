@@ -163,7 +163,7 @@ export const Home = ({ navigation }) => {
 
                             <Cards
                                 key={index}
-                                imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
+                                imageHeader={consulta.paciente.idNavigation.foto}
                                 profileName={consulta.paciente.idNavigation.nome}
                                 profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
                                 appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}

@@ -17,15 +17,23 @@ export const RedefinePassword = ({ navigation, route }) => {
     const [senha, setSenha] = useState("")
     const [confirmar, setConfirmar] = useState("")
 
+    const [textWarning, setTextWarning] = useState('');
+
   async function AtualizarSenha() {
-        if (senha === confirmar) {
-            await api.put(`/Usuario/AlterarSenha?email=${route.params.emailRecuperacao}`, {
-                senhaNova : senha
-            }).then(() => {
-                navigation.replace("Login")
-            }).catch(error => {
-                console.log(error);
-            })
+        if (senha == '' && confirmar == '') {
+            setTextWarning('Preencha os campos!')
+        }
+        else{
+            if (senha === confirmar) {
+                await api.put(`/Usuario/AlterarSenha?email=${route.params.emailRecuperacao}`, {
+                    senhaNova : senha
+                }).then(() => {
+                    navigation.replace("Login")
+                }).catch(error => {
+                    console.log(error);
+                })
+            }
+            setTextWarning('As senhas não coecidem!')
         }
     }
 
@@ -45,9 +53,19 @@ export const RedefinePassword = ({ navigation, route }) => {
                 Insira e confirme a sua nova senha
             </DefaultText>
 
+            <DefaultText
+                fontSize={18}
+                colorText={"#C81D25"}
+                widthText={"90%"}
+                textAlign={"start"}
+                style={{ marginTop: 15}}
+            >
+                {textWarning}
+            </DefaultText>
+
             <Input
                 placeholder="Nova Senha" secureTextEntry={true}
-                style={{ marginBottom: 15, marginTop: 20 }}
+                style={{ marginBottom: 15 }}
                 value={senha}
                 onChangeText={(text) => setSenha(text)}
             />

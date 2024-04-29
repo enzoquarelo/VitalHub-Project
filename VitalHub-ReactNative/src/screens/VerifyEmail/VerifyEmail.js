@@ -16,6 +16,8 @@ import { TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 export const VerifyEmail = ({ navigation, route }) => {
+    const [textWarning, setTextWarning] = useState('');
+
     const [codigo, setCodigo] = useState("");
     const inputs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
@@ -44,20 +46,22 @@ export const VerifyEmail = ({ navigation, route }) => {
                 });
             })
             .catch((error) => {
-                console.log(error);
+                setTextWarning('Código Inválido!');
             });
     }
 
-    const [timer, setTimer] = useState(10);
+    const [timer, setTimer] = useState(6);
     const [linkDisable, setLinkDisable] = useState(true);
 
 
     async function EnviarEmail() {
+        setLinkDisable(true);
+        setTimer(60)
+
         await api.post(`/RecuperarSenha?email=${route.params.emailRecuperacao}`)
 
             .then(() => {
                 setLinkDisable(true);
-                setTimer(60)
             }).catch(error => {
                 console.log(error)
             })
@@ -116,14 +120,24 @@ export const VerifyEmail = ({ navigation, route }) => {
                 {route.params.emailRecuperacao}
             </DefaultText>
 
+
+            <DefaultText
+                fontSize={18}
+                colorText={"#C81D25"}
+                widthText={"90%"}
+                style={{ marginTop: 10, marginBottom: 5 }}
+            >
+                {textWarning}
+            </DefaultText>
+
+
             <Container
                 widthContainer={"88%"}
                 heightContainer={"62px"}
                 flexDirection={"row"}
                 justifyContent={"space-around"}
                 style={{
-                    marginTop: 15,
-                    marginBottom: 20,
+                    marginBottom: 50,
                 }}
             >
                 {[0, 1, 2, 3].map((index) => (

@@ -21,6 +21,8 @@ export const Profile = ({ navigation }) => {
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
 
+    const [userRoleToken, setUserRoleToken] = useState('');
+
     //states para os inputs
     const [userDataNascimento, setUserDataNascimento] = useState('');
     const [userRg, setUserRg] = useState('');
@@ -30,6 +32,8 @@ export const Profile = ({ navigation }) => {
     const [userCidade, setUserCidade] = useState('');
     const [userNumero, setUserNumero] = useState('');
     const [userFoto, setUserFoto] = useState('');
+    const [userEspecialidade, setUserEspecialidade] = useState('');
+    const [userCRM, setUserCRM] = useState('');
 
     //state para manipular edição dos inputs
     const [isEditing, setIsEditing] = useState(false);
@@ -55,20 +59,31 @@ export const Profile = ({ navigation }) => {
         const token = await userDecodeToken();
         const userRoleToken = token.role;
         const userId = token.jti;
+        setUserRoleToken(userRoleToken);
         const url = (userRoleToken === "Medico" ? "Medicos" : "Pacientes");
 
         try {
             const response = await api.get(`/${url}/BuscarPorId?id=${userId}`);
 
-            setUserDataNascimento(response.data.dataNascimento);
-            setUserRg(response.data.rg);
-            setUserCPF(response.data.cpf);
-            setUserLogradouro(response.data.endereco.logradouro);
-            setUserCep(response.data.endereco.cep);
-            setUserCidade(response.data.endereco.cidade);
-            setUserNumero(response.data.endereco.numero);
-            setUserFoto(response.data.idNavigation.foto);
-
+            if (userRoleToken === "Medico") {
+                setUserEspecialidade(response.data.especialidade.especialidade1);
+                setUserCRM(response.data.crm);
+                setUserFoto(response.data.idNavigation.foto);
+                
+                setUserLogradouro(response.data.endereco.logradouro);
+                setUserCep(response.data.endereco.cep);
+                setUserCidade(response.data.endereco.cidade);
+                setUserNumero(response.data.endereco.numero);
+            } else {
+                setUserDataNascimento(response.data.dataNascimento);
+                setUserRg(response.data.rg);
+                setUserCPF(response.data.cpf);
+                setUserLogradouro(response.data.endereco.logradouro);
+                setUserCep(response.data.endereco.cep);
+                setUserCidade(response.data.endereco.cidade);
+                setUserNumero(response.data.endereco.numero);
+                setUserFoto(response.data.idNavigation.foto);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -118,6 +133,7 @@ export const Profile = ({ navigation }) => {
         BuscarUsuario();
     }, []);
 
+    console.log(userCidade)
 
     return (
         <ScrollView>
@@ -129,133 +145,251 @@ export const Profile = ({ navigation }) => {
                 <Title style={{ marginTop: 14 }}>{userName}</Title>
                 <DefaultText fontSize={18}>{userEmail}</DefaultText>
 
-                <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Data de Nascimento</TitleInput>
-                <InputDisable
-                    value={userDataNascimento}
-                    editable={false}
-                />
-
-                <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>RG</TitleInput>
-                {isEditing ? (
-                    <Input
-                        value={userRg}
-                        onChangeText={setUserRg}
-                        editable={true}
-                    />
-                ) : (
-                    <InputDisable
-                        value={
-                            isEditing
-                                ?
-                                userRg
-                                :
-                                UseMask('##.###.###-#', userRg)
-                        }
-                        editable={false}
-                    />
-                )}
-
-                <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>CPF</TitleInput>
-                {isEditing ? (
-                    <Input
-                        value={userCPF}
-                        onChangeText={setUserCPF}
-                        editable={true}
-                    />
-                ) : (
-                    <InputDisable
-                    value={
-                        isEditing
-                            ?
-                            userCPF
-                            :
-                            UseMask('#########-##', userCPF)
-                    }
-                        editable={false}
-                    />
-                )}
-
-                <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14 }}>
-                    <ContainerInputAndTitle>
-                        <TitleInput>CEP</TitleInput>
+                {userRoleToken === "Medico" ? (
+                    <>
+                        <TitleInput style={{marginBottom: 3, marginTop:10}}>Especialidade</TitleInput>
                         {isEditing ? (
                             <Input
-                                value={userCep}
-                                onChangeText={setUserCep}
-                                editable={false}
+                                value={userEspecialidade}
+                                onChangeText={setUserEspecialidade}
+                                editable={true}
                             />
                         ) : (
-                            <InputDisable
+                            <InputDisable value={userEspecialidade} editable={false} />
+                        )}
+
+                        <TitleInput style={{marginBottom: 3, marginTop:10}}>CRM</TitleInput>
+                        {isEditing ? (
+                            <Input
+                                value={userCRM}
+                                onChangeText={setUserCRM}
+                                editable={true}
+                            />
+                        ) : (
+                            <InputDisable value={userCRM} editable={false} />
+                        )}
+
+                        <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14 }}>
+                            <ContainerInputAndTitle>
+                                <TitleInput>CEP</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userCep}
+                                        onChangeText={setUserCep}
+                                        editable={false}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={
+                                            isEditing
+                                                ?
+                                                userCep
+                                                :
+                                                UseMask('#####-###', userCep)
+                                        }
+                                        editable={false}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+
+                            <ContainerInputAndTitle>
+                                <TitleInput>Cidade</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userCidade}
+                                        onChangeText={setUserCidade}
+                                        editable={true}
+                                        widthInput={"180px"}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userCidade}
+                                        editable={false}
+                                        widthInput={"180px"}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+                        </Container>
+
+                        <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14, marginBottom: 40 }}>
+                            <ContainerInputAndTitle widthContainer={"280"}>
+                                <TitleInput>Logradouro</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userLogradouro}
+                                        onChangeText={setUserLogradouro}
+                                        editable={true}
+                                        multiline={false}
+                                        numberOfLines={1}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userLogradouro}
+                                        editable={false}
+                                        multiline={false}
+                                        numberOfLines={1}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+
+                            <ContainerInputAndTitle widthContainer={"100"}>
+                                <TitleInput>N°</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userNumero}
+                                        onChangeText={setUserNumero}
+                                        editable={true}
+                                        widthInput={"80px"}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userNumero}
+                                        editable={false}
+                                        widthInput={"80px"}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+                        </Container>
+                    </>
+                ) : (
+                    <>
+                        <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Data de Nascimento</TitleInput>
+                        <InputDisable
                             value={
                                 isEditing
                                     ?
-                                    userCep
+                                    userDataNascimento
                                     :
-                                    UseMask('#####-###', userCep)
+                                    UseMask('##########', userDataNascimento)
                             }
-                                editable={false}
-                            />
-                        )}
-                    </ContainerInputAndTitle>
+                            editable={false}
+                        />
 
-                    <ContainerInputAndTitle>
-                        <TitleInput>Cidade</TitleInput>
+                        <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>RG</TitleInput>
                         {isEditing ? (
                             <Input
-                                value={userCidade}
-                                onChangeText={setUserCidade}
+                                value={userRg}
+                                onChangeText={setUserRg}
                                 editable={true}
-                                widthInput={"180px"}
                             />
                         ) : (
                             <InputDisable
-                                value={userCidade}
+                                value={
+                                    isEditing
+                                        ?
+                                        userRg
+                                        :
+                                        UseMask('##.###.###-#', userRg)
+                                }
                                 editable={false}
-                                widthInput={"180px"}
                             />
                         )}
-                    </ContainerInputAndTitle>
-                </Container>
 
-                <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14, marginBottom: 40 }}>
-                    <ContainerInputAndTitle widthContainer={"280"}>
-                        <TitleInput>Logradouro</TitleInput>
+                        <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>CPF</TitleInput>
                         {isEditing ? (
                             <Input
-                                value={userLogradouro}
-                                onChangeText={setUserLogradouro}
+                                value={userCPF}
+                                onChangeText={setUserCPF}
                                 editable={true}
-                                multiline={false}
-                                numberOfLines={1}
                             />
                         ) : (
                             <InputDisable
-                                value={userLogradouro}
+                                value={
+                                    isEditing
+                                        ?
+                                        userCPF
+                                        :
+                                        UseMask('#########-##', userCPF)
+                                }
                                 editable={false}
-                                multiline={false}
-                                numberOfLines={1}
                             />
                         )}
-                    </ContainerInputAndTitle>
 
-                    <ContainerInputAndTitle widthContainer={"100"}>
-                        <TitleInput>N°</TitleInput>
-                        {isEditing ? (
-                            <Input
-                                value={userNumero}
-                                onChangeText={setUserNumero}
-                                editable={true}
-                                widthInput={"80px"}
-                            />
-                        ) : (
-                            <InputDisable
-                                value={userNumero}
-                                editable={false}
-                                widthInput={"80px"}
-                            />
-                        )}
-                    </ContainerInputAndTitle>
-                </Container>
+                        <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14 }}>
+                            <ContainerInputAndTitle>
+                                <TitleInput>CEP</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userCep}
+                                        onChangeText={setUserCep}
+                                        editable={false}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={
+                                            isEditing
+                                                ?
+                                                userCep
+                                                :
+                                                UseMask('#####-###', userCep)
+                                        }
+                                        editable={false}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+
+                            <ContainerInputAndTitle>
+                                <TitleInput>Cidade</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userCidade}
+                                        onChangeText={setUserCidade}
+                                        editable={true}
+                                        widthInput={"180px"}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userCidade}
+                                        editable={false}
+                                        widthInput={"180px"}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+                        </Container>
+
+                        <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14, marginBottom: 40 }}>
+                            <ContainerInputAndTitle widthContainer={"280"}>
+                                <TitleInput>Logradouro</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userLogradouro}
+                                        onChangeText={setUserLogradouro}
+                                        editable={true}
+                                        multiline={false}
+                                        numberOfLines={1}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userLogradouro}
+                                        editable={false}
+                                        multiline={false}
+                                        numberOfLines={1}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+
+                            <ContainerInputAndTitle widthContainer={"100"}>
+                                <TitleInput>N°</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userNumero}
+                                        onChangeText={setUserNumero}
+                                        editable={true}
+                                        widthInput={"80px"}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userNumero}
+                                        editable={false}
+                                        widthInput={"80px"}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+                        </Container>
+                    </>
+                )}
+
+
 
                 <CustomButton style={{ marginBottom: 20 }} onPress={salvarAlteracoes}>
                     <TitleButton>SALVAR</TitleButton>
