@@ -9,6 +9,9 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Container } from "../../components/Container/style";
 import { Title } from "../../components/Title/style";
 import { TextSelectDatelabel, ViewCalendar } from "./style";
+import { CustomButton, TitleButton } from "../../components/Button/styles";
+import { Links } from "../../components/Links/style";
+import { FinalDataQueryModal } from "../../components/Modais/FinalDataQueryModal/FinalDataQueryModal";
 
 //import fonts
 import {
@@ -23,6 +26,8 @@ import {
 import { View } from "react-native";
 
 export const SelectDate = ({ navigation }) => {
+    const [showModalQuery, setShowModalQuery] = useState(false);
+
     const [selected, setSelected] = useState("");
 
     const [category, setCategory] = useState(null);
@@ -168,7 +173,8 @@ export const SelectDate = ({ navigation }) => {
                     borderRadius: 5,
                     padding: 10,
                     display: 'flex',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    marginTop: 45
                 }}
                 dropdownStyles={{
                     borderColor: '#34898F',
@@ -189,6 +195,24 @@ export const SelectDate = ({ navigation }) => {
                 arrowicon={<FontAwesome name="chevron-down" size={14} color={'#34898F'} />}
                 search={false}
             />
+
+            <CustomButton
+                style={{ marginTop: 50 }}
+                onPress={() => setShowModalQuery(true)}
+            >
+                <TitleButton>Continuar</TitleButton>
+            </CustomButton>
+
+            <Links
+                colorLink={"#344F8F"}
+                fontSize={18}
+                style={{ marginTop: 12 }}
+                onPress={() => navigation.navigate("Main")}
+            >
+                Cancelar
+            </Links>
+
+            <FinalDataQueryModal visible={showModalQuery} setShowModalQuery={setShowModalQuery} />
         </Container>
     );
 };
