@@ -7,8 +7,20 @@ import { DefaultText } from "../../DefaultText/DefaultText"
 import { CustomButton, TitleButton } from "../../Button/styles"
 import { Links } from "../../Links/style"
 
-export const CancelAppointmentModal = ({ visible, onClose }) => {
- return (
+import api from '../../../service/service';
+
+export const CancelAppointmentModal = ({ visible, onClose, onConfirm, idConsulta  }) => {
+
+  async function CancelAppointment() {
+    try {
+      await api.put(`/Consultas/Status?idConsulta=${idConsulta}&status=Cancelados`);
+      onClose();
+    } catch (error) {
+      console.error("Erro ao cancelar a consulta:", error);
+    }
+  }
+
+  return (
     <Modal
       animationType="fade"
       transparent={true}
@@ -17,20 +29,14 @@ export const CancelAppointmentModal = ({ visible, onClose }) => {
     >
       <ModalContainer>
         <ModalView>
-
           <Title>Cancelar consulta</Title>
-          
           <DefaultText fontSize={16} widthText={"100%"}>Ao cancelar essa consulta, abrirá uma possível disponibilidade no seu horário, deseja mesmo cancelar essa consulta?</DefaultText>
-          
-          <CustomButton style={{marginTop: 15}}>
+          <CustomButton style={{ marginTop: 15 }} onPress={CancelAppointment}>
             <TitleButton>CONFIRMAR</TitleButton>
           </CustomButton>
-
-          <Links colorLink={'#496BBA'} fontLink={'MontserratAlternates_600SemiBold'} fontSize={16} style={{marginTop: 12}} onPress={() => onClose()}>Voltar</Links>
-
+          <Links colorLink={'#496BBA'} fontLink={'MontserratAlternates_600SemiBold'} fontSize={16} style={{ marginTop: 12 }} onPress={() => onClose()}>Voltar</Links>
         </ModalView>
       </ModalContainer>
     </Modal>
- );
+  );
 };
-

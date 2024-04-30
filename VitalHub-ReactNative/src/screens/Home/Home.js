@@ -9,6 +9,7 @@ import { ScheduleAppointment } from "../../components/ScheduleAppointment/Schedu
 
 import { QueryModalComponent } from "../../components/Modais/QueryModal/QueryModal";
 import { AppointmentLocalModal } from "../../components/Modais/AppointmentLocalModal/AppointmentLocalModal";
+
 import { userDecodeToken } from "../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from "moment"
@@ -60,14 +61,17 @@ export const Home = ({ navigation }) => {
             });
     }
 
-
-
     useEffect(() => {
         loadUserRole();
     }, [])
+
     useEffect(() => {
         ListarConsulta();
     }, [diaSelecionado, selectedAgendadas, selectedRealizadas, selectedCanceladas])
+
+    useEffect(() => {
+    }, [])
+    
 
     const handleButtonClick = (buttonName) => {
         setSelectedAgendadas(false);
@@ -241,6 +245,7 @@ export const Home = ({ navigation }) => {
                         const crmDoctor = consulta.medicoClinica.medico.crm;
                         const doctorName = consulta.medicoClinica.medico.idNavigation.nome;
                         const doctorSpecialty = consulta.medicoClinica.medico.especialidade.especialidade1;
+                        const consultaId = consulta.id;
 
                         const appointmentId = consulta.id
 
@@ -253,6 +258,7 @@ export const Home = ({ navigation }) => {
                                 <Cards
                                     key={index}
                                     imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
+                                    idConsulta={consultaId}
                                     profileName={`Dr. ${doctorName}`}
                                     profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
                                     appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
