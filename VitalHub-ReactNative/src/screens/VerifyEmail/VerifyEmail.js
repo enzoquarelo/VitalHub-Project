@@ -85,6 +85,8 @@ export const VerifyEmail = ({ navigation, route }) => {
 
     return (
         <Container>
+            <StatusBar/>
+
             <TouchableOpacity
                 style={{
                     width: 40,
@@ -95,7 +97,7 @@ export const VerifyEmail = ({ navigation, route }) => {
                     alignItems: "center",
                     justifyContent: "center",
                     position: "absolute",
-                    top: 60,
+                    top: 40,
                     left: 20,
                 }}
                 onPress={() => {

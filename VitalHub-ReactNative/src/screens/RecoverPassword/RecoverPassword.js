@@ -21,16 +21,19 @@ export const RecoverPassword = ({ navigation }) => {
     //enviar o email
     async function EnviarEmail() {
         if (email === '') {
-            setTextWarning('Por favor, preencha o campo.');
+            setTextWarning('Por favor, preencha o campo e-mail.');
             return false;
         }
 
+        setIsLoading(true);
         await api.post(`/RecuperarSenha?email=${email}`)
 
             .then(() => {
                 navigation.replace("VerifyEmail", { emailRecuperacao: email });
+                setIsLoading(false);
             }).catch(error => {
-                setTextWarning('Email não encontrado');
+                setTextWarning('E-mail não encontrado');
+                setIsLoading(false);
             })
     }
 
@@ -38,7 +41,7 @@ export const RecoverPassword = ({ navigation }) => {
         <Container>
             <StatusBar />
 
-            <TouchableOpacity style={{ width: 40, height: 40, backgroundColor: "#49B3BA15", borderRadius: 50, display: "flex", alignItems: "center", justifyContent: "center", position: "absolute", top: 40, left: 20 }} onPress={() => { navigation.navigate("Login") }}>
+            <TouchableOpacity style={{ width: 40, height: 40, backgroundColor: "#49B3BA15", borderRadius: 50, display: "flex", alignItems: "center", justifyContent: "center", position: "absolute", top: 45, left: 20 }} onPress={() => { navigation.navigate("Login") }}>
                 <AntDesign name="arrowleft" size={24} color="#34898F" />
             </TouchableOpacity>
 
@@ -60,13 +63,17 @@ export const RecoverPassword = ({ navigation }) => {
             </DefaultText>
 
             <Input
-                placeholder="Usuário ou E-mail"
+                placeholder="E-mail"
                 style={{ marginBottom: 30 }}
                 value={email}
                 onChangeText={(text) => setEmail(text)}
             />
-            <CustomButton onPress={() => EnviarEmail()}>
-                <TitleButton>CONTINUAR  </TitleButton>
+            <CustomButton onPress={() => EnviarEmail()} disabled={isLoading}>
+                {isLoading ? (
+                    <ActivityIndicator size="small" color="#fff" /> // Indicador de carregamento
+                ) : (
+                    <TitleButton>CONTINUAR</TitleButton>
+                )}
             </CustomButton>
         </Container>
     );

@@ -13,7 +13,7 @@ import { Home } from './src/screens/Home/Home';
 import { AppointmentLocation } from './src/screens/AppointmentLocation/AppointmentLocation';
 import { ViewPrescription } from './src/screens/ViewPrescription/ViewPrescription';
 import { Profile } from './src/screens/Profile/Profile';
-import { CompleteDataProfile } from './src/screens/CompleteDataProfile/CompleteDataProfile';
+import { UpdateProfile } from './src/screens/CompleteDataProfile/CompleteDataProfile';
 import { Main } from './src/screens/Main/Main';
 import { SelectClinic } from './src/screens/SelectClinic/SelectClinic';
 import { SelectDoctor } from './src/screens/SelectDoctor/SelectDoctor';
@@ -96,8 +96,8 @@ export default function App() {
         />
 
         <Stack.Screen
-          name="CompleteDataProfile"
-          component={CompleteDataProfile}
+          name="UpdateProfile"
+          component={UpdateProfile}
           options={{ headerShown: false }}
         />
 

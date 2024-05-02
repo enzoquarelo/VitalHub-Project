@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 import { Container } from "../../components/Container/style"
@@ -11,6 +11,9 @@ import { DefaultText } from "../../components/DefaultText/DefaultText";
 import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { Links } from "../../components/Links/style";
 
+import { Feather } from '@expo/vector-icons';
+
+
 import api from "../../service/service";
 
 
@@ -18,9 +21,11 @@ export const CreateAccount = ({ navigation }) => {
     const [textWarning, setTextWarning] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [senhaConfirm, setSenhaConfirm] = useState('');
+    const [email, setEmail] = useState('enzo.q@gmail.com');
+    const [senha, setSenha] = useState('123');
+    const [senhaConfirm, setSenhaConfirm] = useState('123');
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const validateFields = () => {
         if (!email || !senha || !senhaConfirm) {
@@ -32,6 +37,7 @@ export const CreateAccount = ({ navigation }) => {
             setTextWarning('As senhas não coincidem.');
             return false;
         }
+
 
         setTextWarning('');
 
@@ -47,27 +53,33 @@ export const CreateAccount = ({ navigation }) => {
 
         try {
             const response = await api.post('/Pacientes', {
-                email: email,
-                senha: senha,
+                email: 'enzo.q@gmail.com',
+                senha: '123',
                 idTipoUsuario: "D3468A23-AF5A-490C-84AD-99C73F017B96"
-            });
+            },
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    }
+                });
 
             if (response.status === 200) {
-                navigation.replace("CompleteDataProfile");
+                navigation.replace("UpdateProfile")
             } else {
                 setTextWarning('Erro ao cadastrar. Por favor, tente novamente.');
             }
         } catch (error) {
             console.log(error);
-            setTextWarning('Erro ao cadastrar. Por favor, tente novamente.');
+            setTextWarning('Erro passou pelo catch');
         } finally {
             setIsLoading(false);
         }
     }
 
+
     return (
         <Container>
-            <StatusBar/>
+            <StatusBar />
 
             <Logo />
 
@@ -97,7 +109,7 @@ export const CreateAccount = ({ navigation }) => {
             <Input
                 placeholder="Senha"
                 value={senha}
-                secureTextEntry={true}
+                secureTextEntry={!showPassword}
                 style={{ marginBottom: 15 }}
                 onChangeText={(txt) => setSenha(txt)}
             />
@@ -105,10 +117,19 @@ export const CreateAccount = ({ navigation }) => {
             <Input
                 placeholder="Confirmar Senha"
                 value={senhaConfirm}
-                secureTextEntry={true}
-                style={{ marginBottom: 30 }}
+                secureTextEntry={!showPassword}
+                style={{ marginBottom: 5 }}
                 onChangeText={(txt) => setSenhaConfirm(txt)}
             />
+
+            <Container widthContainer={'90%'} heightContainer={'30px'} flexDirection={'row'} justifyContent={'flex-start'} style={{ marginBottom: 30 }}>
+                <TouchableOpacity
+                    onPress={() => setShowPassword(!showPassword)}
+                >
+                    <Feather name={showPassword ? "x-square" : "square"} size={24} color="#49B3BA" style={{ marginRight: 5 }} />
+                </TouchableOpacity>
+                <DefaultText fontFamily={'Quicksand_600SemiBold'} colorText={'#49B3BA'}>Mostrar senha</DefaultText>
+            </Container>
 
             <CustomButton onPress={() => { Post() }} disabled={isLoading}>
                 {isLoading ? (
