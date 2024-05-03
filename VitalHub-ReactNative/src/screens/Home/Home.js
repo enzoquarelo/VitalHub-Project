@@ -71,7 +71,7 @@ export const Home = ({ navigation }) => {
 
     useEffect(() => {
     }, [])
-    
+
 
     const handleButtonClick = (buttonName) => {
         setSelectedAgendadas(false);
@@ -149,6 +149,12 @@ export const Home = ({ navigation }) => {
                             </SelectableTitleButton>
                         </SelectableButton>
                     </Container>
+                    
+                    {consultas.length === 0 && (
+                        <Container justifyContent={'center'} alignItems={'center'}>
+                            <DefaultText>Nenhuma consulta encontrada para esse dia.</DefaultText>
+                        </Container>
+                    )}
 
                     {consultas.map((consulta, index) => {
                         const idadePaciente = moment().diff(consulta.paciente.dataNascimento, 'years');
@@ -162,7 +168,6 @@ export const Home = ({ navigation }) => {
                         } else if (selectedCanceladas) {
                             buttonSelected = 'Canceladas';
                         }
-
                         return (
 
                             <Cards

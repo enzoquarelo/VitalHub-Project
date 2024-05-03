@@ -11,20 +11,18 @@ import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { DefaultText } from "../../components/DefaultText/DefaultText";
 
 //imports de bibliotecas
-import { ActivityIndicator, ScrollView, TouchableWithoutFeedback } from "react-native";
+import { ActivityIndicator, TouchableWithoutFeedback } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { userDecodeToken } from "../../utils/auth";
 
 //import da api
 import api from "../../service/service";
 
 
 export const Login = ({ navigation }) => {
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
+    const [email, setEmail] = useState('enzo.quarelo@gmail.com');
+    const [senha, setSenha] = useState('paciente123');
 
     const [textWarning, setTextWarning] = useState('');
     const [isLoading, setIsLoading] = useState(false);

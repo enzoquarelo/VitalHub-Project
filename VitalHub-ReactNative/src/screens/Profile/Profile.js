@@ -70,18 +70,21 @@ export const Profile = ({ navigation }) => {
                 setUserCRM(response.data.crm);
                 setUserFoto(response.data.idNavigation.foto);
                 
+                console.log(response.data.endereco)
                 setUserLogradouro(response.data.endereco.logradouro);
                 setUserCep(response.data.endereco.cep);
                 setUserCidade(response.data.endereco.cidade);
-                setUserNumero(response.data.endereco.numero);
+            
+                setUserNumero(response.data.endereco.numero.toString());
             } else {
                 setUserDataNascimento(response.data.dataNascimento);
                 setUserRg(response.data.rg);
                 setUserCPF(response.data.cpf);
                 setUserLogradouro(response.data.endereco.logradouro);
                 setUserCep(response.data.endereco.cep);
+            
                 setUserCidade(response.data.endereco.cidade);
-                setUserNumero(response.data.endereco.numero);
+                setUserNumero(response.data.endereco.numero.toString());
                 setUserFoto(response.data.idNavigation.foto);
             }
         } catch (error) {
@@ -133,7 +136,6 @@ export const Profile = ({ navigation }) => {
         BuscarUsuario();
     }, []);
 
-    console.log(userCidade)
 
     return (
         <ScrollView>
