@@ -8,8 +8,9 @@ import { ClinicCard } from "../../components/ClinicCard/ClinicCard";
 import api from "../../service/service";
 import { ListComponent } from "../../components/List/List";
 import { StatusBar } from "expo-status-bar";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-export const SelectClinic = ({ navigation, route, clinica}) => {
+export const SelectClinic = ({ navigation, route, clinica, isSelected }) => {
     const [selectedClinicId, setSelectedClinicId] = useState(null);
     const [clinicaLista, setclinicaLista] = useState([]);
 
@@ -30,13 +31,10 @@ export const SelectClinic = ({ navigation, route, clinica}) => {
             });
     };
 
-    function  handleContinue() {
-      navigation.replace("SelectDoctor", {
-        ...route.params.agendamento,
-        ...clinica
-        
-        
-      })
+    function handleContinue() {
+        navigation.replace("SelectDoctor", {
+            selectedClinicId,
+        });
     }
 
     useEffect(() => {
@@ -61,7 +59,7 @@ export const SelectClinic = ({ navigation, route, clinica}) => {
                         onPressClinic={() => handleSelectClinic(item.id)}
                         navigation={navigation}
                     />
-                )} // Verifica se é o primeiro item da lista
+                )}
             />
 
             <CustomButton
@@ -74,7 +72,7 @@ export const SelectClinic = ({ navigation, route, clinica}) => {
             <Links
                 colorLink={"#344F8F"}
                 fontSize={18}
-                style={{ marginTop: 12 }}
+                style={{ marginTop: 12, marginBottom: 60 }}
                 onPress={() => navigation.navigate("Home")}
             >
                 Cancelar

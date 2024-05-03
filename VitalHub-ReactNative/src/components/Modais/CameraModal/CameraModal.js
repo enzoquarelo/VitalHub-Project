@@ -63,7 +63,7 @@ const ModalCamera = ({
   async function CapturePhoto() {
     
     if (cameraRef.current) {
-      const photo = await cameraRef.current.takePictureAsync();
+      const photo = await cameraRef.current.takePictureAsync({quality: 1});
 
       if (photo) {
         setPhoto(photo.uri);

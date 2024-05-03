@@ -7,9 +7,13 @@ import {
     ImageDoctor
 } from "./style";
 
-export const DoctorCard = ({ doctor, imageDoctor }) => {
+export const DoctorCard = ({ doctor, imageDoctor, isSelected, onPressDoctor }) => {
+    const handlePress = () => {
+        console.log(doctor.id);
+        onPressDoctor(doctor.id);
+    };
     return (
-        <ContainerDoctorCard>
+        <ContainerDoctorCard onPress={handlePress} style={{ borderWidth: isSelected ? 2 : 0, borderColor: isSelected ? '#49B3BA' : 'transparent' }}>
             <ContainerTextCard>
                 <Title style={{marginTop: 8}} fontSize={20}>{doctor.idNavigation.nome}</Title>
                 

@@ -20,10 +20,13 @@ import {
     Quicksand_600SemiBold,
 } from "@expo-google-fonts/quicksand";
 import { View } from "react-native";
+import { CustomButton, TitleButton } from "../../components/Button/styles";
+import { Links } from "../../components/Links/style";
+import { FinalDataQueryModal } from "../../components/Modais/FinalDateQueryModal/FinalDateQueryModal";
 
-export const SelectDate = ({ navigation, route }) => {
+export const SelectDate = ({ navigation, route, doctor, clinica, date }) => {
     const [selected, setSelected] = useState("");
-
+    const [showModalQuery, setShowModalQuery] = useState(false);
     const [category, setCategory] = useState(null);
     const [subcategory, setSubCategory] = useState("");
 
@@ -131,6 +134,10 @@ export const SelectDate = ({ navigation, route }) => {
         navigation.replace("PatientConsultations");
     }
 
+    function handleContinue() {
+        setShowModalQuery(true);
+    }
+
     return (
         <Container>
             <Title style={{ marginBottom: 20 }}>Selecionar Data</Title>
@@ -167,6 +174,7 @@ export const SelectDate = ({ navigation, route }) => {
                     padding: 10,
                     display: "flex",
                     alignItems: "center",
+                    marginTop: 45,
                 }}
                 dropdownStyles={{
                     borderColor: "#34898F",
@@ -192,6 +200,31 @@ export const SelectDate = ({ navigation, route }) => {
                     />
                 }
                 search={false}
+            />
+
+            <CustomButton
+                style={{ marginTop: 50 }}
+                onPress={() => handleContinue()}
+            >
+                <TitleButton>Continuar</TitleButton>
+            </CustomButton>
+
+            <Links
+                colorLink={"#344F8F"}
+                fontSize={18}
+                style={{ marginTop: 12 }}
+                onPress={() => navigation.navigate("Main")}
+            >
+                Cancelar
+            </Links>
+
+            <FinalDataQueryModal
+                visible={showModalQuery}
+                setShowModalQuery={setShowModalQuery}
+                agendamento={route.params.agendamento}
+                clinica={clinica}
+                doctor={doctor}
+                date={date}
             />
         </Container>
     );

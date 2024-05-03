@@ -10,43 +10,40 @@ import { Links } from "../../components/Links/style";
 import api from "../../service/service";
 import { ListComponent } from "../../components/List/List";
 
-export const SelectDoctor = ({ navigation, route }) => {
+export const SelectDoctor = ({ navigation, route, doctor, clinica }) => {
     const [selectedDoctorId, setselectedDoctorId] = useState(null);
     const [DoctorList, setDoctorList] = useState([]);
 
-    const handleSelectDoctor = (clinicId) => {
-        setSelectedClinicId(clinicId);
+    const handleSelectDoctor = (doctorId) => {
+        setselectedDoctorId(doctorId);
     };
 
-    useEffect(() => {
-        const listarDoctor = async () => {
-            try {
-                const response = await api
-                    .get(
-                        `/Medicos/ListarPorClinicas?id=${route.params.agendamento.clinicaId}`
-                    )
-                    .then((response) => {
-                        setDoctorList(response.data);
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        listarDoctor();
-    }, []);
+    const listarDoctor = async () => {
+        try {
+            const response = await api
+                .get(
+                    `/Medicos/BuscarPorIdClinica?id=${route.params.selectedClinicId}`
+                )
+                .then((response) => {
+                    setDoctorList(response.data);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     function handleContinue() {
         navigation.replace("SelectDate", {
-            agendamento: {
-                ...route.params.agendamento,
-                ...medico,
-            },
+            selectedDoctorId,
+            ...route.params.agendamento,
+            ...clinica,
+            ...doctor,
         });
     }
 
     useEffect(() => {
-        console.log(route);
-    }, [route]);
+        listarDoctor();
+    }, []);
 
     return (
         <Container>
@@ -63,8 +60,8 @@ export const SelectDoctor = ({ navigation, route }) => {
                 renderItem={({ item }) => (
                     <DoctorCard
                         doctor={item}
-                        isSelected={item.id === setselectedDoctorId}
-                        onPressClinic={() => handleSelectDoctor(item.id)}
+                        isSelected={item.id === selectedDoctorId}
+                        onPressDoctor={() => handleSelectDoctor(item.id)}
                         navigation={navigation}
                         onPress={() => {
                             setDoctorList({
@@ -78,15 +75,17 @@ export const SelectDoctor = ({ navigation, route }) => {
 
             <CustomButton
                 style={{ marginTop: 60 }}
-                onPress={() => navigation.navigate("SelectDate")}
+                onPress={() => handleContinue()}
             >
-                <TitleButton colorTxt={false}>CONTINUAR</TitleButton>
+                <TitleButton colorTxt={false} onPress={() => handleContinue()}>
+                    CONTINUAR
+                </TitleButton>
             </CustomButton>
 
             <Links
                 colorLink={"#344F8F"}
                 fontSize={18}
-                style={{ marginTop: 12 }}
+                style={{ marginTop: 12,  marginBottom: 60  }}
                 onPress={() => navigation.navigate("SelectClinic")}
             >
                 Cancelar
