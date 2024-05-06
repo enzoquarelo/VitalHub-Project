@@ -33,47 +33,60 @@ VALUES
     (NEWID(), 'Oncologia');
 
 
- SELECT * FROM Especialidades;
+SELECT * FROM TiposUsuario
+INSERT INTO Usuarios VALUES
+	(NEWID(), '748D63E2-6D0C-4CB2-85AB-102B3212C0A3', 'Matheus Alves', 'matheus.alves@gmail.com', 'medico123', 'foto', NULL),
+	(NEWID(), '748D63E2-6D0C-4CB2-85AB-102B3212C0A3', 'Davi Peixoto', 'davipeixoto@gmail.com', 'medico123', 'foto', NULL),
+	(NEWID(), '748D63E2-6D0C-4CB2-85AB-102B3212C0A3', 'Giovanna Monteiro', 'gi.monteiro@gmail.com', 'medico123', 'foto', NULL),
+	(NEWID(), '748D63E2-6D0C-4CB2-85AB-102B3212C0A3', 'Elisa Barros', 'barros.elisa@gmail.com', 'medico123', 'foto', NULL),
+	(NEWID(), '748D63E2-6D0C-4CB2-85AB-102B3212C0A3', 'Marcelo Raul', 'raul.marcelo@gmail.com', 'medico123', 'foto', NULL),
+	--paciente
+	(NEWID(), '2B90EF1A-EDF8-489F-824E-1AFA6C97DEAD', 'Luiz Lorenzo', 'luiz.lorenzo@gmail.com', 'paciente123', 'foto', NULL),
+	(NEWID(), '2B90EF1A-EDF8-489F-824E-1AFA6C97DEAD', 'Bárbara Real', 'real.barbara@gmail.com', 'paciente123', 'foto', NULL);
+
+ SELECT * FROM Usuarios;
  SELECT * FROM Enderecos;
+ SELECT * FROM Especialidades;
  INSERT INTO Medicos VALUES
-	(NEWID(), '4CA0467C-FBBA-4B0B-9E78-91C4436EEE5F', 'CRM', 'EndereçoID'),
-	(NEWID(), '4CA0467C-FBBA-4B0B-9E78-91C4436EEE5F', 'CRM', 'EndereçoID'),
-	(NEWID(), '4CA0467C-FBBA-4B0B-9E78-91C4436EEE5F', 'CRM', 'EndereçoID'),
-	(NEWID(), '4CA0467C-FBBA-4B0B-9E78-91C4436EEE5F', 'CRM', 'EndereçoID'),
-	(NEWID(), '4CA0467C-FBBA-4B0B-9E78-91C4436EEE5F', 'CRM', 'EndereçoID');
+	('4AE950E9-EBE3-401F-B8D1-4FBDBB04BE09', 'E67FB7B5-BFF9-4BF5-AE04-1378847D7338', '37112', '595531C1-C71E-42EA-89F7-0D20AE21B9FE'),
+	('5E2A40C7-4AF1-4B85-B0A4-68ED22929471', '8D933A7B-5350-4739-8C68-3720E60AE0EC', '09677', 'CFD63044-B30A-43CC-8E30-FF612FE34955'),
+	('5509BDFF-C66C-4AD8-9BA8-9C430314919B', '7D7AEAA7-9029-4378-A880-3A3CBB9B3936', '13899', '7DA60DB9-D852-45CD-8307-FC73419B4118'),
+	('39631BB4-3BB8-43CF-9E5B-A5F202217446', 'CCC31EB0-8767-4754-AF94-B466637615AD', '07331', '7E92501D-6F3A-43D9-8055-7DE6317E38B0'),
+	('031F6240-67E1-4AB0-8D69-F1B68BBB4865', '2BC9C684-5F7B-44F8-BDC0-F51D81A59785', '25600', 'DED5B06B-A85B-41D0-A46A-8A83E3158B36');
 
  SELECT * FROM Clinicas;
  SELECT * FROM Medicos;
  INSERT INTO MedicosClinicas VALUES
-	(NEWID(), 'IDClinica', 'IDMedico'),
-	(NEWID(), 'IDClinica', 'IDMedico'),
-	(NEWID(), 'IDClinica', 'IDMedico'),
-	(NEWID(), 'IDClinica', 'IDMedico'),
-	(NEWID(), 'IDClinica', 'IDMedico');
+	(NEWID(), 'F887FF1B-4BAA-4787-9A72-00A55032222A', '4AE950E9-EBE3-401F-B8D1-4FBDBB04BE09'),
+	(NEWID(), 'F887FF1B-4BAA-4787-9A72-00A55032222A', '5E2A40C7-4AF1-4B85-B0A4-68ED22929471'),
+	(NEWID(), 'AE60E35D-63BA-47A7-8252-26172082F443', '5509BDFF-C66C-4AD8-9BA8-9C430314919B'),
+	(NEWID(), 'AB128280-938C-4E1B-BDF1-838192C71F98', '39631BB4-3BB8-43CF-9E5B-A5F202217446'),
+	(NEWID(), 'AB128280-938C-4E1B-BDF1-838192C71F98', '031F6240-67E1-4AB0-8D69-F1B68BBB4865');
 
  INSERT INTO NiveisPrioridade VALUES
-	 (NEWID(), '(INT)Prioridade'),
-	  (NEWID(), '(INT)Prioridade'),
-	   (NEWID(), '(INT)Prioridade');
+	 (NEWID(), 0),
+	  (NEWID(), 1),
+	   (NEWID(), 2);
 
  INSERT INTO Receitas VALUES
-	(NEWID(), 'Medicamento'),
-	(NEWID(), 'Medicamento'),
-	(NEWID(), 'Medicamento'),
-	(NEWID(), 'Medicamento'),
-	(NEWID(), 'Medicamento'),
-	(NEWID(), 'Medicamento'),
-	(NEWID(), 'Medicamento');
+	(NEWID(), 'Ciprofloxacino 500mg, Tomar 1 comprimido via oral a cada 12horas por 7 dias.'),
+	(NEWID(), 'Tylenol 200mg, Tomar 1 comprimido via oral a cada sempre que a dor persistir'),
+	(NEWID(), 'Amoxicilina 500mg, Tomar 1 comprimido via oral a cada 8horas por 4 dias.'),
+	(NEWID(), 'Dramim 20gotas, Tomar 1 comprimido via oral 1hora antes de dormir'),
+	(NEWID(), 'Sertralina 500mg, Tomar 1 comprimido via oral após a primeira refeição do dia, até o retorno'),
+	(NEWID(), 'Rivotril 2mg, Tomar 2 comprimido via oral a cada 12 horas'),
+	(NEWID(), 'Cataflam 10mg, Tomar 1 comprimido via horal por dia até o retorno');
 
+ SELECT * FROM Usuarios
  SELECT * FROM Enderecos
  INSERT INTO Pacientes VALUES
-	(NEWID(), 'YYYY-MM--DD', 'RG', 'CPF', 'IDEndereco'),
-	(NEWID(), 'YYYY-MM--DD', 'RG', 'CPF', 'IDEndereco');
+	('EFAACD6A-A127-47FD-8699-231EBD710069', '2002-07-01', '190765203', '95518120001', 'B905E338-105B-4CE5-9FC8-8F44B2AD65E4'),
+	('A084E1A6-34CC-454D-884B-4740227115F1', '2003-04-03', '397090845', '98354737063', '013549CF-7DD0-4D24-BF99-AB4D7401BE2E');
 
  INSERT INTO Situacoes VALUES
-	(NEWID(), 'Situação'),
-	(NEWID(), 'Situação'),
-	(NEWID(), 'Situação');
+	(NEWID(), 'Pendentes'),
+	(NEWID(), 'Cancelados'),
+	(NEWID(), 'Realizados');
 
  SELECT * FROM Situacoes
  SELECT * FROM Pacientes
@@ -89,8 +102,7 @@ VALUES
 	(NEWID(), 'SituacaoID', 'PacienteID', 'MedicoClinicaID', 'ReceitaID', 'PrioridadeID', 'YYYY-MM--DD', 'Descricao', 'Diagnóstico'),
 	(NEWID(), 'SituacaoID', 'PacienteID', 'MedicoClinicaID', 'ReceitaID', 'PrioridadeID', 'YYYY-MM--DD', 'Descricao', 'Diagnóstico');
 
- SELECT * FROM Usuarios
 
 
-
-
+	Select * from Usuarios
+	UPDATE dbo.Usuarios SET foto = '$2y$10$wXHOxKE4vD18Qv2O1N0bsu1IBrPCZ8TQCHY76BBdACVES0XI5NMPu' WHERE id = 'EFAACD6A-A127-47FD-8699-231EBD710069';

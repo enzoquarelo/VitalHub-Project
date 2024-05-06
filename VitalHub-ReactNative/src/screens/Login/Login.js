@@ -21,7 +21,7 @@ import api from "../../service/service";
 
 
 export const Login = ({ navigation }) => {
-    const [email, setEmail] = useState('enzo.quarelo@gmail.com');
+    const [email, setEmail] = useState('real.barbara@gmail.com');
     const [senha, setSenha] = useState('paciente123');
 
     const [textWarning, setTextWarning] = useState('');
