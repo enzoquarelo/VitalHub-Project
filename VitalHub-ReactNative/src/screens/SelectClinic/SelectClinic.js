@@ -32,8 +32,16 @@ export const SelectClinic = ({ navigation, route, clinica, isSelected }) => {
     };
 
     function handleContinue() {
+        // navigation.replace("SelectDoctor", {
+        //     selectedClinicId,
+        //     clinica: clinica,
+        // });
         navigation.replace("SelectDoctor", {
-            selectedClinicId,
+            agendamento: {
+                ...route.params.agendamento,
+                clinicaId: selectedClinicId,
+
+            }
         });
     }
 

@@ -36,9 +36,9 @@ export const QueryModalComponent = ({
     };
 
     const nivelConsulta = [
-        { id: "3fa85f64-5717-4562-b3fc-2c963f66afa6", tipo: "Rotina" },
-        { id: "3fa85f64-5717-4562-b3fc-2c963f66aa6", tipo: "Exame" },
-        { id: "3fa85f64-5717-4562-b3fc-2c963f66afa", tipo: "Urgencia" },
+        { id: "A11C38EB-48FE-45C8-9B2C-A7FC4FC7009B", tipo: "Rotina" },
+        { id: "84F0899F-1C93-42CF-8416-C24F1EE99FD4", tipo: "Exame" },
+        { id: "5286C98F-B4E4-4A2D-9DB5-7F2D8C393428", tipo: "Urgencia" },
     ];
 
     async function handleContinue() {

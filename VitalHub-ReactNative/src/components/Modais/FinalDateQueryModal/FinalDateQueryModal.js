@@ -24,6 +24,12 @@ export const FinalDataQueryModal = ({
     date,
     ...rest
 }) => {
+
+    console.log('Clinica:', clinica); 
+    console.log('Doctor:', doctor); 
+    console.log('Date:', date); 
+
+
     const navigation = useNavigation();
 
     const handleConfirm = () => {
@@ -60,7 +66,12 @@ export const FinalDataQueryModal = ({
 
                         <ContainerDataQueryText>
                             <SubTitleData>Médico(a) da consulta</SubTitleData>
-                            <TextDataQuery>{doctor}</TextDataQuery>
+                            {doctor && (
+                                <TextDataQuery>
+                                    {doctor.idNavigation.nome}
+                                </TextDataQuery>
+                            )}
+
                             <TextDataQuery>
                                 Demartologa, Esteticista
                             </TextDataQuery>
@@ -68,7 +79,12 @@ export const FinalDataQueryModal = ({
 
                         <ContainerDataQueryText style={{ marginTop: 10 }}>
                             <SubTitleData>Local da consulta</SubTitleData>
-                            <TextDataQuery>{clinica}</TextDataQuery>
+
+                            {clinica && (
+                                <TextDataQuery>
+                                    {clinica.endereco.logradouro}
+                                </TextDataQuery>
+                            )}
                         </ContainerDataQueryText>
 
                         <ContainerDataQueryText>

@@ -135,6 +135,13 @@ export const SelectDate = ({ navigation, route, doctor, clinica, date }) => {
     }
 
     function handleContinue() {
+        
+        navigation.navigate("FinalDataQueryModal", {
+            agendamento: route.params.agendamento,
+            clinica: clinica,
+            doctor: doctor,
+            date: date,
+        });
         setShowModalQuery(true);
     }
 

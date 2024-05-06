@@ -33,17 +33,24 @@ export const SelectDoctor = ({ navigation, route, doctor, clinica }) => {
     };
 
     function handleContinue() {
+        console.log("Agendamento:", route.params.agendamento);
+        console.log("Clinica:", clinica);
+
         navigation.replace("SelectDate", {
             selectedDoctorId,
             ...route.params.agendamento,
-            ...clinica,
-            ...doctor,
+            clinica: clinica,
+            doctor: doctor,
         });
     }
 
     useEffect(() => {
         listarDoctor();
     }, []);
+
+    useEffect(() => {
+        console.log(route);
+    }, [route]);
 
     return (
         <Container>
@@ -85,7 +92,7 @@ export const SelectDoctor = ({ navigation, route, doctor, clinica }) => {
             <Links
                 colorLink={"#344F8F"}
                 fontSize={18}
-                style={{ marginTop: 12,  marginBottom: 60  }}
+                style={{ marginTop: 12, marginBottom: 60 }}
                 onPress={() => navigation.navigate("SelectClinic")}
             >
                 Cancelar
