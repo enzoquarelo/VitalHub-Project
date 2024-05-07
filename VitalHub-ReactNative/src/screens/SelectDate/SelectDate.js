@@ -24,22 +24,37 @@ import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { Links } from "../../components/Links/style";
 import { FinalDataQueryModal } from "../../components/Modais/FinalDateQueryModal/FinalDateQueryModal";
 
-export const SelectDate = ({ navigation, route, doctor, clinica, date }) => {
+export const SelectDate = ({ navigation, route }) => {
     const [selected, setSelected] = useState("");
     const [showModalQuery, setShowModalQuery] = useState(false);
     const [category, setCategory] = useState(null);
     const [subcategory, setSubCategory] = useState("");
 
-    const categories = [
-        { key: "9h", value: "09:00" },
-        { key: "10h", value: "10:00" },
-    ];
+    const [agendamento, setAgendamento] = useState(null);
 
     const [fontsLoaded, fontsError] = useFonts({
         MontserratAlternates_600SemiBold,
         Quicksand_500Medium,
         Quicksand_600SemiBold,
     });
+
+    const workHours = generateWorkHours(8, 22);
+
+    function generateWorkHours(startHour, endHour) {
+        const hours = [];
+        for (let hour = startHour; hour <= endHour; hour++) {
+            for (let minute = 0; minute < 60; minute += 30) {
+                const formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
+                const formattedMinute = minute === 0 ? "00" : `${minute}`;
+                const time = `${formattedHour}:${formattedMinute}`;
+                hours.push({
+                    key: `${formattedHour}:${formattedMinute}`,
+                    value: time,
+                });
+            }
+        }
+        return hours;
+    }
 
     //fontsLoaded
     if (!fontsLoaded && !fontsError) {
@@ -135,12 +150,9 @@ export const SelectDate = ({ navigation, route, doctor, clinica, date }) => {
     }
 
     function handleContinue() {
-        
-        navigation.navigate("FinalDataQueryModal", {
-            agendamento: route.params.agendamento,
-            clinica: clinica,
-            doctor: doctor,
-            date: date,
+        setAgendamento({
+            ...route.params.agendamento,
+            dataConsulta: `${selected} ${category}`,
         });
         setShowModalQuery(true);
     }
@@ -169,8 +181,8 @@ export const SelectDate = ({ navigation, route, doctor, clinica, date }) => {
             </ViewCalendar>
 
             <SelectList
-                setSelected={setCategory}
-                data={categories}
+                setSelected={(val) => setCategory(val)}
+                data={workHours}
                 placeholder="Selecione o Horário"
                 fontFamily="MontserratAlternates_600SemiBold"
                 boxStyles={{
@@ -228,10 +240,7 @@ export const SelectDate = ({ navigation, route, doctor, clinica, date }) => {
             <FinalDataQueryModal
                 visible={showModalQuery}
                 setShowModalQuery={setShowModalQuery}
-                agendamento={route.params.agendamento}
-                clinica={clinica}
-                doctor={doctor}
-                date={date}
+                agendamento={agendamento}
             />
         </Container>
     );

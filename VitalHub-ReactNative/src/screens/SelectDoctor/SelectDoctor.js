@@ -10,7 +10,7 @@ import { Links } from "../../components/Links/style";
 import api from "../../service/service";
 import { ListComponent } from "../../components/List/List";
 
-export const SelectDoctor = ({ navigation, route, doctor, clinica }) => {
+export const SelectDoctor = ({ navigation, route, doctor, clinicaId }) => {
     const [selectedDoctorId, setselectedDoctorId] = useState(null);
     const [DoctorList, setDoctorList] = useState([]);
 
@@ -22,7 +22,7 @@ export const SelectDoctor = ({ navigation, route, doctor, clinica }) => {
         try {
             const response = await api
                 .get(
-                    `/Medicos/BuscarPorIdClinica?id=${route.params.selectedClinicId}`
+                    `/Medicos/BuscarPorIdClinica?id=${route.params.agendamento.clinicaId}`
                 )
                 .then((response) => {
                     setDoctorList(response.data);
@@ -33,14 +33,12 @@ export const SelectDoctor = ({ navigation, route, doctor, clinica }) => {
     };
 
     function handleContinue() {
-        console.log("Agendamento:", route.params.agendamento);
-        console.log("Clinica:", clinica);
-
         navigation.replace("SelectDate", {
-            selectedDoctorId,
-            ...route.params.agendamento,
-            clinica: clinica,
-            doctor: doctor,
+            agendamento: {
+                ...route.params.agendamento,
+                doctorId: selectedDoctorId,
+                
+            },
         });
     }
 

@@ -29,6 +29,7 @@ const ModalCamera = ({
   onClose,
   title,
   onConfirm,
+  onPhotoConfirmed,
   getMediaLibrary = false,
 }) => {
   const cameraRef = useRef(null);

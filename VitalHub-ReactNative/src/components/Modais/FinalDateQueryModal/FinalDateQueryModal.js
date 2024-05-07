@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { Modal } from "react-native";
@@ -25,11 +25,6 @@ export const FinalDataQueryModal = ({
     ...rest
 }) => {
 
-    console.log('Clinica:', clinica); 
-    console.log('Doctor:', doctor); 
-    console.log('Date:', date); 
-
-
     const navigation = useNavigation();
 
     const handleConfirm = () => {
@@ -38,6 +33,10 @@ export const FinalDataQueryModal = ({
         // Navegar para a tela Main
         navigation.navigate("Main");
     };
+
+    useEffect(() => {
+        console.log(agendamento)
+    }, [visible])
 
     return (
         <Modal

@@ -40,14 +40,17 @@ export const SelectClinic = ({ navigation, route, clinica, isSelected }) => {
             agendamento: {
                 ...route.params.agendamento,
                 clinicaId: selectedClinicId,
-
-            }
+            },
         });
     }
 
     useEffect(() => {
         listarClinicas();
     }, []);
+
+    useEffect(() => {
+        console.log(route);
+    }, [route]);
 
     return (
         <Container>
