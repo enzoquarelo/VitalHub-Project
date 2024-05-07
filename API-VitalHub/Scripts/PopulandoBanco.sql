@@ -90,19 +90,23 @@ INSERT INTO Usuarios VALUES
 
  SELECT * FROM Situacoes
  SELECT * FROM Pacientes
- SELECT * FROM MedicosClinicas
+ SELECT * FROM Usuarios
+  SELECT * FROM Clinicas
+ SELECT * FROM Enderecos
+ SELECT * FROM Situacoes
  SELECT * FROM Receitas
  SELECT * FROM NiveisPrioridade
  INSERT INTO Consultas VALUES
-	(NEWID(), 'SituacaoID', 'PacienteID', 'MedicoClinicaID', 'ReceitaID', 'PrioridadeID', 'YYYY-MM--DD', 'Descricao', 'Diagnóstico'),
-	(NEWID(), 'SituacaoID', 'PacienteID', 'MedicoClinicaID', 'ReceitaID', 'PrioridadeID', 'YYYY-MM--DD', 'Descricao', 'Diagnóstico'),
-	(NEWID(), 'SituacaoID', 'PacienteID', 'MedicoClinicaID', 'ReceitaID', 'PrioridadeID', 'YYYY-MM--DD', 'Descricao', 'Diagnóstico'),
-	(NEWID(), 'SituacaoID', 'PacienteID', 'MedicoClinicaID', 'ReceitaID', 'PrioridadeID', 'YYYY-MM--DD', 'Descricao', 'Diagnóstico'),
-	(NEWID(), 'SituacaoID', 'PacienteID', 'MedicoClinicaID', 'ReceitaID', 'PrioridadeID', 'YYYY-MM--DD', 'Descricao', 'Diagnóstico'),
-	(NEWID(), 'SituacaoID', 'PacienteID', 'MedicoClinicaID', 'ReceitaID', 'PrioridadeID', 'YYYY-MM--DD', 'Descricao', 'Diagnóstico'),
-	(NEWID(), 'SituacaoID', 'PacienteID', 'MedicoClinicaID', 'ReceitaID', 'PrioridadeID', 'YYYY-MM--DD', 'Descricao', 'Diagnóstico');
+	(NEWID(), '57ACD4ED-24F3-415F-AB42-42F0AF7506FC', 'EFAACD6A-A127-47FD-8699-231EBD710069', 'D9CA8F1B-A0B3-42A2-B14A-8378C253AF7A', '55D31DD0-FCB4-4454-B737-1893894F2541', '84A661AD-BAAE-4904-9522-2492CAAA2367', '2024-05-28T15:30:00', null , null),
+	(NEWID(), '57ACD4ED-24F3-415F-AB42-42F0AF7506FC', 'EFAACD6A-A127-47FD-8699-231EBD710069', '89DA46F7-F069-457D-9FA6-FA6ED98F845F', 'D8918119-23EB-4280-BC6E-2B965E8C9D66', '34F0DAE4-4E4F-4E19-A94D-AEAADB309EDF', '2024-05-30T05:45:00', null , null),
+	(NEWID(), '3535E097-6E11-4340-B46B-D64EA32F3EF1', 'EFAACD6A-A127-47FD-8699-231EBD710069', '0B28862A-CFF5-4077-B7E8-15963D9F2E9E', '31A324A8-111B-4DFE-A1A6-73F5A3EB6CED', '96C34BAB-D769-4BF7-9C83-F419635FBDD9', '2024-05-28T12:00:00', 'Prescrição de antiemético para controlar náuseas e vômitos associados ao enjoo.', 'Cinetose'),
+	(NEWID(), 'C8DE418F-4013-471A-A953-83C07311CC61', 'EFAACD6A-A127-47FD-8699-231EBD710069', 'D9CA8F1B-A0B3-42A2-B14A-8378C253AF7A', '82B6DBBF-E519-4462-954E-E6ACED7D7B5F', '84A661AD-BAAE-4904-9522-2492CAAA2367', '2024-05-28T09:30:00', 'Prescrição de antibiótico para tratar infecção bacteriana.', 'Infecção urinária'),
+	(NEWID(), '57ACD4ED-24F3-415F-AB42-42F0AF7506FC', 'A084E1A6-34CC-454D-884B-4740227115F1', 'ACF5FA5C-AAF5-4653-B6FE-32835DAE547E', '02AA6F49-3C10-4D33-856C-EBE5B37D7842', '34F0DAE4-4E4F-4E19-A94D-AEAADB309EDF', '2024-05-28T07:30:00', null , null),
+	(NEWID(), '3535E097-6E11-4340-B46B-D64EA32F3EF1', 'A084E1A6-34CC-454D-884B-4740227115F1', '89DA46F7-F069-457D-9FA6-FA6ED98F845F', 'D8918119-23EB-4280-BC6E-2B965E8C9D66', '96C34BAB-D769-4BF7-9C83-F419635FBDD9', '2024-05-28T05:00:00', 'Prescrição de antidepressivo para tratar sintomas de depressão, como tristeza profunda e falta de energia.', 'Depressão maior.'),
+	(NEWID(), 'C8DE418F-4013-471A-A953-83C07311CC61', 'A084E1A6-34CC-454D-884B-4740227115F1', 'ACF5FA5C-AAF5-4653-B6FE-32835DAE547E', '1426A10A-5874-4902-88F6-D6295602BC8B', '84A661AD-BAAE-4904-9522-2492CAAA2367', '2024-05-28T12:50:00', 'Prescrição de analgésico para aliviar dor de cabeça intensa.', 'Cefaleia tensional.');
 
 
-
-	Select * from Usuarios
+	Select * from Consultas
 	UPDATE dbo.Usuarios SET foto = '$2y$10$wXHOxKE4vD18Qv2O1N0bsu1IBrPCZ8TQCHY76BBdACVES0XI5NMPu' WHERE id = 'EFAACD6A-A127-47FD-8699-231EBD710069';
+
+	--57ACD4ED-24F3-415F-AB42-42F0AF7506FC

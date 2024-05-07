@@ -8,63 +8,82 @@ import { ClinicCard } from "../../components/ClinicCard/ClinicCard";
 import api from "../../service/service";
 import { ListComponent } from "../../components/List/List";
 import { StatusBar } from "expo-status-bar";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-export const SelectClinic = ({ navigation }) => {
-  const [selectedClinicId, setSelectedClinicId] = useState(null);
-  const [clinicaLista, setclinicaLista] = useState([]);
+export const SelectClinic = ({ navigation, route, clinica, isSelected }) => {
+    const [selectedClinicId, setSelectedClinicId] = useState(null);
+    const [clinicaLista, setclinicaLista] = useState([]);
 
-  const handleSelectClinic = (clinicId) => {
-    setSelectedClinicId(clinicId);
-  };
-
-  useEffect(() => {
-    const listarClinicas = async () => {
-      try {
-        const response = await api.get("/Clinica/ListarTodas");
-        setclinicaLista(response.data);
-      } catch (error) {
-        console.log(error);
-      }
+    const handleSelectClinic = (clinicId) => {
+        setSelectedClinicId(clinicId);
     };
-    listarClinicas();
-  }, []);
 
-  return (
-    <Container>
-      <StatusBar />
-      <Title style={{ paddingBottom: 50, paddingTop: 100 }}>
-        Selecionar Clínica
-      </Title>
+    const listarClinicas = async () => {
+        const response = await api
+            .get(
+                `/Clinica/BuscarPorCidade?cidade=${route.params.agendamento.localizacao}`
+            )
+            .then((response) => {
+                setclinicaLista(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
-      <ListComponent
-        contentContainerStyle={{ alignItems: "center" }}
-        data={clinicaLista}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ClinicCard
-            clinic={item}
-            isSelected={item.id === selectedClinicId}
-            onPressClinic={() => handleSelectClinic(item.id)}
-            navigation={navigation}
-          />
-        )} // Verifica se é o primeiro item da lista
-      />
+    function handleContinue() {
+        navigation.replace("SelectDoctor", {
+            agendamento: {
+                ...route.params.agendamento,
+                clinicaId: selectedClinicId,
+            },
+        });
+    }
 
-      <CustomButton
-        style={{ marginTop: 50 }}
-        onPress={() => navigation.navigate("SelectDoctor")}
-      >
-        <TitleButton>Continuar</TitleButton>
-      </CustomButton>
+    useEffect(() => {
+        listarClinicas();
+    }, []);
 
-      <Links
-        colorLink={"#344F8F"}
-        fontSize={18}
-        style={{ marginTop: 12 }}
-        onPress={() => navigation.navigate("Home")}
-      >
-        Cancelar
-      </Links>
-    </Container>
-  );
+    useEffect(() => {
+        console.log(route);
+    }, [route]);
+
+    return (
+        <Container>
+            <StatusBar />
+            <Title style={{ paddingBottom: 50, paddingTop: 100 }}>
+                Selecionar Clínica
+            </Title>
+
+            <ListComponent
+                contentContainerStyle={{ alignItems: "center" }}
+                data={clinicaLista}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <ClinicCard
+                        clinic={item}
+                        isSelected={item.id === selectedClinicId}
+                        onPressClinic={() => handleSelectClinic(item.id)}
+                        navigation={navigation}
+                    />
+                )}
+            />
+
+            <CustomButton
+                style={{ marginTop: 50 }}
+                onPress={() => handleContinue()}
+            >
+                <TitleButton>Continuar</TitleButton>
+            </CustomButton>
+
+            <Links
+                colorLink={"#344F8F"}
+                fontSize={18}
+                style={{ marginTop: 12, marginBottom: 60 }}
+                onPress={() => navigation.navigate("Home")}
+            >
+                Cancelar
+            </Links>
+        </Container>
+    );
 };

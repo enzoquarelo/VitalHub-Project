@@ -10,7 +10,8 @@ namespace WebAPI.Utils.BlobStorage
             try
             {
 
-                
+                nomeContainer = "blobvitalhubg10container";
+                stringConexao = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubg10;AccountKey=/yCgfJFjgaTH6Js/nLV4g46ceHH649S2wyAdJcn/gNozhysQ8X9MxwezhcOuNuowVA7vP6mw5cbN+AStzrarbQ==;EndpointSuffix=core.windows.net";
                 //verifica se existe o arquivo
                 if (arquivo != null)
                 {

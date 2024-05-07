@@ -2,16 +2,12 @@ import { React, useState, useEffect } from "react";
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { SelectList } from "react-native-dropdown-select-list";
-import { FontAwesome } from '@expo/vector-icons';
-
+import { FontAwesome } from "@expo/vector-icons";
 
 //import Components
 import { Container } from "../../components/Container/style";
 import { Title } from "../../components/Title/style";
 import { TextSelectDatelabel, ViewCalendar } from "./style";
-import { CustomButton, TitleButton } from "../../components/Button/styles";
-import { Links } from "../../components/Links/style";
-import { FinalDataQueryModal } from "../../components/Modais/FinalDataQueryModal/FinalDataQueryModal";
 
 //import fonts
 import {
@@ -24,19 +20,28 @@ import {
     Quicksand_600SemiBold,
 } from "@expo-google-fonts/quicksand";
 import { View } from "react-native";
+import { CustomButton, TitleButton } from "../../components/Button/styles";
+import { Links } from "../../components/Links/style";
+import { FinalDataQueryModal } from "../../components/Modais/FinalDataQueryModal/FinalDataQueryModal";
 
-export const SelectDate = ({ navigation }) => {
-    const [showModalQuery, setShowModalQuery] = useState(false);
-
+export const SelectDate = ({ navigation, route }) => {
     const [selected, setSelected] = useState("");
-
+    const [showModalQuery, setShowModalQuery] = useState(false);
     const [category, setCategory] = useState(null);
     const [subcategory, setSubCategory] = useState("");
 
+    const [agendamento, setAgendamento] = useState({
+        dataConsulta: "",
+        doctorName: "",
+        localizacao: "",
+        prioridadeLabel: "",
+        medicoClinica: "",
+    })
+
     const categories = [
-        { key: '9h', value: '09:00' },
-        { key: '10h', value: '10:00' },
-    ]
+        { key: "9h", value: "09:00" },
+        { key: "10h", value: "10:00" },
+    ];
 
     const [fontsLoaded, fontsError] = useFonts({
         MontserratAlternates_600SemiBold,
@@ -137,6 +142,14 @@ export const SelectDate = ({ navigation }) => {
         navigation.replace("PatientConsultations");
     }
 
+    function handleContinue() {
+        setAgendamento({
+           ...route.params.agendamento,
+            dataConsulta: `${selected} ${category}`,
+        });
+        setShowModalQuery(true);
+    }
+
 
     return (
         <Container>
@@ -162,43 +175,49 @@ export const SelectDate = ({ navigation }) => {
             </ViewCalendar>
 
             <SelectList
-                setSelected={setCategory}
+                setSelected={(val) => setCategory(val)}
                 data={categories}
                 placeholder="Selecione o Horário"
                 fontFamily="MontserratAlternates_600SemiBold"
                 boxStyles={{
-                    width: '90%',
-                    borderColor: '#34898F',
+                    width: "90%",
+                    borderColor: "#34898F",
                     borderWidth: 1,
                     borderRadius: 5,
                     padding: 10,
-                    display: 'flex',
-                    alignItems: 'center',
-                    marginTop: 45
+                    display: "flex",
+                    alignItems: "center",
+                    marginTop: 45,
                 }}
                 dropdownStyles={{
-                    borderColor: '#34898F',
+                    borderColor: "#34898F",
                     borderWidth: 1,
                     borderRadius: 5,
                     padding: 10,
-                    display: 'flex',
-                    alignItems: 'start'
+                    display: "flex",
+                    alignItems: "start",
                 }}
                 inputStyles={{
-                    color: '#34898F',
+                    color: "#34898F",
                     fontSize: 16,
                 }}
                 dropdownTextStyles={{
-                    color: '#34898F',
+                    color: "#34898F",
                     fontSize: 16,
                 }}
-                arrowicon={<FontAwesome name="chevron-down" size={14} color={'#34898F'} />}
+                arrowicon={
+                    <FontAwesome
+                        name="chevron-down"
+                        size={14}
+                        color={"#34898F"}
+                    />
+                }
                 search={false}
             />
 
             <CustomButton
                 style={{ marginTop: 50 }}
-                onPress={() => setShowModalQuery(true)}
+                onPress={() => handleContinue()}
             >
                 <TitleButton>Continuar</TitleButton>
             </CustomButton>
@@ -212,7 +231,11 @@ export const SelectDate = ({ navigation }) => {
                 Cancelar
             </Links>
 
-            <FinalDataQueryModal visible={showModalQuery} setShowModalQuery={setShowModalQuery} />
+            <FinalDataQueryModal
+                visible={showModalQuery}
+                setShowModalQuery={setShowModalQuery}
+                agendamento={agendamento}
+            />
         </Container>
     );
 };

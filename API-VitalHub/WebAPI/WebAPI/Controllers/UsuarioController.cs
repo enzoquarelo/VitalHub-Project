@@ -63,7 +63,8 @@ namespace WebAPI.Controllers
                     return NotFound();
                 }
 
-                
+                var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubg10;AccountKey=k5Bd++jfvtkwYcpwZHaxHG8QUu/BmvyMtHTBWfr9eSO6e/upmPrhyCKSBO8xpZLBQO0sapRdA3ZI+AStOn3h5Q==;EndpointSuffix=core.windows.net";
+                var containerName = "blobvitalhubg10container";
 
                 string fotoUrl = await AzureBlobStorageHelper.UploadImageBlobAsync(form.Arquivo!, connectionString!, containerName!);
 

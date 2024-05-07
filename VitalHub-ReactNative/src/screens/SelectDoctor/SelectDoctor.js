@@ -10,62 +10,94 @@ import { Links } from "../../components/Links/style";
 import api from "../../service/service";
 import { ListComponent } from "../../components/List/List";
 
+export const SelectDoctor = ({ navigation, route, doctor, clinicaId }) => {
+    const [selectedDoctorId, setselectedDoctorId] = useState(null);
+    const [DoctorList, setDoctorList] = useState([]);
+    const [selectedDoctorName, setSelectedDoctorName] = useState([]);
+    const [agendamento, setAgendamento] = useState([]);
 
-export const SelectDoctor = ({ navigation }) => {
-  const [selectedDoctorId, setselectedDoctorId] = useState(null);
-  const [DoctorList, setDoctorList] = useState([]);
-
-  const handleSelectDoctor = (clinicId) => {
-    setSelectedClinicId(clinicId);
+    const handleSelectDoctor = (doctorId, doctorName) => {
+      setselectedDoctorId(doctorId);
+      setSelectedDoctorName(doctorName);
+      setAgendamento(prevState => ({
+         ...prevState,
+          doctorId: doctorId,
+          doctorName: doctorName,
+      }));
   };
 
-  useEffect(() => {
     const listarDoctor = async () => {
-      try {
-        const response = await api.get("/Medicos");
-        setDoctorList(response.data);
-      } catch (error) {
-        console.log(error);
-      }
+        try {
+            const response = await api
+                .get(
+                    `/Medicos/BuscarPorIdClinica?id=${route.params.agendamento.clinicaId}`
+                )
+                .then((response) => {
+                    setDoctorList(response.data);
+                });
+        } catch (error) {
+            console.log(error);
+        }
     };
-    listarDoctor();
-  }, []);
 
-  return (
-    <Container>
-      <StatusBar />
+    function handleContinue() {
+      navigation.replace("SelectDate", {
+          agendamento: {
+              ...route.params.agendamento,
+              doctorId: selectedDoctorId,
+              doctorName: selectedDoctorName,
+              clinicaId: route.params.agendamento.clinicaId, // Adicionando clinicaId
+          },
+      });
+  }
 
-      <Title style={{ marginBottom: 45, paddingTop: 100 }} fontSize={24}>
-        Selecionar Médico
-      </Title>
+    useEffect(() => {
+        listarDoctor();
+    }, []);
 
-      <ListComponent
-        contentContainerStyle={{ alignItems: "center" }}
-        data={DoctorList}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <DoctorCard
-            doctor={item}
-            isSelected={item.id === setselectedDoctorId}
-            onPressClinic={() => handleSelectDoctor(item.id)}
-            navigation={navigation}
-          />
-        )} // Verifica se é o primeiro item da lista
-      />
+    useEffect(() => {
+        console.log(route);
+    }, [route]);
 
+    return (
+        <Container>
+            <StatusBar />
 
-      <CustomButton style={{ marginTop: 60 }} onPress={() => navigation.navigate("SelectDate")}>
-        <TitleButton colorTxt={false}>CONTINUAR</TitleButton>
-      </CustomButton>
+            <Title style={{ marginBottom: 45, paddingTop: 100 }} fontSize={24}>
+                Selecionar Médico
+            </Title>
 
-      <Links
-        colorLink={"#344F8F"}
-        fontSize={18}
-        style={{ marginTop: 12 }}
-        onPress={() => navigation.navigate("SelectClinic")}
-      >
-        Cancelar
-      </Links>
-    </Container>
-  );
+            <ListComponent
+                contentContainerStyle={{ alignItems: "center" }}
+                data={DoctorList}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                    <DoctorCard
+                        doctor={item}
+                        isSelected={item.id === selectedDoctorId}
+                        onPressDoctor={() => handleSelectDoctor(item.id, item.idNavigation.nome)}
+                        navigation={navigation}
+                    />
+                )}
+            />
+
+            <CustomButton
+                style={{ marginTop: 60 }}
+                onPress={() => handleContinue()}
+            >
+                <TitleButton colorTxt={false} onPress={() => handleContinue()}>
+                    CONTINUAR
+                </TitleButton>
+            </CustomButton>
+
+            <Links
+                colorLink={"#344F8F"}
+                fontSize={18}
+                style={{ marginTop: 12, marginBottom: 60 }}
+                onPress={() => navigation.navigate("SelectClinic")}
+            >
+                Cancelar
+            </Links>
+        </Container>
+    );
 };
