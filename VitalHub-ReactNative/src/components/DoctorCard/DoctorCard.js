@@ -9,7 +9,6 @@ import {
 
 export const DoctorCard = ({ doctor, imageDoctor, isSelected, onPressDoctor }) => {
     const handlePress = () => {
-        console.log(doctor.id);
         onPressDoctor(doctor.id);
     };
     return (
@@ -20,7 +19,7 @@ export const DoctorCard = ({ doctor, imageDoctor, isSelected, onPressDoctor }) =
                 <TextAboutDoctor>{doctor.especialidade.especialidade1}</TextAboutDoctor>
             </ContainerTextCard>
 
-            <ImageDoctor source={{ uri: imageDoctor}}/>
+            <ImageDoctor source={{ uri: doctor.idNavigation.foto}}/>
 
         </ContainerDoctorCard>
     );

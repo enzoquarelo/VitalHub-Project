@@ -7,14 +7,19 @@ import { DefaultText } from "../../DefaultText/DefaultText"
 import { CustomButton, TitleButton } from "../../Button/styles"
 import { Links } from "../../Links/style"
 
+import { useNavigation } from '@react-navigation/native';
+
 import api from '../../../service/service';
 
 export const CancelAppointmentModal = ({ visible, onClose, onConfirm, idConsulta  }) => {
+
+  const navigation = useNavigation();
 
   async function CancelAppointment() {
     try {
       await api.put(`/Consultas/Status?idConsulta=${idConsulta}&status=Cancelados`);
       onClose();
+      navigation.replace("Main")
     } catch (error) {
       console.error("Erro ao cancelar a consulta:", error);
     }

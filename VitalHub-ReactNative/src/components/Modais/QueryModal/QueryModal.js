@@ -21,7 +21,7 @@ export const QueryModalComponent = ({
     visible,
     setShowModalQuery,
     item,
-   ...rest
+    ...rest
 }) => {
     const navigation = useNavigation();
 
@@ -65,11 +65,23 @@ export const QueryModalComponent = ({
 
                     <Title style={{ marginBottom: 30 }}>Agendar consulta</Title>
 
+                    <TitleInput fontSize={18}>Informe a localização desejada</TitleInput>
+
+                    <Input
+                        placeholder="Informe a localização"
+                        fontSize={16}
+                        style={{ marginTop: 8, marginBottom: 10 }}
+                        value={agendamento ? agendamento.location : ''}
+                        onChangeText={(txt) => setAgendamento({
+                            ...agendamento,
+                            location: txt
+                        })}
+                    />
 
 
                     <TitleInput fontSize={18}>Qual o nível da consulta</TitleInput>
 
-                    <Container heightContainer={'55px'} widthContainer={'90%'} flexDirection={'row'} justifyContent={'space-between'}>
+                    <Container heightContainer={'55px'} widthContainer={'90%'} flexDirection={'row'} justifyContent={'space-between'} style={{marginBottom: 100}}>
                         {nivelConsulta.map((item, index) => (
                             <SelectableButtonAppointment
                                 key={index}
@@ -85,7 +97,7 @@ export const QueryModalComponent = ({
                                     fontSize={14}
                                     selected={selectedButton === `button${index + 1}`}
                                     onPress={() => setAgendamento({
-                                       ...agendamento,
+                                        ...agendamento,
                                         idPriority: item.id,
                                         priorityLabel: item.tipo
                                     })}
@@ -95,20 +107,6 @@ export const QueryModalComponent = ({
                             </SelectableButtonAppointment>
                         ))}
                     </Container>
-
-
-                    <TitleInput fontSize={18}>Informe a localização desejada</TitleInput>
-
-                    <Input
-                        placeholder="Informe a localização"
-                        fontSize={16}
-                        style={{ marginTop: 8, marginBottom: 100 }}
-                        value={agendamento? agendamento.location : ''}
-                        onChangeText={(txt) => setAgendamento({
-                           ...agendamento,
-                            location: txt
-                        })}
-                    />
 
                     <CustomButton onPress={handleContinue}>
                         <TitleButton>CONTINUAR</TitleButton>

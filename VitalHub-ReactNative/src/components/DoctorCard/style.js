@@ -11,7 +11,7 @@ export const ContainerDoctorCard = styled.TouchableOpacity`
     flex-direction: row-reverse;
 
     background-color: white;
-    elevation: 3;
+    elevation: 10;
 
     margin-bottom: 15px;
 `
@@ -33,9 +33,9 @@ export const TextAboutDoctor = styled.Text`
 `
 
 export const ImageDoctor = styled.Image`
-    width: 77px;
+    width: 80px;
     height: 80px;
 
     border-radius: 5px;
-    margin-left: 25px;
+    margin-left: 15px;
 `
