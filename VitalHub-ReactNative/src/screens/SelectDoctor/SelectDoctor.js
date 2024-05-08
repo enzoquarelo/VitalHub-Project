@@ -10,21 +10,21 @@ import { Links } from "../../components/Links/style";
 import api from "../../service/service";
 import { ListComponent } from "../../components/List/List";
 
-export const SelectDoctor = ({ navigation, route, doctor, clinicaId }) => {
+export const SelectDoctor = ({ navigation, route }) => {
     const [selectedDoctorId, setselectedDoctorId] = useState(null);
     const [DoctorList, setDoctorList] = useState([]);
     const [selectedDoctorName, setSelectedDoctorName] = useState([]);
     const [agendamento, setAgendamento] = useState([]);
 
     const handleSelectDoctor = (doctorId, doctorName) => {
-      setselectedDoctorId(doctorId);
-      setSelectedDoctorName(doctorName);
-      setAgendamento(prevState => ({
-         ...prevState,
-          doctorId: doctorId,
-          doctorName: doctorName,
-      }));
-  };
+        setselectedDoctorId(doctorId);
+        setSelectedDoctorName(doctorName);
+        setAgendamento(prevState => ({
+            ...prevState,
+            idMedicoClinica: doctorId,
+            doctorName: doctorName,
+        }));
+    };
 
     const listarDoctor = async () => {
         try {
@@ -41,23 +41,19 @@ export const SelectDoctor = ({ navigation, route, doctor, clinicaId }) => {
     };
 
     function handleContinue() {
-      navigation.replace("SelectDate", {
-          agendamento: {
-              ...route.params.agendamento,
-              doctorId: selectedDoctorId,
-              doctorName: selectedDoctorName,
-              clinicaId: route.params.agendamento.clinicaId, // Adicionando clinicaId
-          },
-      });
-  }
+        navigation.replace("SelectDate", {
+            agendamento: {
+                ...route.params.agendamento,
+                idMedicoClinica: selectedDoctorId,
+                doctorName: selectedDoctorName,
+
+            },
+        });
+    }
 
     useEffect(() => {
         listarDoctor();
     }, []);
-
-    useEffect(() => {
-        console.log(route);
-    }, [route]);
 
     return (
         <Container>

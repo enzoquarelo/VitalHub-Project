@@ -18,7 +18,6 @@ import { Container } from "../../Container/style";
 import { userDecodeToken } from "../../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from "../../../service/service";
-import { format } from 'date-fns';
 
 export const FinalDataQueryModal = ({
     visible,
@@ -41,35 +40,29 @@ export const FinalDataQueryModal = ({
 
     console.log(agendamento)
 
-    const formatDateToAmerican = (dateString) => {
-        const date = new Date(dateString);
-        return format(date, 'MM/dd/yyyy');
-      };
-      
-      async function Post() {
-          try {
-              const token = await userDecodeToken();
-              const userId = token.jti;
-      
-              // Formatando a data da consulta para o formato americano
-              const formattedDate = formatDateToAmerican(agendamento.dataConsulta);
+    async function Post() {
+        try {
+            const token = await userDecodeToken();
+            const userId = token.jti;
 
-      
-              const response = await api.post('/Consultas/Cadastrar', {
-                  situacaoId: '57ACD4ED-24F3-415F-AB42-42F0AF7506FC',
-                  pacienteId: userId,
-                  medicoClinicaId: agendamento.doctorId,
-                  prioridadeId: agendamento.prioridadeId,
-                  dataConsulta: formattedDate // Usando a data formatada
-              });
-      
-              console.log(`cadastrou: ${response.status}`);
-      
-              navigation.replace("Main");
-          } catch (error) {
-              console.log(error);
-          }
-      }
+            ;
+
+
+            const response = await api.post('/Consultas/Cadastrar', {
+                situacaoId: '57ACD4ED-24F3-415F-AB42-42F0AF7506FC',
+                pacienteId: userId,
+                medicoClinicaId: agendamento.idMedicoClinica,
+                prioridadeId: agendamento.idPriority,
+                dataConsulta: agendamento.dataConsulta
+            });
+
+            console.log(`cadastrou: ${response.status}`);
+
+            navigation.replace("Main");
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
     useEffect(() => {
@@ -112,13 +105,13 @@ export const FinalDataQueryModal = ({
                             <SubTitleData>Local da consulta</SubTitleData>
 
                             <TextDataQuery>
-                                {agendamento.localizacao}
+                                {agendamento.location}
                             </TextDataQuery>
                         </ContainerDataQueryText>
 
                         <ContainerDataQueryText>
                             <SubTitleData>Tipo da consulta</SubTitleData>
-                            <TextDataQuery>{agendamento.prioridadeLabel}</TextDataQuery>
+                            <TextDataQuery>{agendamento.priorityLabel}</TextDataQuery>
                         </ContainerDataQueryText>
                     </Container>
 

@@ -24,19 +24,14 @@ import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { Links } from "../../components/Links/style";
 import { FinalDataQueryModal } from "../../components/Modais/FinalDataQueryModal/FinalDataQueryModal";
 
+import moment from "moment";
+
 export const SelectDate = ({ navigation, route }) => {
     const [selected, setSelected] = useState("");
     const [showModalQuery, setShowModalQuery] = useState(false);
     const [category, setCategory] = useState(null);
-    const [subcategory, setSubCategory] = useState("");
 
-    const [agendamento, setAgendamento] = useState({
-        dataConsulta: "",
-        doctorName: "",
-        localizacao: "",
-        prioridadeLabel: "",
-        medicoClinica: "",
-    })
+    const [agendamento, setAgendamento] = useState({});
 
     const categories = [
         { key: "9h", value: "09:00" },
@@ -58,6 +53,7 @@ export const SelectDate = ({ navigation, route }) => {
         setSelected(date);
     };
 
+
     const today = new Date().toISOString().split("T")[0]; // Obter a data atual em formato "YYYY-MM-DD"
 
     const markedDates = {
@@ -73,6 +69,7 @@ export const SelectDate = ({ navigation, route }) => {
         },
     };
 
+    //configuração do calendário
     LocaleConfig.locales["pt-br"] = {
         monthNames: [
             "Janeiro",
@@ -135,19 +132,17 @@ export const SelectDate = ({ navigation, route }) => {
             "Sáb".split("_"),
         ],
     };
-
     LocaleConfig.defaultLocale = "pt-br";
 
-    async function PatientConsultations() {
-        navigation.replace("PatientConsultations");
-    }
 
     function handleContinue() {
         setAgendamento({
-           ...route.params.agendamento,
-            dataConsulta: `${selected} ${category}`,
+            ...route.params.agendamento,
+            dataConsulta: moment(`${selected} ${category}`, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm'),
         });
+
         setShowModalQuery(true);
+        
     }
 
 

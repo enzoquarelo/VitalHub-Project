@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+
+//import dos componentes
 import { Modal } from "react-native";
 import { Title } from "../../Title/style";
 import { QueryModal, ModalContent } from "./style";
@@ -13,6 +15,8 @@ import {
 import { Input, TitleInput } from "../../Input/styles";
 import { Links } from "../../Links/style";
 
+
+
 export const QueryModalComponent = ({
     visible,
     setShowModalQuery,
@@ -23,11 +27,11 @@ export const QueryModalComponent = ({
 
     const [selectedButton, setSelectedButton] = useState(null);
     const [agendamento, setAgendamento] = useState({
-        dataConsulta: "",
         doctorName: "",
-        localizacao: "",
-        prioridadeLabel: "",
-        medicoClinica: "",
+        location: "",
+        idPriority: "",
+        priorityLabel: "",
+        idMedicoClinica: ""
     });
 
     const nivelConsulta = [
@@ -40,23 +44,31 @@ export const QueryModalComponent = ({
         setSelectedButton(buttonName);
     };
 
+    //função pra prosseguir com o agendamento da consulta
     const handleContinue = () => {
         setAgendamento({
-           ...agendamento,
-            prioridadeId: selectedButton,
-            prioridadeLabel: selectedButton,
+            ...agendamento
         });
+
+        //fecha o modal
         setShowModalQuery(false);
+        //navega pra a outra tela, levando o agendamento
         navigation.replace("SelectClinic", { agendamento: agendamento });
-        console.log(agendamento);
+
+        console.log(agendamento)
     };
 
     return (
         <Modal {...rest} visible={visible} transparent={true} animationType="fade">
             <QueryModal>
                 <ModalContent>
+
                     <Title style={{ marginBottom: 30 }}>Agendar consulta</Title>
+
+
+
                     <TitleInput fontSize={18}>Qual o nível da consulta</TitleInput>
+
                     <Container heightContainer={'55px'} widthContainer={'90%'} flexDirection={'row'} justifyContent={'space-between'}>
                         {nivelConsulta.map((item, index) => (
                             <SelectableButtonAppointment
@@ -74,8 +86,8 @@ export const QueryModalComponent = ({
                                     selected={selectedButton === `button${index + 1}`}
                                     onPress={() => setAgendamento({
                                        ...agendamento,
-                                        prioridadeId: item.id,
-                                        prioridadeLabel: item.tipo
+                                        idPriority: item.id,
+                                        priorityLabel: item.tipo
                                     })}
                                 >
                                     {item.tipo}
@@ -83,15 +95,18 @@ export const QueryModalComponent = ({
                             </SelectableButtonAppointment>
                         ))}
                     </Container>
+
+
                     <TitleInput fontSize={18}>Informe a localização desejada</TitleInput>
+
                     <Input
                         placeholder="Informe a localização"
                         fontSize={16}
                         style={{ marginTop: 8, marginBottom: 100 }}
-                        value={agendamento? agendamento.localizacao : ''}
+                        value={agendamento? agendamento.location : ''}
                         onChangeText={(txt) => setAgendamento({
                            ...agendamento,
-                            localizacao: txt
+                            location: txt
                         })}
                     />
 
@@ -107,6 +122,7 @@ export const QueryModalComponent = ({
                     >
                         Cancelar
                     </Links>
+
                 </ModalContent>
             </QueryModal>
         </Modal>

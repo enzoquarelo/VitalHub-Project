@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+//import dos componentes
 import { Container } from "../../components/Container/style";
 import { Title } from "../../components/Title/style";
 import { CustomButton, TitleButton } from "../../components/Button/styles";
@@ -8,7 +9,6 @@ import { ClinicCard } from "../../components/ClinicCard/ClinicCard";
 import api from "../../service/service";
 import { ListComponent } from "../../components/List/List";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export const SelectClinic = ({ navigation, route, clinica, isSelected }) => {
     const [selectedClinicId, setSelectedClinicId] = useState(null);
@@ -21,7 +21,7 @@ export const SelectClinic = ({ navigation, route, clinica, isSelected }) => {
     const listarClinicas = async () => {
         const response = await api
             .get(
-                `/Clinica/BuscarPorCidade?cidade=${route.params.agendamento.localizacao}`
+                `/Clinica/BuscarPorCidade?cidade=${route.params.agendamento.location}`
             )
             .then((response) => {
                 setclinicaLista(response.data);
@@ -43,10 +43,6 @@ export const SelectClinic = ({ navigation, route, clinica, isSelected }) => {
     useEffect(() => {
         listarClinicas();
     }, []);
-
-    useEffect(() => {
-        console.log(route);
-    }, [route]);
 
     return (
         <Container>
