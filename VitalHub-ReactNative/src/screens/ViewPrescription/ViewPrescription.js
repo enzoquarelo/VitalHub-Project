@@ -1,4 +1,5 @@
 import { React, useState } from "react";
+import { useEffect } from "react";
 
 import { Container } from "../../components/Container/style";
 import { Title } from "../../components/Title/style";
@@ -18,35 +19,47 @@ import { Image, ScrollView, StyleSheet } from "react-native";
 import ModalCamera from "../../components/Modais/CameraModal/CameraModal";
 import api from "../../service/service";
 
-export const ViewPrescription = ({ navigation }) => {
+export const ViewPrescription = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [capturePhoto, setCapturePhoto] = useState(null);
     const [descricaoExame, setDescricaoExame] = useState(null);
     const [photo, setPhoto] = useState(null);
+    const [photoUri, setPhotoUri] = useState("");
+
+    // Atualizando photoUri com o valor de route.params.photoUri quando disponível
+    useEffect(() => {
+        if (route.params?.photoUri) {
+            setPhotoUri(route.params.photoUri);
+
+            InserirExame();
+        }
+    }, [route.params?.photoUri]);
 
     async function InserirExame() {
         const formData = new FormData();
         formData.append("consultaId", prontuario.id);
         formData.append("Imagem", {
-            uri: capturePhoto,
-            name: `ìmage${capturePhoto.split(".").pop()}`,
-            type: `ìmage${capturePhoto.split(".").pop()}`,
+            uri: photoUri,
+            name: `image${photoUri.split(".").pop()}`,
+            type: `image${photoUri.split(".").pop()}`,
         });
 
-        await api
+        try {
+            const response = await api
             .post(`/Exame/Cadastrar`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                }.then((response) => {
-                    setDescricaoExame(
-                        descricaoExame + "\n" + response.data.descricao
-                    );
-                }),
-            })
-            .catch((error) => {
-                console.log(error);
+                },
             });
+            setDescricaoExame(descricaoExame + '\n' + response.data.descricao)
+        } catch (error) {
+            console.log(error)
+        }
     }
+
+    const handlePhotoCapture = (capturedPhotoUri) => {
+        setPhoto(capturedPhotoUri);
+    };
 
     return (
         <ScrollView>
@@ -103,12 +116,11 @@ Duração: 3 dias"
                     multiline={true}
                     style={{ marginBottom: 20, marginTop: 8 }}
                 />
-
                 <TitleInput fontSize={18}>Exames Médicos</TitleInput>
                 <ContainerImageExame>
-                    {photo && (
+                    {photoUri && (
                         <Image
-                            source={{ uri: photo }}
+                            source={{ uri: photoUri }}
                             style={styles.capturedImage}
                         />
                     )}
@@ -153,7 +165,9 @@ Duração: 3 dias"
                     editable={false}
                     multiline={true}
                     style={{ marginBottom: 12, marginTop: 20 }}
-                />
+                >
+                    {/* {consulta.exames[0].descricao} */}
+                </InputDisable>
 
                 <Links
                     colorLink={"#344F8F"}
@@ -172,6 +186,7 @@ Duração: 3 dias"
                 title="Título do Modal"
                 setCapturePhoto={setCapturePhoto}
                 setModalVisible={setModalVisible}
+                onPhotoCaptured={handlePhotoCapture}
             />
         </ScrollView>
     );
@@ -186,8 +201,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     capturedImage: {
-        width: 100,
-        height: 200,
+        width: "100%",
+        height: "80%",
+
         resizeMode: "contain",
     },
 });

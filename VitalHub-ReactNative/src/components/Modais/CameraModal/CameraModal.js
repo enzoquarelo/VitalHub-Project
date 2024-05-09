@@ -7,6 +7,8 @@ import {
     Text,
 } from "react-native";
 
+import { useNavigation } from "@react-navigation/native";
+
 import {
     BtnCapture,
     BtnFlip,
@@ -32,27 +34,32 @@ const ModalCamera = ({
     onConfirm,
     onPhotoConfirmed,
     getMediaLibrary = false,
+    onPhotoCaptured,
 }) => {
+
+    const navigation = useNavigation();
+
     const cameraRef = useRef(null);
 
     const [photo, setPhoto] = useState(null);
     const [openModal, setOpenModal] = useState(false);
-    const [cameraType, setCameraType] = useState('front');
+    const [cameraType, setCameraType] = useState("back");
     const [flashMode, setFlashMode] = useState("off");
 
     const [latestPhoto, setLatestPhoto] = useState(null);
     const [permission, requestPermission] = useCameraPermissions();
 
+
     async function selectImageGallery() {
         console.log("selectImageGallery function called");
-
+    
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 quality: 1,
             });
-
-            if (!result.cancelled) {
+    
+            if (!result.cancelled && result.assets && result.assets.length > 0) {
                 setPhoto(result.assets[0].uri);
                 setOpenModal(true);
             }
@@ -60,11 +67,11 @@ const ModalCamera = ({
             console.error("Error in selectImageGallery:", error);
         }
     }
+    
 
     function toggleCameraFacing() {
-      setCameraType(current => (current === 'back' ? 'front' : 'back'));
+        setCameraType((current) => (current === "back" ? "front" : "back"));
     }
-  
 
     async function capturePhoto() {
         if (cameraRef.current) {
@@ -89,6 +96,12 @@ const ModalCamera = ({
                 setOpenModal(false);
                 setLatestPhoto(photo.uri);
                 onClose();
+                
+                onPhotoCaptured(photo.uri); // Chamando a função de callback com o URI da foto]
+            
+                setPhoto(photo.uri);
+
+                navigation.navigate("ViewPrescription", { photoUri: photo });
             } else {
                 alert("No image captured.");
             }
@@ -99,7 +112,7 @@ const ModalCamera = ({
     }
 
     const toggleFlash = () => {
-        setFlashMode(flashMode === "on" ? "off" : "on",);
+        setFlashMode(flashMode === "on" ? "off" : "on");
     };
 
     async function getLastPhoto() {
@@ -123,7 +136,6 @@ const ModalCamera = ({
     }, [visible]);
 
     if (!permission) {
-      alert('carregando permissao')
     }
 
     return (
@@ -140,6 +152,7 @@ const ModalCamera = ({
                     flash={flashMode}
                     style={styles.camera}
                     ratio={"16:9"}
+                    facing={cameraType}
                 >
                     <ContainerButtonsCamera>
                         <ButtonGaleria onPress={() => selectImageGallery()}>
@@ -149,7 +162,7 @@ const ModalCamera = ({
                         </ButtonGaleria>
 
                         <BtnCapture onPress={capturePhoto} />
-                        <BtnFlip onPress={toggleCameraFacing} >
+                        <BtnFlip onPress={toggleCameraFacing}>
                             <MaterialCommunityIcons
                                 name="camera-flip"
                                 size={35}

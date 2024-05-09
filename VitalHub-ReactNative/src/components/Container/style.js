@@ -25,4 +25,7 @@ export const ContainerImageExame = styled.View`
   border: 2px solid #49b3ba;
   border-radius: 5px;
   
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
