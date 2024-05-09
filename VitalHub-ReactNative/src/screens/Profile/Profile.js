@@ -17,6 +17,8 @@ import { UseMask } from "../../utils/formater";
 
 import api from "../../service/service";
 
+import { Masks, useMaskedInputProps } from 'react-native-mask-input';
+
 export const Profile = ({ navigation }) => {
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
@@ -37,6 +39,20 @@ export const Profile = ({ navigation }) => {
 
     //state para manipular edição dos inputs
     const [isEditing, setIsEditing] = useState(false);
+
+    //máscara para data de nascimento
+    const dataMasked = useMaskedInputProps({
+        value: userDataNascimento,
+        onChangeText: setUserDataNascimento,
+        mask: Masks.DATE_YYYYMMDD
+    });
+
+    const cpfMasked = useMaskedInputProps({
+        value: userCPF,
+        onChangeText: setUserCPF,
+        mask: Masks.BRL_CPF
+    })
+
 
     //captura nome e email do token
     async function profileLoad() {
@@ -69,12 +85,12 @@ export const Profile = ({ navigation }) => {
                 setUserEspecialidade(response.data.especialidade.especialidade1);
                 setUserCRM(response.data.crm);
                 setUserFoto(response.data.idNavigation.foto);
-                
+
                 console.log(response.data.endereco)
                 setUserLogradouro(response.data.endereco.logradouro);
                 setUserCep(response.data.endereco.cep);
                 setUserCidade(response.data.endereco.cidade);
-            
+
                 setUserNumero(response.data.endereco.numero.toString());
             } else {
                 setUserDataNascimento(response.data.dataNascimento);
@@ -82,7 +98,7 @@ export const Profile = ({ navigation }) => {
                 setUserCPF(response.data.cpf);
                 setUserLogradouro(response.data.endereco.logradouro);
                 setUserCep(response.data.endereco.cep);
-            
+
                 setUserCidade(response.data.endereco.cidade);
                 setUserNumero(response.data.endereco.numero.toString());
                 setUserFoto(response.data.idNavigation.foto);
@@ -149,7 +165,7 @@ export const Profile = ({ navigation }) => {
 
                 {userRoleToken === "Medico" ? (
                     <>
-                        <TitleInput style={{marginBottom: 3, marginTop:10}}>Especialidade</TitleInput>
+                        <TitleInput style={{ marginBottom: 3, marginTop: 10 }}>Especialidade</TitleInput>
                         {isEditing ? (
                             <Input
                                 value={userEspecialidade}
@@ -160,7 +176,7 @@ export const Profile = ({ navigation }) => {
                             <InputDisable value={userEspecialidade} editable={false} />
                         )}
 
-                        <TitleInput style={{marginBottom: 3, marginTop:10}}>CRM</TitleInput>
+                        <TitleInput style={{ marginBottom: 3, marginTop: 10 }}>CRM</TitleInput>
                         {isEditing ? (
                             <Input
                                 value={userCRM}
@@ -256,21 +272,27 @@ export const Profile = ({ navigation }) => {
                 ) : (
                     <>
                         <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Data de Nascimento</TitleInput>
-                        <InputDisable
-                            value={
-                                isEditing
-                                    ?
-                                    userDataNascimento
-                                    :
-                                    UseMask('##########', userDataNascimento)
-                            }
-                            editable={false}
-                        />
+                        {isEditing ? (
+                            <Input
+                                value={userDataNascimento}
+                                onChangeText={setUserDataNascimento}
+                                editable={true}
+                                keyboardType="numeric"
+                                {...dataMasked}
+                            />
+                        ) : (
+                            <InputDisable
+                                value={userDataNascimento}
+                                editable={false}
+                                {...dataMasked}
+                            />
+                        )}
 
                         <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>RG</TitleInput>
                         {isEditing ? (
                             <Input
                                 value={userRg}
+                                keyboardType="numeric"
                                 onChangeText={setUserRg}
                                 editable={true}
                             />
@@ -293,16 +315,13 @@ export const Profile = ({ navigation }) => {
                                 value={userCPF}
                                 onChangeText={setUserCPF}
                                 editable={true}
+                                keyboardType="numeric" 
+                                {...cpfMasked}
                             />
                         ) : (
                             <InputDisable
-                                value={
-                                    isEditing
-                                        ?
-                                        userCPF
-                                        :
-                                        UseMask('#########-##', userCPF)
-                                }
+                                value={userCPF}
+                                {...cpfMasked}
                                 editable={false}
                             />
                         )}
@@ -314,17 +333,12 @@ export const Profile = ({ navigation }) => {
                                     <Input
                                         value={userCep}
                                         onChangeText={setUserCep}
-                                        editable={false}
+                                        keyboardType="numeric"
+                                        editable={true}
                                     />
                                 ) : (
                                     <InputDisable
-                                        value={
-                                            isEditing
-                                                ?
-                                                userCep
-                                                :
-                                                UseMask('#####-###', userCep)
-                                        }
+                                        value={userCep}
                                         editable={false}
                                     />
                                 )}
@@ -377,6 +391,7 @@ export const Profile = ({ navigation }) => {
                                         value={userNumero}
                                         onChangeText={setUserNumero}
                                         editable={true}
+                                        keyboardType="numeric"
                                         widthInput={"80px"}
                                     />
                                 ) : (

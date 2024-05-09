@@ -6,6 +6,7 @@ import CalendarHome from "../../components/CalendarHome/CalendarHome";
 import { SelectableButton, SelectableTitleButton } from "../../components/Button/styles";
 import { Cards } from "../../components/Cards/Cards";
 import { ScheduleAppointment } from "../../components/ScheduleAppointment/ScheduleAppointment";
+import { DefaultText } from "../../components/DefaultText/DefaultText";
 
 import { QueryModalComponent } from "../../components/Modais/QueryModal/QueryModal";
 import { AppointmentLocalModal } from "../../components/Modais/AppointmentLocalModal/AppointmentLocalModal";
@@ -29,6 +30,11 @@ export const Home = ({ navigation }) => {
     const [diaSelecionado, setDiaSelecionado] = useState(moment().format(""));
     const [consultas, setConsultas] = useState([]);
     const [consultaSelecionada, setConsultaSelecionada] = useState(null); // Adicionado para armazenar a consulta selecionada
+
+    const [pacienteNome, setPacienteNome] = useState('');
+    const [pacienteEmail, setPacienteEmail] = useState('');
+    const [pacienteIdade, setPacienteIdade] = useState('');
+    const [pacientePhoto, setPacientePhoto] = useState('');
 
     async function loadUserRole() {
         const token = await userDecodeToken();
@@ -93,8 +99,16 @@ export const Home = ({ navigation }) => {
         }
     };
 
-    const handleCardPress = (consulta) => {
+    const handleCardPress = (consulta, idadePaciente) => {
         setConsultaSelecionada(consulta); // Atualiza a consulta selecionada
+        const pacienteNome = consulta.paciente.idNavigation.nome;
+        const pacienteEmail = consulta.paciente.idNavigation.email;
+        const pacienteIdade = moment().diff(consulta.paciente.dataNascimento, 'years');
+        const pacientePhoto = consulta.paciente.idNavigation.foto;
+        setPacienteNome(pacienteNome);
+        setPacienteEmail(pacienteEmail);
+        setPacienteIdade(pacienteIdade);
+        setPacientePhoto(pacientePhoto);
         setShowPrescription(true); // Mostra o modal de prescrição
     };
 
@@ -149,12 +163,6 @@ export const Home = ({ navigation }) => {
                             </SelectableTitleButton>
                         </SelectableButton>
                     </Container>
-                    
-                    {consultas.length === 0 && (
-                        <Container justifyContent={'center'} alignItems={'center'}>
-                            <DefaultText>Nenhuma consulta encontrada para esse dia.</DefaultText>
-                        </Container>
-                    )}
 
                     {consultas.map((consulta, index) => {
                         const idadePaciente = moment().diff(consulta.paciente.dataNascimento, 'years');
@@ -163,24 +171,47 @@ export const Home = ({ navigation }) => {
                         let buttonSelected = '';
                         if (selectedAgendadas) {
                             buttonSelected = 'Agendadas';
+                            return (
+                                <Cards
+                                    key={index}
+                                    imageHeader={consulta.paciente.idNavigation.foto}
+                                    profileName={consulta.paciente.idNavigation.nome}
+                                    profileEmail={consulta.paciente.idNavigation.email}
+                                    profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
+                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                    onCardPress={() => handleCardPress(consulta, idadePaciente)}
+
+                                    buttonSelected={buttonSelected}
+                                />
+                            );
                         } else if (selectedRealizadas) {
                             buttonSelected = 'Realizadas';
+                            return (
+                                <Cards
+                                    key={index}
+                                    imageHeader={consulta.paciente.idNavigation.foto}
+                                    profileName={consulta.paciente.idNavigation.nome}
+                                    profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
+                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                    onCardPress={() => handleCardPress(consulta)}
+
+                                    buttonSelected={buttonSelected}
+                                />
+                            );
                         } else if (selectedCanceladas) {
                             buttonSelected = 'Canceladas';
+                            return (
+                                <Cards
+                                    key={index}
+                                    imageHeader={consulta.paciente.idNavigation.foto}
+                                    profileName={consulta.paciente.idNavigation.nome}
+                                    profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
+                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+
+                                    buttonSelected={buttonSelected}
+                                />
+                            );
                         }
-                        return (
-
-                            <Cards
-                                key={index}
-                                imageHeader={consulta.paciente.idNavigation.foto}
-                                profileName={consulta.paciente.idNavigation.nome}
-                                profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
-                                appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
-                                onCardPress={() => handleCardPress(consulta)}
-
-                                buttonSelected={buttonSelected}
-                            />
-                        );
                     })}
 
                     <AppointmentLocalModal
@@ -189,6 +220,10 @@ export const Home = ({ navigation }) => {
                         onPressClose={() => setShowPrescription(false)}
                         userRole={userRole}
                         consulta={consultaSelecionada}
+                        pacienteNome={pacienteNome}
+                        pacienteEmail={pacienteEmail}
+                        pacienteIdade={pacienteIdade}
+                        pacientePhoto={pacientePhoto}
                     />
                 </Container>
             </>

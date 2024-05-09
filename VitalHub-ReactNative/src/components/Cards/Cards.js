@@ -11,7 +11,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import { useNavigation } from "@react-navigation/native";
 
-export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, onCardPress, buttonSelected, appointmentId, idConsulta }) => {
+export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, onCardPress, buttonSelected, appointmentId, idConsulta, profileEmail }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const navigation = useNavigation();
