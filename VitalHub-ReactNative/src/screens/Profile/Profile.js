@@ -7,8 +7,9 @@ import { Container, ContainerInputAndTitle } from "../../components/Container/st
 import { Title } from "../../components/Title/style"
 import { DefaultText } from "../../components/DefaultText/DefaultText"
 import { InputDisable, TitleInput, Input } from "../../components/Input/styles"
-import { UserImage } from "./style";
+import { UserImage, ViewImage, ButtonCamera, LastPhoto, ButtonGaleria } from "./style";
 import { ButtonDisable, CustomButton, TitleButton } from "../../components/Button/styles";
+import ModalCamera from "../../components/Modais/CameraModal/CameraModal";
 
 import { userDecodeToken } from "../../utils/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,7 +20,12 @@ import api from "../../service/service";
 
 import { Masks, useMaskedInputProps } from 'react-native-mask-input';
 
-export const Profile = ({ navigation }) => {
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+export const Profile = ({ navigation, route }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [uriCameraCapture, SetUriCameraCapture] = useState(null);
+
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
 
@@ -39,6 +45,8 @@ export const Profile = ({ navigation }) => {
 
     //state para manipular edição dos inputs
     const [isEditing, setIsEditing] = useState(false);
+
+    const [newPhoto, setNewPhoto] = useState(null);
 
     //máscara para data de nascimento
     const dataMasked = useMaskedInputProps({
@@ -108,6 +116,8 @@ export const Profile = ({ navigation }) => {
         }
     }
 
+    console.log('ta nulo', newPhoto);
+
     //Put - Ativa os botões e salva os novos valores
     async function salvarAlteracoes() {
         const token = await userDecodeToken();
@@ -142,6 +152,32 @@ export const Profile = ({ navigation }) => {
         setIsEditing(!isEditing);
     }
 
+    useEffect(() => {
+        if (uriCameraCapture) {
+            AlterarFotoPerfil()
+        }
+    }, [uriCameraCapture])
+
+    async function AlterarFotoPerfil() {
+
+        const formatDate = new FormData()
+        formatDate.append("Arquivo", {
+            uri: uriCameraCapture,
+            name: `image.${uriCameraCapture.split(".")[1]}`,
+            type: `image.${uriCameraCapture.split(".")[1]}`
+        })
+
+        await api.put(`/Usuario/AlterarFotoPerfil?id=${profile.user}`, formatDate, {
+            headers: {
+                "Content-Type": "multipart/from-data"
+            }
+        }).then(response => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
     //carrega os dados do usuário para chamada na api
     useEffect(() => {
         profileLoad();
@@ -159,6 +195,17 @@ export const Profile = ({ navigation }) => {
                 <StatusBar style="light" />
 
                 <UserImage source={{ uri: userFoto }} />
+
+                <ViewImage>
+                    <ButtonCamera onPress={() => setModalVisible(true)} getMediaLibrary={true}>
+                        <MaterialCommunityIcons
+
+                            name="camera-plus"
+                            size={25}
+                            color="#fbfbfb"
+                        />
+                    </ButtonCamera>
+                </ViewImage>
 
                 <Title style={{ marginTop: 14 }}>{userName}</Title>
                 <DefaultText fontSize={18}>{userEmail}</DefaultText>
@@ -315,7 +362,7 @@ export const Profile = ({ navigation }) => {
                                 value={userCPF}
                                 onChangeText={setUserCPF}
                                 editable={true}
-                                keyboardType="numeric" 
+                                keyboardType="numeric"
                                 {...cpfMasked}
                             />
                         ) : (
@@ -420,6 +467,14 @@ export const Profile = ({ navigation }) => {
                     <TitleButton>SAIR DO APP</TitleButton>
                 </ButtonDisable>
             </Container>
+
+            <ModalCamera
+                getMediaLibrary={true}
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                onPhotoConfirmed={newPhoto}
+                title="Título do Modal"
+            />
         </ScrollView>
     );
 }
