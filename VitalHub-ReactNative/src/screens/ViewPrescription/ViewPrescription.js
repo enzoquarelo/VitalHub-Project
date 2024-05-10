@@ -109,6 +109,7 @@ export const ViewPrescription = ({ route }) => {
                         backgroundBtn={"#49B3BA"}
                         showBorder={false}
                         onPress={() => setModalVisible(true)}
+                        getMediaLibrary={true}
                     >
                         <MaterialCommunityIcons name="camera-plus-outline" size={22} color="white" style={{ marginRight: 12, marginBottom: 1 }} />
                         <TitleButton>Enviar</TitleButton>
@@ -133,6 +134,7 @@ export const ViewPrescription = ({ route }) => {
             </Container>
 
             <ModalCamera
+                getMediaLibrary={true}
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
                 title="Título do Modal"

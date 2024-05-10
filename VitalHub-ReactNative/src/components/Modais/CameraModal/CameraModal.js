@@ -1,14 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
+//nativos
 import {
     Modal,
     StyleSheet,
     StatusBar,
     TouchableOpacity,
-    Text,
 } from "react-native";
 
-import { useNavigation } from "@react-navigation/native";
-
+//styles
+import { ButtonDisable, CustomButton, TitleButton } from "../../Button/styles";
+import { Container } from "../../Container/style";
+import { ButtonGaleria, LastPhoto } from "../../../screens/Profile/style";
 import {
     BtnCapture,
     BtnFlip,
@@ -17,27 +19,19 @@ import {
     Photo,
 } from "./style";
 
-import { CameraView, useCameraPermissions } from "expo-camera";
-
+//bibliotecas
+import { CameraView } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
-
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import { ButtonDisable, CustomButton, TitleButton } from "../../Button/styles";
-import { Container } from "../../Container/style";
-import { ButtonGaleria, LastPhoto } from "../../../screens/Profile/style";
+
 
 const ModalCamera = ({
     visible,
     onClose,
-    title,
-    onConfirm,
-    onPhotoConfirmed,
     getMediaLibrary = false,
+    SetUriCameraCapture
 }) => {
-
-    const navigation = useNavigation();
-
     const cameraRef = useRef(null);
 
     const [photo, setPhoto] = useState(null);
@@ -46,7 +40,6 @@ const ModalCamera = ({
     const [flashMode, setFlashMode] = useState("off");
 
     const [latestPhoto, setLatestPhoto] = useState(null);
-    const [permission, requestPermission] = useCameraPermissions();
 
     //seleciona a imagem da galeria
     async function selectImageGallery() {
@@ -55,9 +48,13 @@ const ModalCamera = ({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 quality: 1,
             });
-
+    
             if (!result.cancelled && result.assets && result.assets.length > 0) {
+                // Atualiza o estado 'photo' com o URI da imagem selecionada
                 setPhoto(result.assets[0].uri);
+                // Atualiza o estado 'SetUriCameraCapture' com o URI da imagem selecionada
+                SetUriCameraCapture(result.assets[0].uri);
+                // Abre o modal para visualizar a imagem selecionada
                 setOpenModal(true);
             }
         } catch (error) {
@@ -79,6 +76,8 @@ const ModalCamera = ({
 
             if (photo) {
                 setPhoto(photo.uri);
+                SetUriCameraCapture(photo.uri);
+
                 setOpenModal(true);
             } else {
                 console.log("Failed to capture photo");
@@ -93,12 +92,11 @@ const ModalCamera = ({
                 await MediaLibrary.saveToLibraryAsync(photo);
                 alert("Photo saved to gallery");
                 setOpenModal(false);
-                setLatestPhoto(photo.uri);
+                setLatestPhoto(photo);
                 onClose();
 
-                onPhotoConfirmed(photo);
-
                 setPhoto(photo.uri);
+                SetUriCameraCapture(photo.uri);
             } else {
                 alert("No image captured.");
             }
@@ -107,6 +105,8 @@ const ModalCamera = ({
             alert("Error saving photo: " + error.message);
         }
     }
+
+
 
     //altera o status do flash
     const toggleFlash = () => {

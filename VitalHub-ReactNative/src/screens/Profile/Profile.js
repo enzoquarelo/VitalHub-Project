@@ -28,6 +28,7 @@ export const Profile = ({ navigation, route }) => {
 
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
+    const [userId, setUserId] = useState('');
 
     const [userRoleToken, setUserRoleToken] = useState('');
 
@@ -46,8 +47,7 @@ export const Profile = ({ navigation, route }) => {
     //state para manipular edição dos inputs
     const [isEditing, setIsEditing] = useState(false);
 
-    const [newPhoto, setNewPhoto] = useState(null);
-
+    console.log(userFoto);
     //máscara para data de nascimento
     const dataMasked = useMaskedInputProps({
         value: userDataNascimento,
@@ -67,6 +67,8 @@ export const Profile = ({ navigation, route }) => {
         const token = await userDecodeToken();
         const userNameToken = token.name;
         const userEmailToken = token.email;
+        const userID = token.jti;
+        setUserId(userID);
         setUserName(userNameToken);
         setUserEmail(userEmailToken);
     }
@@ -116,8 +118,6 @@ export const Profile = ({ navigation, route }) => {
         }
     }
 
-    console.log('ta nulo', newPhoto);
-
     //Put - Ativa os botões e salva os novos valores
     async function salvarAlteracoes() {
         const token = await userDecodeToken();
@@ -134,7 +134,7 @@ export const Profile = ({ navigation, route }) => {
                 logradouro: userLogradouro,
                 numero: userNumero,
                 cidade: userCidade,
-                foto: userFoto
+                foto: userFoto,
             });
 
 
@@ -159,20 +159,20 @@ export const Profile = ({ navigation, route }) => {
     }, [uriCameraCapture])
 
     async function AlterarFotoPerfil() {
-
         const formatDate = new FormData()
         formatDate.append("Arquivo", {
             uri: uriCameraCapture,
-            name: `image.${uriCameraCapture.split(".")[1]}`,
-            type: `image.${uriCameraCapture.split(".")[1]}`
+            name: `image.${uriCameraCapture.split(".").pop()}`,
+            type: `image/${uriCameraCapture.split(".").pop()}`
         })
 
-        await api.put(`/Usuario/AlterarFotoPerfil?id=${profile.user}`, formatDate, {
+        await api.put(`/Usuario/AlterarFotoPerfil?id=${userId}`, formatDate, {
             headers: {
-                "Content-Type": "multipart/from-data"
+                "Content-Type": "multipart/form-data"
             }
         }).then(response => {
-            console.log(response)
+            setUserFoto(uriCameraCapture);
+            console.log("Foto atualizada com sucesso:", userFoto);
         }).catch(error => {
             console.log(error)
         })
@@ -471,8 +471,8 @@ export const Profile = ({ navigation, route }) => {
             <ModalCamera
                 getMediaLibrary={true}
                 visible={modalVisible}
+                SetUriCameraCapture={SetUriCameraCapture}
                 onClose={() => setModalVisible(false)}
-                onPhotoConfirmed={newPhoto}
                 title="Título do Modal"
             />
         </ScrollView>
