@@ -286,6 +286,7 @@ export const Home = ({ navigation }) => {
                         const doctorName = consulta.medicoClinica.medico.idNavigation.nome;
                         const doctorSpecialty = consulta.medicoClinica.medico.especialidade.especialidade1;
                         const consultaId = consulta.id;
+                        const dateQuery = consulta.dataConsulta;
 
                         const appointmentId = consulta.id
 
