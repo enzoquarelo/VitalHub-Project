@@ -34,6 +34,7 @@
     "react-native-calendars": "^1.1304.1",
     "react-native-camera": "^4.2.1",
     "react-native-dropdown-select-list": "^2.0.5",
+    "react-native-image-to-text": "^0.1.2",
     "react-native-maps": "1.14.0",
     "react-native-maps-directions": "^1.9.0",
     "styled-components": "^6.1.8"

@@ -22,7 +22,7 @@ import api from "../../service/service";
 export const ViewPrescription = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [capturePhoto, setCapturePhoto] = useState(null);
-    const [descricaoExame, setDescricaoExame] = useState(null);
+    const [descricaoExame, setDescricaoExame] = useState(""); // Inicializando com uma string vazia
     const [photo, setPhoto] = useState(null);
     const [photoUri, setPhotoUri] = useState("");
 
@@ -45,15 +45,22 @@ export const ViewPrescription = ({ navigation, route }) => {
         });
 
         try {
-            const response = await api
-            .post(`/Exame/Cadastrar`, formData, {
+            const response = await api.post(`/Exame/Cadastrar`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            setDescricaoExame(descricaoExame + '\n' + response.data.descricao)
+
+            // Adicionando uma quebra de linha entre os resultados dos exames
+            setDescricaoExame((prevDescricao) =>
+                prevDescricao !== ""
+                    ? prevDescricao + "\n" + response.data.descricao
+                    : response.data.descricao
+            );
+
+            console.log(descricaoExame);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
@@ -161,13 +168,10 @@ Duração: 3 dias"
                     heightInput={"100px"}
                     fontSize={16}
                     textAlignVertical="top"
-                    placeholder="Resultado do exame de sangue : tudo normal"
                     editable={false}
                     multiline={true}
                     style={{ marginBottom: 12, marginTop: 20 }}
-                >
-                    {/* {consulta.exames[0].descricao} */}
-                </InputDisable>
+                />
 
                 <Links
                     colorLink={"#344F8F"}

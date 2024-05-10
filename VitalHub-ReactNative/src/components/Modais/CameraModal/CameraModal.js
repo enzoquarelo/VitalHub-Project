@@ -68,7 +68,6 @@ const ModalCamera = ({
         }
     }
     
-
     function toggleCameraFacing() {
         setCameraType((current) => (current === "back" ? "front" : "back"));
     }
@@ -96,8 +95,6 @@ const ModalCamera = ({
                 setOpenModal(false);
                 setLatestPhoto(photo.uri);
                 onClose();
-                
-                onPhotoCaptured(photo.uri); // Chamando a função de callback com o URI da foto]
             
                 setPhoto(photo.uri);
 
