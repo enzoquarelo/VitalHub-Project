@@ -10,10 +10,10 @@ import { Links } from "../../Links/style"
 
 import { useNavigation } from '@react-navigation/native';
 
-export const PrescriptionModal = ({ visible, onPressClose, userRole, doctorCRM, specialtyName, doctorName, clinicId }) => {
+export const AppointmentLocalModal = ({ visible, setShowPrescription, onPressClose, userRole, doctorPhoto, doctorCRM, specialtyName, doctorName, consulta, clinicId, pacienteNome, pacienteEmail, pacienteIdade, pacientePhoto }) => {
 
   const navigation = useNavigation();
-  
+
 
   async function handleClose(screen) {
     onPressClose();
@@ -31,10 +31,11 @@ export const PrescriptionModal = ({ visible, onPressClose, userRole, doctorCRM, 
       >
         <ModalContainer>
           <ModalView>
+            <UserImage source={{ uri: pacientePhoto }} />
 
-            <Title>Nome Usuário</Title>
+            <Title>{pacienteNome}</Title>
 
-            <DefaultText fontSize={16} widthText={"100%"}>idade  -  email do usuário</DefaultText>
+            <DefaultText fontSize={16} widthText={"100%"}>{pacienteIdade} anos  -  {pacienteEmail}</DefaultText>
 
 
             <CustomButton style={{ marginTop: 15 }} widthButton={100}>
@@ -59,7 +60,7 @@ export const PrescriptionModal = ({ visible, onPressClose, userRole, doctorCRM, 
         <ModalContainer>
           <ModalView>
 
-            <UserImage source={require('../../../../assets/images/doctorImage_temp.png')} />
+            <UserImage source={{ uri: doctorPhoto }} />
 
             <Title>Dr(a) {doctorName}</Title>
 

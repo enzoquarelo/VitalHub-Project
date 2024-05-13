@@ -17,6 +17,7 @@ export const Input = styled.TextInput.attrs(props => ({
 
 export const InputDisable = styled(Input).attrs(props => ({
     placeholderTextColor: "#33303E",
+    numberOfLines: 1
 }))`
     border: none;
     background-color: #F5F3F3;

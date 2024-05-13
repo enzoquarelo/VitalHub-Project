@@ -9,11 +9,15 @@ import {
     SubTitleData,
     TextDataQuery,
     ContainerDataQueryText,
-} from "./Style";
+} from "./style";
 import { DefaultText } from "../../DefaultText/DefaultText";
 import { CustomButton, TitleButton } from "../../Button/styles";
 import { Links } from "../../Links/style";
 import { Container } from "../../Container/style";
+
+import { userDecodeToken } from "../../../utils/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from "../../../service/service";
 
 export const FinalDataQueryModal = ({
     visible,
@@ -33,6 +37,33 @@ export const FinalDataQueryModal = ({
         // Navegar para a tela Main
         navigation.navigate("Main");
     };
+
+    console.log(agendamento)
+
+    async function Post() {
+        try {
+            const token = await userDecodeToken();
+            const userId = token.jti;
+
+            ;
+
+
+            const response = await api.post('/Consultas/Cadastrar', {
+                situacaoId: '57ACD4ED-24F3-415F-AB42-42F0AF7506FC',
+                pacienteId: userId,
+                medicoClinicaId: agendamento.idMedicoClinica,
+                prioridadeId: agendamento.idPriority,
+                dataConsulta: agendamento.dataConsulta
+            });
+
+            console.log(`cadastrou: ${response.status}`);
+
+            navigation.replace("Main");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     useEffect(() => {
         console.log(agendamento)
@@ -60,39 +91,31 @@ export const FinalDataQueryModal = ({
                     >
                         <ContainerDataQueryText>
                             <SubTitleData>Data da Consulta</SubTitleData>
-                            <TextDataQuery>{date}</TextDataQuery>
+                            <TextDataQuery>{agendamento.dataConsulta}</TextDataQuery>
                         </ContainerDataQueryText>
 
                         <ContainerDataQueryText>
                             <SubTitleData>Médico(a) da consulta</SubTitleData>
-                            {doctor && (
-                                <TextDataQuery>
-                                    {doctor.idNavigation.nome}
-                                </TextDataQuery>
-                            )}
-
                             <TextDataQuery>
-                                Demartologa, Esteticista
+                                {agendamento.doctorName}
                             </TextDataQuery>
                         </ContainerDataQueryText>
 
                         <ContainerDataQueryText style={{ marginTop: 10 }}>
                             <SubTitleData>Local da consulta</SubTitleData>
 
-                            {clinica && (
-                                <TextDataQuery>
-                                    {clinica.endereco.logradouro}
-                                </TextDataQuery>
-                            )}
+                            <TextDataQuery>
+                                {agendamento.location}
+                            </TextDataQuery>
                         </ContainerDataQueryText>
 
                         <ContainerDataQueryText>
                             <SubTitleData>Tipo da consulta</SubTitleData>
-                            <TextDataQuery>Rotina</TextDataQuery>
+                            <TextDataQuery>{agendamento.priorityLabel}</TextDataQuery>
                         </ContainerDataQueryText>
                     </Container>
 
-                    <CustomButton onPress={handleConfirm}>
+                    <CustomButton onPress={Post}>
                         <TitleButton>CONFIRMAR</TitleButton>
                     </CustomButton>
 

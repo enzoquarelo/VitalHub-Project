@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const DoctorImage = styled.Image`
     width: 100%;
+    height: 250px;
 `
 
 export const RowGray = styled.View`

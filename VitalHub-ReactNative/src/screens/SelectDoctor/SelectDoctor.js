@@ -10,12 +10,20 @@ import { Links } from "../../components/Links/style";
 import api from "../../service/service";
 import { ListComponent } from "../../components/List/List";
 
-export const SelectDoctor = ({ navigation, route, doctor, clinicaId }) => {
+export const SelectDoctor = ({ navigation, route }) => {
     const [selectedDoctorId, setselectedDoctorId] = useState(null);
     const [DoctorList, setDoctorList] = useState([]);
+    const [selectedDoctorName, setSelectedDoctorName] = useState([]);
+    const [agendamento, setAgendamento] = useState([]);
 
-    const handleSelectDoctor = (doctorId) => {
+    const handleSelectDoctor = (doctorId, doctorName) => {
         setselectedDoctorId(doctorId);
+        setSelectedDoctorName(doctorName);
+        setAgendamento(prevState => ({
+            ...prevState,
+            idMedicoClinica: doctorId,
+            doctorName: doctorName,
+        }));
     };
 
     const listarDoctor = async () => {
@@ -36,8 +44,9 @@ export const SelectDoctor = ({ navigation, route, doctor, clinicaId }) => {
         navigation.replace("SelectDate", {
             agendamento: {
                 ...route.params.agendamento,
-                doctorId: selectedDoctorId,
-                
+                idMedicoClinica: selectedDoctorId,
+                doctorName: selectedDoctorName,
+
             },
         });
     }
@@ -45,10 +54,6 @@ export const SelectDoctor = ({ navigation, route, doctor, clinicaId }) => {
     useEffect(() => {
         listarDoctor();
     }, []);
-
-    useEffect(() => {
-        console.log(route);
-    }, [route]);
 
     return (
         <Container>
@@ -66,14 +71,8 @@ export const SelectDoctor = ({ navigation, route, doctor, clinicaId }) => {
                     <DoctorCard
                         doctor={item}
                         isSelected={item.id === selectedDoctorId}
-                        onPressDoctor={() => handleSelectDoctor(item.id)}
+                        onPressDoctor={() => handleSelectDoctor(item.id, item.idNavigation.nome)}
                         navigation={navigation}
-                        onPress={() => {
-                            setDoctorList({
-                                medicoClinicaId: medico.id,
-                                medicoLabel: medico.idNavigation.nome,
-                            });
-                        }}
                     />
                 )}
             />

@@ -19,8 +19,8 @@ export const ContainerButtonsCamera = styled.View`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around
-`
+    justify-content: space-around;
+`;
 
 export const BtnCapture = styled.TouchableOpacity`
     width: 60px;
@@ -34,7 +34,7 @@ export const BtnCapture = styled.TouchableOpacity`
 
     align-items: 'center';
     justify-content: 'center';
-`
+`;
 
 export const BtnFlip = styled.TouchableOpacity`
     width: 60px;

@@ -1,248 +1,480 @@
 import { React, useState, useEffect } from "react";
 
 import { StatusBar } from "expo-status-bar";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 
-import {
-  Container,
-  ContainerInputAndTitle,
-} from "../../components/Container/style";
-import { Title } from "../../components/Title/style";
-import { DefaultText } from "../../components/DefaultText/DefaultText";
-import { InputDisable, TitleInput } from "../../components/Input/styles";
-import { ButtonCamera, UserImage, ViewImage } from "./style";
-import {
-  ButtonDisable,
-  CustomButton,
-  TitleButton,
-} from "../../components/Button/styles";
-import { userDecodeToken } from "../../utils/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import api from "../../service/service";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { ViewPrescription } from "../ViewPrescription/ViewPrescription";
+import { Container, ContainerInputAndTitle } from "../../components/Container/style"
+import { Title } from "../../components/Title/style"
+import { DefaultText } from "../../components/DefaultText/DefaultText"
+import { InputDisable, TitleInput, Input } from "../../components/Input/styles"
+import { UserImage, ViewImage, ButtonCamera, LastPhoto, ButtonGaleria } from "./style";
+import { ButtonDisable, CustomButton, TitleButton } from "../../components/Button/styles";
 import ModalCamera from "../../components/Modais/CameraModal/CameraModal";
 
-export const Profile = ({ navigation }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [uriCameraCapture, SetUriCameraCapture] = useState(null);
+import { userDecodeToken } from "../../utils/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-  //state para guardar e manipular os dados
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userRole, setUserRole] = useState("");
+import { UseMask } from "../../utils/formater";
 
-  //states para guardar o usuario
-  const [UserData, setUserData] = useState({
-    dataDeNascimento: null,
-    rg: null,
-    cpf: null,
-    logradouro: null,
-    cep: null,
-    cidade: null,
-    numero: null,
-  });
+import api from "../../service/service";
 
-  //const para o javascript do map
-  // const [dadosUsuario, SetDadosUsuario]= useState([])
+import { Masks, useMaskedInputProps } from 'react-native-mask-input';
 
-  function updateUserData(
-    dataDeNascimento,
-    rg,
-    cpf,
-    logradouro,
-    cep,
-    cidade,
-    numero
-  ) {
-    setUserData({ dataDeNascimento, rg, cpf, logradouro, cep, cidade, numero });
-  }
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-  useEffect(() => {
-    if (uriCameraCapture) {
-      AlterarFotoPerfil()
-    }
-  },[uriCameraCapture])
+export const Profile = ({ navigation, route }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [uriCameraCapture, SetUriCameraCapture] = useState(null);
 
-  async function AlterarFotoPerfil() {
+    const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+    const [userId, setUserId] = useState('');
 
-    const formatDate = new FormData()
-    formatDate.append("Arquivo", {
-      uri : uriCameraCapture,
-      name : `image.${uriCameraCapture.split(".")[1]}`,
-      type : `image.${uriCameraCapture.split(".")[1]}`
+    const [userRoleToken, setUserRoleToken] = useState('');
+
+    //states para os inputs
+    const [userDataNascimento, setUserDataNascimento] = useState('');
+    const [userRg, setUserRg] = useState('');
+    const [userCPF, setUserCPF] = useState('');
+    const [userLogradouro, setUserLogradouro] = useState('');
+    const [userCep, setUserCep] = useState('');
+    const [userCidade, setUserCidade] = useState('');
+    const [userNumero, setUserNumero] = useState('');
+    const [userFoto, setUserFoto] = useState('');
+    const [userEspecialidade, setUserEspecialidade] = useState('');
+    const [userCRM, setUserCRM] = useState('');
+
+    //state para manipular edição dos inputs
+    const [isEditing, setIsEditing] = useState(false);
+
+    console.log(userFoto);
+    //máscara para data de nascimento
+    const dataMasked = useMaskedInputProps({
+        value: userDataNascimento,
+        onChangeText: setUserDataNascimento,
+        mask: Masks.DATE_YYYYMMDD
+    });
+
+    const cpfMasked = useMaskedInputProps({
+        value: userCPF,
+        onChangeText: setUserCPF,
+        mask: Masks.BRL_CPF
     })
 
-    await api.put(`/Usuario/AlterarFotoPerfil?id=${profile.user}`, formatDate, {
-      headers: {
-        "Content-Type" : "multipart/from-data"
-      }
-    }).then(response => {
-      console.log(response)
-    }).catch(error => {
-      console.log(error)
-    }) 
-  }
 
-  //função que captura e guarda o nome e email do usuário pelo token
-  async function profileLoad() {
-    const token = await userDecodeToken();
-
-    const userNameToken = token.name;
-    const userEmailToken = token.email;
-    setUserName(userNameToken);
-    setUserEmail(userEmailToken);
-  }
-
-  //função responsavél por deletar o token da AsyncStorage e retornar o usuário para a Login caso ele opte por sair do app
-  async function deleteToken() {
-    await AsyncStorage.removeItem("token");
-
-    navigation.navigate("Login");
-
-    console.log(token);
-  }
-
-  //funcao para chamar o metodo api / buscar por id
-  async function BuscarUsuario() {
-    const token = await userDecodeToken();
-    const userRoleToken = token.role;
-    const userId = token.jti;
-
-    const url = userRoleToken === "Medico" ? "Medicos" : "Pacientes";
-
-    try {
-      const response = await api.get(`/${url}/BuscarPorId?id=${userId}`);
-      console.log(response);
-
-      // Correctly destructure the response data
-      const { dataNascimento, rg, cpf, endereco } = response.data;
-      const { logradouro, cep, cidade } = endereco;
-      const numero = endereco.numero; // Assuming you want the 'numero' from 'endereco'
-
-      // Update the user data with the correctly destructured values
-      updateUserData(dataNascimento, rg, cpf, logradouro, cep, cidade, numero);
-    } catch (error) {
-      console.log(error);
+    //captura nome e email do token
+    async function profileLoad() {
+        const token = await userDecodeToken();
+        const userNameToken = token.name;
+        const userEmailToken = token.email;
+        const userID = token.jti;
+        setUserId(userID);
+        setUserName(userNameToken);
+        setUserEmail(userEmailToken);
     }
-  }
 
-  function formatDate(dateString) {
-    // Create a Date object from the date string
-    const date = new Date(dateString);
+    //LOGOUT - deleta o token da AsyncStorage
+    async function deleteToken() {
+        await AsyncStorage.removeItem('token');
+        navigation.navigate("Login");
+    }
 
-    // Format the date to "day/month/year"
-    const formattedDate = date.toLocaleDateString("pt-BR");
 
-    return formattedDate;
-  }
+    //Get - Procura o Usuário para inserir os dados nos inputs
+    async function BuscarUsuario() {
+        const token = await userDecodeToken();
+        const userRoleToken = token.role;
+        const userId = token.jti;
+        setUserRoleToken(userRoleToken);
+        const url = (userRoleToken === "Medico" ? "Medicos" : "Pacientes");
 
-  useEffect(() => {
-    profileLoad();
-  }, []);
+        try {
+            const response = await api.get(`/${url}/BuscarPorId?id=${userId}`);
 
-  useEffect(() => {
-    BuscarUsuario();
-  }, []);
+            if (userRoleToken === "Medico") {
+                setUserEspecialidade(response.data.especialidade.especialidade1);
+                setUserCRM(response.data.crm);
+                setUserFoto(response.data.idNavigation.foto);
 
-  //Javascript com o map para trazer cada dado do usuario nos Inputs
-  // {dadosUsuario.map((UserData, index) => {
-  //     //data de nascimento formatado
-  //     const rg = dadosUsuario.Pacientes.rg;
-  //     const cpf= dadosUsuario.Pacientes.cpf;
-  //     const endereco = dadosUsuario.Pacientes.endereco.logradouro;
-  //     const cep = dadosUsuario.Pacientes.endereco.cep;
-  //     const cidade = dadosUsuario.Pacientes.endereco.cidade;
-  // })
+                console.log(response.data.endereco)
+                setUserLogradouro(response.data.endereco.logradouro);
+                setUserCep(response.data.endereco.cep);
+                setUserCidade(response.data.endereco.cidade);
 
-  return (
-    <ScrollView>
-      <Container>
-        <StatusBar style="light" />
+                setUserNumero(response.data.endereco.numero.toString());
+            } else {
+                setUserDataNascimento(response.data.dataNascimento);
+                setUserRg(response.data.rg);
+                setUserCPF(response.data.cpf);
+                setUserLogradouro(response.data.endereco.logradouro);
+                setUserCep(response.data.endereco.cep);
 
-        <UserImage
-          source={require("../../../assets/images/doctorImage_temp.png")}
-        />
+                setUserCidade(response.data.endereco.cidade);
+                setUserNumero(response.data.endereco.numero.toString());
+                setUserFoto(response.data.idNavigation.foto);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-        <ViewImage>
-          <ButtonCamera onPress={() => setModalVisible(true)} getMediaLibrary={true}>
-            <MaterialCommunityIcons
-            
-              name="camera-plus"
-              size={25}
-              color="#fbfbfb"
+    //Put - Ativa os botões e salva os novos valores
+    async function salvarAlteracoes() {
+        const token = await userDecodeToken();
+        const userRoleToken = token.role;
+        const userId = token.jti;
+        const url = (userRoleToken === "Medico" ? "Medicos" : "Pacientes");
+
+        try {
+            const response = await api.put(`/${url}?idUsuario=${userId}`, {
+                rg: userRg,
+                cpf: userCPF,
+                dataNascimento: userDataNascimento,
+                cep: userCep,
+                logradouro: userLogradouro,
+                numero: userNumero,
+                cidade: userCidade,
+                foto: userFoto,
+            });
+
+
+            console.log("Alterações salvas com sucesso:", response.data);
+
+            setIsEditing(false);
+
+        } catch (error) {
+            console.error("Erro ao salvar alterações:", error);
+        }
+    }
+
+    //edição
+    function toggleEditing() {
+        setIsEditing(!isEditing);
+    }
+
+    useEffect(() => {
+        if (uriCameraCapture) {
+            AlterarFotoPerfil()
+        }
+    }, [uriCameraCapture])
+
+    async function AlterarFotoPerfil() {
+        const formatDate = new FormData()
+        formatDate.append("Arquivo", {
+            uri: uriCameraCapture,
+            name: `image.${uriCameraCapture.split(".").pop()}`,
+            type: `image/${uriCameraCapture.split(".").pop()}`
+        })
+
+        await api.put(`/Usuario/AlterarFotoPerfil?id=${userId}`, formatDate, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }).then(response => {
+            setUserFoto(uriCameraCapture);
+            console.log("Foto atualizada com sucesso:", userFoto);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    //carrega os dados do usuário para chamada na api
+    useEffect(() => {
+        profileLoad();
+    }, []);
+
+    //carrega dados para inserção dos inputs
+    useEffect(() => {
+        BuscarUsuario();
+    }, []);
+
+
+    return (
+        <ScrollView>
+            <Container>
+                <StatusBar style="light" />
+
+                <UserImage source={{ uri: userFoto }} />
+
+                <ViewImage>
+                    <ButtonCamera onPress={() => setModalVisible(true)} getMediaLibrary={true}>
+                        <MaterialCommunityIcons
+
+                            name="camera-plus"
+                            size={25}
+                            color="#fbfbfb"
+                        />
+                    </ButtonCamera>
+                </ViewImage>
+
+                <Title style={{ marginTop: 14 }}>{userName}</Title>
+                <DefaultText fontSize={18}>{userEmail}</DefaultText>
+
+                {userRoleToken === "Medico" ? (
+                    <>
+                        <TitleInput style={{ marginBottom: 3, marginTop: 10 }}>Especialidade</TitleInput>
+                        {isEditing ? (
+                            <Input
+                                value={userEspecialidade}
+                                onChangeText={setUserEspecialidade}
+                                editable={true}
+                            />
+                        ) : (
+                            <InputDisable value={userEspecialidade} editable={false} />
+                        )}
+
+                        <TitleInput style={{ marginBottom: 3, marginTop: 10 }}>CRM</TitleInput>
+                        {isEditing ? (
+                            <Input
+                                value={userCRM}
+                                onChangeText={setUserCRM}
+                                editable={true}
+                            />
+                        ) : (
+                            <InputDisable value={userCRM} editable={false} />
+                        )}
+
+                        <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14 }}>
+                            <ContainerInputAndTitle>
+                                <TitleInput>CEP</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userCep}
+                                        onChangeText={setUserCep}
+                                        editable={false}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={
+                                            isEditing
+                                                ?
+                                                userCep
+                                                :
+                                                UseMask('#####-###', userCep)
+                                        }
+                                        editable={false}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+
+                            <ContainerInputAndTitle>
+                                <TitleInput>Cidade</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userCidade}
+                                        onChangeText={setUserCidade}
+                                        editable={true}
+                                        widthInput={"180px"}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userCidade}
+                                        editable={false}
+                                        widthInput={"180px"}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+                        </Container>
+
+                        <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14, marginBottom: 40 }}>
+                            <ContainerInputAndTitle widthContainer={"280"}>
+                                <TitleInput>Logradouro</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userLogradouro}
+                                        onChangeText={setUserLogradouro}
+                                        editable={true}
+                                        multiline={false}
+                                        numberOfLines={1}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userLogradouro}
+                                        editable={false}
+                                        multiline={false}
+                                        numberOfLines={1}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+
+                            <ContainerInputAndTitle widthContainer={"100"}>
+                                <TitleInput>N°</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userNumero}
+                                        onChangeText={setUserNumero}
+                                        editable={true}
+                                        widthInput={"80px"}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userNumero}
+                                        editable={false}
+                                        widthInput={"80px"}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+                        </Container>
+                    </>
+                ) : (
+                    <>
+                        <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>Data de Nascimento</TitleInput>
+                        {isEditing ? (
+                            <Input
+                                value={userDataNascimento}
+                                onChangeText={setUserDataNascimento}
+                                editable={true}
+                                keyboardType="numeric"
+                                {...dataMasked}
+                            />
+                        ) : (
+                            <InputDisable
+                                value={userDataNascimento}
+                                editable={false}
+                                {...dataMasked}
+                            />
+                        )}
+
+                        <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>RG</TitleInput>
+                        {isEditing ? (
+                            <Input
+                                value={userRg}
+                                keyboardType="numeric"
+                                onChangeText={setUserRg}
+                                editable={true}
+                            />
+                        ) : (
+                            <InputDisable
+                                value={
+                                    isEditing
+                                        ?
+                                        userRg
+                                        :
+                                        UseMask('##.###.###-#', userRg)
+                                }
+                                editable={false}
+                            />
+                        )}
+
+                        <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>CPF</TitleInput>
+                        {isEditing ? (
+                            <Input
+                                value={userCPF}
+                                onChangeText={setUserCPF}
+                                editable={true}
+                                keyboardType="numeric"
+                                {...cpfMasked}
+                            />
+                        ) : (
+                            <InputDisable
+                                value={userCPF}
+                                {...cpfMasked}
+                                editable={false}
+                            />
+                        )}
+
+                        <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14 }}>
+                            <ContainerInputAndTitle>
+                                <TitleInput>CEP</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userCep}
+                                        onChangeText={setUserCep}
+                                        keyboardType="numeric"
+                                        editable={true}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userCep}
+                                        editable={false}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+
+                            <ContainerInputAndTitle>
+                                <TitleInput>Cidade</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userCidade}
+                                        onChangeText={setUserCidade}
+                                        editable={true}
+                                        widthInput={"180px"}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userCidade}
+                                        editable={false}
+                                        widthInput={"180px"}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+                        </Container>
+
+                        <Container widthContainer={"90%"} heightContainer={"80px"} justifyContent={"space-between"} flexDirection={"row"} style={{ marginTop: 14, marginBottom: 40 }}>
+                            <ContainerInputAndTitle widthContainer={"280"}>
+                                <TitleInput>Logradouro</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userLogradouro}
+                                        onChangeText={setUserLogradouro}
+                                        editable={true}
+                                        multiline={false}
+                                        numberOfLines={1}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userLogradouro}
+                                        editable={false}
+                                        multiline={false}
+                                        numberOfLines={1}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+
+                            <ContainerInputAndTitle widthContainer={"100"}>
+                                <TitleInput>N°</TitleInput>
+                                {isEditing ? (
+                                    <Input
+                                        value={userNumero}
+                                        onChangeText={setUserNumero}
+                                        editable={true}
+                                        keyboardType="numeric"
+                                        widthInput={"80px"}
+                                    />
+                                ) : (
+                                    <InputDisable
+                                        value={userNumero}
+                                        editable={false}
+                                        widthInput={"80px"}
+                                    />
+                                )}
+                            </ContainerInputAndTitle>
+                        </Container>
+                    </>
+                )}
+
+
+
+                <CustomButton style={{ marginBottom: 20 }} onPress={salvarAlteracoes}>
+                    <TitleButton>SALVAR</TitleButton>
+                </CustomButton>
+
+                <CustomButton onPress={toggleEditing}>
+                    <TitleButton>EDITAR</TitleButton>
+                </CustomButton>
+
+                <ButtonDisable widthButton={60} style={{ marginTop: 20, marginBottom: 20 }} onPress={() => { deleteToken() }}>
+                    <TitleButton>SAIR DO APP</TitleButton>
+                </ButtonDisable>
+            </Container>
+
+            <ModalCamera
+                getMediaLibrary={true}
+                visible={modalVisible}
+                SetUriCameraCapture={SetUriCameraCapture}
+                onClose={() => setModalVisible(false)}
+                title="Título do Modal"
             />
-          </ButtonCamera>
-        </ViewImage>
-
-        <Title style={{ marginTop: 14 }}>{userName}</Title>
-        <DefaultText fontSize={18}>{userEmail}</DefaultText>
-
-        <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>
-          Data de Nascimento
-        </TitleInput>
-        <InputDisable
-          placeholder={formatDate(UserData.dataDeNascimento)}
-          editable={false}
-        />
-
-        <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>RG</TitleInput>
-        <InputDisable placeholder={UserData.rg} editable={false} />
-
-        <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>CPF</TitleInput>
-        <InputDisable placeholder={UserData.cpf} editable={false} />
-
-        <TitleInput style={{ marginTop: 14, marginBottom: 5 }}>
-          Endereço
-        </TitleInput>
-        <InputDisable
-          placeholder={`${UserData.logradouro}, ${UserData.numero}`}
-          editable={false}
-        />
-
-        <Container
-          widthContainer={"90%"}
-          heightContainer={"80px"}
-          justifyContent={"space-between"}
-          flexDirection={"row"}
-          style={{ marginTop: 14, marginBottom: 40 }}
-        >
-          <ContainerInputAndTitle>
-            <TitleInput>CEP</TitleInput>
-            <InputDisable placeholder={UserData.cep} editable={false} />
-          </ContainerInputAndTitle>
-
-          <ContainerInputAndTitle>
-            <TitleInput>Cidade</TitleInput>
-            <InputDisable placeholder={UserData.cidade} editable={false} />
-          </ContainerInputAndTitle>
-        </Container>
-
-        <CustomButton style={{ marginBottom: 20 }}>
-          <TitleButton>SALVAR</TitleButton>
-        </CustomButton>
-
-        <CustomButton>
-          <TitleButton>EDITAR</TitleButton>
-        </CustomButton>
-
-        <ButtonDisable
-          widthButton={60}
-          style={{ marginTop: 20, marginBottom: 20 }}
-          onPress={() => {
-            deleteToken();
-          }}
-        >
-          <TitleButton>SAIR DO APP</TitleButton>
-        </ButtonDisable>
-
-        <ModalCamera
-        getMediaLibrary={true}
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          title="Título do Modal"
-        />
-      </Container>
-    </ScrollView>
-  );
-};
+        </ScrollView>
+    );
+}

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/native";
 
 export const Container = styled.View`
     width: ${props => (props.widthContainer ? props.widthContainer : "100%")};
@@ -12,20 +12,31 @@ export const Container = styled.View`
     flex-direction: ${props => (props.flexDirection ? props.flexDirection : "column")};
 `
 
+export const BoxElevation = styled.View`
+    width: 75%;
+    height: 80px;
+
+    background-color: ${(props) => props.backgroundColor ? props.backgroundColor : "white"};
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    border-radius: 10px;
+
+    position: relative;
+    bottom: 30;
+
+    elevation: 20;
+`
+
+export const ScrollViewContainer = styled(Container)``
+
 export const ContainerInputAndTitle = styled.View`
-    width: 150px;
-    height: 83px;
+    width: ${props => (props.widthContainer ? props.widthContainer : "180px")};
+    height: 85px;
 
     display: flex;
     justify-content: space-between;
 `
-export const ContainerImageExame = styled.View`
-  width: 90%;
-  height: 204px;
-  border: 2px solid #49b3ba;
-  border-radius: 5px;
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;

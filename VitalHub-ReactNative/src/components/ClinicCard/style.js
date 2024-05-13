@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 
 export const ContainerClinicCard = styled.TouchableOpacity`
-    width: 90%;
+    width: 100%;
     height: 90px;
 
     border-radius:5px;
@@ -11,7 +11,7 @@ export const ContainerClinicCard = styled.TouchableOpacity`
     align-items: center;
     justify-content: space-around;
 
-    elevation: 5;
+    elevation: 10;
 
     margin-bottom:25px;
 `
@@ -32,6 +32,8 @@ export const ContainerAssessment = styled.View`
     flex-direction: row;
     align-items:center;
     justify-content: space-around;
+
+    margin-right: 10px;
 `
 
 export const AssessmentText = styled.Text`
@@ -43,7 +45,7 @@ export const AssessmentText = styled.Text`
 
 export const TextLocate = styled(AssessmentText)`
     color: #4E4B59;
-    margin-left: -4px;
+    margin-left: 10px;
 `
 
 export const ContainerDateClinic = styled.View`
@@ -57,6 +59,8 @@ export const ContainerDateClinic = styled.View`
     flex-direction: row;
     align-items:center;
     justify-content: space-evenly;
+    margin-right: 5px;
+    margin-bottom: 5px;
 `
 
 export const TextDateClinic = styled(AssessmentText)`

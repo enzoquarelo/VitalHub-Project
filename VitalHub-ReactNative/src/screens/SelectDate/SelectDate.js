@@ -22,21 +22,16 @@ import {
 import { View } from "react-native";
 import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { Links } from "../../components/Links/style";
-import { FinalDataQueryModal } from "../../components/Modais/FinalDateQueryModal/FinalDateQueryModal";
+import { FinalDataQueryModal } from "../../components/Modais/FinalDataQueryModal/FinalDataQueryModal";
+
+import moment from "moment";
 
 export const SelectDate = ({ navigation, route }) => {
     const [selected, setSelected] = useState("");
     const [showModalQuery, setShowModalQuery] = useState(false);
     const [category, setCategory] = useState(null);
-    const [subcategory, setSubCategory] = useState("");
 
-    const [agendamento, setAgendamento] = useState(null);
-
-    const [fontsLoaded, fontsError] = useFonts({
-        MontserratAlternates_600SemiBold,
-        Quicksand_500Medium,
-        Quicksand_600SemiBold,
-    });
+    const [agendamento, setAgendamento] = useState({});
 
     const workHours = generateWorkHours(8, 22);
 
@@ -55,6 +50,12 @@ export const SelectDate = ({ navigation, route }) => {
         }
         return hours;
     }
+
+    const [fontsLoaded, fontsError] = useFonts({
+        MontserratAlternates_600SemiBold,
+        Quicksand_500Medium,
+        Quicksand_600SemiBold,
+    });
 
     //fontsLoaded
     if (!fontsLoaded && !fontsError) {
@@ -80,6 +81,7 @@ export const SelectDate = ({ navigation, route }) => {
         },
     };
 
+    //configuração do calendário
     LocaleConfig.locales["pt-br"] = {
         monthNames: [
             "Janeiro",
@@ -142,18 +144,17 @@ export const SelectDate = ({ navigation, route }) => {
             "Sáb".split("_"),
         ],
     };
-
     LocaleConfig.defaultLocale = "pt-br";
-
-    async function PatientConsultations() {
-        navigation.replace("PatientConsultations");
-    }
 
     function handleContinue() {
         setAgendamento({
             ...route.params.agendamento,
-            dataConsulta: `${selected} ${category}`,
+            dataConsulta: moment(
+                `${selected} ${category}`,
+                "YYYY-MM-DD HH:mm"
+            ).format("YYYY-MM-DD HH:mm"),
         });
+
         setShowModalQuery(true);
     }
 

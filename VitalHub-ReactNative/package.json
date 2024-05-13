@@ -17,13 +17,15 @@
     "@react-navigation/native-stack": "^6.9.22",
     "axios": "^1.6.8",
     "base-64": "^1.0.0",
+    "date-fns": "^3.6.0",
     "expo": "^51.0.0",
-    "expo-camera": "^15.0.4",
-    "expo-image-picker": "~15.0.4",
+    "expo-camera": "~15.0.4",
+    "expo-image-picker": "^15.0.4",
     "expo-linear-gradient": "~13.0.2",
     "expo-location": "~17.0.1",
     "expo-media-library": "~16.0.3",
     "expo-status-bar": "~1.12.1",
+    "expo-updates": "~0.25.9",
     "jwt-decode": "^4.0.0",
     "lottie-react-native": "6.7.0",
     "moment": "^2.30.1",
@@ -34,10 +36,12 @@
     "react-native-calendars": "^1.1304.1",
     "react-native-camera": "^4.2.1",
     "react-native-dropdown-select-list": "^2.0.5",
-    "react-native-image-to-text": "^0.1.2",
     "react-native-maps": "1.14.0",
     "react-native-maps-directions": "^1.9.0",
-    "styled-components": "^6.1.8"
+    "react-native-mask-input": "^1.2.3",
+    "react-native-masked-text": "^1.13.0",
+    "styled-components": "^6.1.8",
+    "expo-notifications": "~0.28.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

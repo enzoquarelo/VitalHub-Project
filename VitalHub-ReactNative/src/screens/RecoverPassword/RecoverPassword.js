@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 
+import { StatusBar } from "expo-status-bar";
 import { Container } from "../../components/Container/style"
 import { Logo } from "../../components/Logo/Logo";
 import { Title } from "../../components/Title/style";
@@ -11,42 +12,36 @@ import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity, ActivityIndicator } from "react-native";
 import api from "../../service/service";
 
-
 export const RecoverPassword = ({ navigation }) => {
-
     const [textWarning, setTextWarning] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const [userData, setUserData] = useState('');
-
-    const [email, setEmail] = useState("")
+    const [email, setEmail] = useState("enzo.quarelo@gmail.com")
 
     //enviar o email
     async function EnviarEmail() {
-        await api.post(`/RecuperarSenha?email=${email}`)
-
-        .then(() => {
-            navigation.replace("VerifyEmail, {emailRecuperacao : email}")
-        }).catch(error => {
-            console.log(error)
-        })
-    }
-
-    const validateFields = () => {
-        if (userData === '') {
-            setTextWarning('Por favor, preencha o campo.');
+        if (email === '') {
+            setTextWarning('Por favor, preencha o campo e-mail.');
             return false;
         }
 
-        setTextWarning('');
-        navigation.replace("VerifyEmail");
+        setIsLoading(true);
+        await api.post(`/RecuperarSenha?email=${email}`)
 
-        return true;
-    };
+            .then(() => {
+                navigation.replace("VerifyEmail", { emailRecuperacao: email });
+                setIsLoading(false);
+            }).catch(error => {
+                setTextWarning('E-mail não encontrado');
+                setIsLoading(false);
+            })
+    }
 
     return (
         <Container>
-            <TouchableOpacity style={{ width: 40, height: 40, backgroundColor: "#49B3BA15", borderRadius: 50, display: "flex", alignItems: "center", justifyContent: "center", position: "absolute", top: 60, left: 20 }} onPress={() => { navigation.navigate("Login") }}>
+            <StatusBar />
+
+            <TouchableOpacity style={{ width: 40, height: 40, backgroundColor: "#49B3BA15", borderRadius: 50, display: "flex", alignItems: "center", justifyContent: "center", position: "absolute", top: 45, left: 20 }} onPress={() => { navigation.navigate("Login") }}>
                 <AntDesign name="arrowleft" size={24} color="#34898F" />
             </TouchableOpacity>
 
@@ -68,13 +63,17 @@ export const RecoverPassword = ({ navigation }) => {
             </DefaultText>
 
             <Input
-                placeholder="Usuário ou E-mail"
+                placeholder="E-mail"
                 style={{ marginBottom: 30 }}
-                value={email} 
+                value={email}
                 onChangeText={(text) => setEmail(text)}
             />
-            <CustomButton onPress={() => EnviarEmail() }>
-                <TitleButton>CONTINUAR  </TitleButton>
+            <CustomButton onPress={() => EnviarEmail()} disabled={isLoading}>
+                {isLoading ? (
+                    <ActivityIndicator size="small" color="#fff" /> // Indicador de carregamento
+                ) : (
+                    <TitleButton>CONTINUAR</TitleButton>
+                )}
             </CustomButton>
         </Container>
     );

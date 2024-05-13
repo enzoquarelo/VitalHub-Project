@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { DefaultText } from '../DefaultText/DefaultText';
 import { Title } from '../Title/style';
@@ -9,8 +9,12 @@ import { CancelAppointmentModal } from '../Modais/CancelAppointmentModal/CancelA
 
 import { AntDesign } from '@expo/vector-icons';
 
-export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, onCardPress, buttonSelected }) => {
+import { useNavigation } from "@react-navigation/native";
+
+export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, onCardPress, buttonSelected, appointmentId, idConsulta, profileEmail }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const navigation = useNavigation();
 
     const handleCancelPress = () => {
         setIsModalVisible(true);
@@ -43,9 +47,11 @@ export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, 
         clockColor = '#49B3BA' 
     }
 
-    const handleCardPress = () => {
-        if (buttonText !== null) {
-            onCardPress();
+    const handleButtonPress = (screen) => {
+        if (buttonText === 'Cancelar') {
+            handleCancelPress();
+        } else if (buttonText === 'Ver Prontuário') {
+            navigation.navigate('ViewPrescription', { appointmentId: appointmentId });
         }
     };
 
@@ -70,7 +76,7 @@ export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, 
                         </AppointmentTime>
 
                         {buttonText && (
-                            <ButtonLinkCancel onPress={handleCancelPress}>
+                            <ButtonLinkCancel onPress={handleButtonPress}>
                                 <Links colorLink={colorTxt} fontSize={16} underline={true}>{buttonText}</Links>
                             </ButtonLinkCancel>
                         )}
@@ -79,7 +85,8 @@ export const Cards = ({ imageHeader, profileName, profileData, appointmentHour, 
 
                 </Container>
             </CardContainer>
-            <CancelAppointmentModal visible={isModalVisible} onClose={handleCloseModal} />
+
+            <CancelAppointmentModal visible={isModalVisible} onClose={handleCloseModal} idConsulta={idConsulta}/>
         </>
     );
 }

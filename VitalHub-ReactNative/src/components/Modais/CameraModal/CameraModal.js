@@ -1,14 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
+//nativos
 import {
     Modal,
     StyleSheet,
     StatusBar,
     TouchableOpacity,
-    Text,
 } from "react-native";
 
-import { useNavigation } from "@react-navigation/native";
-
+//styles
+import { ButtonDisable, CustomButton, TitleButton } from "../../Button/styles";
+import { Container } from "../../Container/style";
+import { ButtonGaleria, LastPhoto } from "../../../screens/Profile/style";
 import {
     BtnCapture,
     BtnFlip,
@@ -17,28 +19,19 @@ import {
     Photo,
 } from "./style";
 
-import { CameraView, useCameraPermissions } from "expo-camera";
-
+//bibliotecas
+import { CameraView } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
-
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import { ButtonDisable, CustomButton, TitleButton } from "../../Button/styles";
-import { Container } from "../../Container/style";
-import { ButtonGaleria, LastPhoto } from "../../../screens/Profile/style";
+
 
 const ModalCamera = ({
     visible,
     onClose,
-    title,
-    onConfirm,
-    onPhotoConfirmed,
     getMediaLibrary = false,
-    onPhotoCaptured,
+    SetUriCameraCapture
 }) => {
-
-    const navigation = useNavigation();
-
     const cameraRef = useRef(null);
 
     const [photo, setPhoto] = useState(null);
@@ -47,12 +40,9 @@ const ModalCamera = ({
     const [flashMode, setFlashMode] = useState("off");
 
     const [latestPhoto, setLatestPhoto] = useState(null);
-    const [permission, requestPermission] = useCameraPermissions();
 
-
+    //seleciona a imagem da galeria
     async function selectImageGallery() {
-        console.log("selectImageGallery function called");
-    
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -60,18 +50,24 @@ const ModalCamera = ({
             });
     
             if (!result.cancelled && result.assets && result.assets.length > 0) {
+                // Atualiza o estado 'photo' com o URI da imagem selecionada
                 setPhoto(result.assets[0].uri);
+                // Atualiza o estado 'SetUriCameraCapture' com o URI da imagem selecionada
+                SetUriCameraCapture(result.assets[0].uri);
+                // Abre o modal para visualizar a imagem selecionada
                 setOpenModal(true);
             }
         } catch (error) {
             console.error("Error in selectImageGallery:", error);
         }
     }
-    
+
+    //altera o estado do tipo da camera sendo a traseira ou a frontal
     function toggleCameraFacing() {
         setCameraType((current) => (current === "back" ? "front" : "back"));
     }
 
+    //captura a foto
     async function capturePhoto() {
         if (cameraRef.current) {
             const photo = await cameraRef.current.takePictureAsync({
@@ -80,6 +76,8 @@ const ModalCamera = ({
 
             if (photo) {
                 setPhoto(photo.uri);
+                SetUriCameraCapture(photo.uri);
+
                 setOpenModal(true);
             } else {
                 console.log("Failed to capture photo");
@@ -87,43 +85,47 @@ const ModalCamera = ({
         }
     }
 
+    //salva a foto na galeria
     async function savePhoto() {
         try {
             if (photo) {
                 await MediaLibrary.saveToLibraryAsync(photo);
                 alert("Photo saved to gallery");
                 setOpenModal(false);
-                setLatestPhoto(photo.uri);
+                setLatestPhoto(photo);
                 onClose();
-            
-                setPhoto(photo.uri);
 
-                navigation.navigate("ViewPrescription", { photoUri: photo });
+                setPhoto(photo.uri);
+                SetUriCameraCapture(photo.uri);
             } else {
                 alert("No image captured.");
             }
         } catch (error) {
             console.error("Error saving photo:", error);
-            alert("Error saving photo.");
+            alert("Error saving photo: " + error.message);
         }
     }
 
+
+
+    //altera o status do flash
     const toggleFlash = () => {
         setFlashMode(flashMode === "on" ? "off" : "on");
     };
 
+    //pega a última foto da galeria para exibir
     async function getLastPhoto() {
         const { assets } = await MediaLibrary.getAssetsAsync({
             sortBy: [[MediaLibrary.SortBy.creationTime, false]],
             first: 1,
         });
 
-        console.log(assets);
         if (assets.length > 0) {
             setLatestPhoto(assets[0].uri);
         }
     }
 
+    //ao exibir o modal ele deixa a photo com valor nulo e pega a ultima foto da galeria
     useEffect(() => {
         setPhoto(null);
 
@@ -131,9 +133,6 @@ const ModalCamera = ({
             getLastPhoto();
         }
     }, [visible]);
-
-    if (!permission) {
-    }
 
     return (
         <>

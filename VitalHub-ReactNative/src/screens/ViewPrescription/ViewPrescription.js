@@ -1,7 +1,6 @@
-import { React, useState } from "react";
-import { useEffect } from "react";
+import { React, useState, useEffect } from "react";
 
-import { Container } from "../../components/Container/style";
+import { Container } from "../../components/Container/style"
 import { Title } from "../../components/Title/style";
 import { InputDisable, TitleInput } from "../../components/Input/styles";
 import { Links } from "../../components/Links/style";
@@ -9,102 +8,67 @@ import { CustomButton, TitleButton } from "../../components/Button/styles";
 import { DefaultText } from "../../components/DefaultText/DefaultText";
 
 import { DoctorImage, RowGray } from "./style";
-import { ContainerImageExame } from "../../components/Container/style";
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { StatusBar } from "expo-status-bar";
-import { Image, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StatusBar} from "react-native";
 
 import ModalCamera from "../../components/Modais/CameraModal/CameraModal";
 import api from "../../service/service";
 
-export const ViewPrescription = ({ navigation, route }) => {
+
+export const ViewPrescription = ({ route }) => {
+    const [appointment, setAppointment] = useState({ descricao: '', diagnostico: '', medicamento: '', foto: '', nome: '', crm: '', especialidade1: '' });
     const [modalVisible, setModalVisible] = useState(false);
-    const [capturePhoto, setCapturePhoto] = useState(null);
-    const [descricaoExame, setDescricaoExame] = useState(""); // Inicializando com uma string vazia
-    const [photo, setPhoto] = useState(null);
-    const [photoUri, setPhotoUri] = useState("");
 
-    // Atualizando photoUri com o valor de route.params.photoUri quando disponível
-    useEffect(() => {
-        if (route.params?.photoUri) {
-            setPhotoUri(route.params.photoUri);
+    const { appointmentId } = route.params;
 
-            InserirExame();
-        }
-    }, [route.params?.photoUri]);
-
-    async function InserirExame() {
-        const formData = new FormData();
-        formData.append("consultaId", prontuario.id);
-        formData.append("Imagem", {
-            uri: photoUri,
-            name: `image${photoUri.split(".").pop()}`,
-            type: `image${photoUri.split(".").pop()}`,
-        });
-
+    async function SearchAppointment() {
         try {
-            const response = await api.post(`/Exame/Cadastrar`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+            const response = await api.get(`/Consultas/BuscarPorId?id=${appointmentId}`);
+            const { descricao, diagnostico } = response.data;
+            const { medicamento } = response.data.receita;
+            const {foto, nome} = response.data.medicoClinica.medico.idNavigation;
+            const { crm } = response.data.medicoClinica.medico;
+            const { especialidade1 } = response.data.medicoClinica.medico.especialidade;
 
-            // Adicionando uma quebra de linha entre os resultados dos exames
-            setDescricaoExame((prevDescricao) =>
-                prevDescricao !== ""
-                    ? prevDescricao + "\n" + response.data.descricao
-                    : response.data.descricao
-            );
-
-            console.log(descricaoExame);
+            setAppointment({ descricao, diagnostico, medicamento, foto, nome, crm, especialidade1 });
         } catch (error) {
-            console.log(error);
+            console.error("Erro ao buscar os dados da consulta:", error);
         }
     }
 
-    const handlePhotoCapture = (capturedPhotoUri) => {
-        setPhoto(capturedPhotoUri);
-    };
+    useEffect(() => {
+        SearchAppointment();
+    }, []);
 
+    console.log(appointment.foto);
     return (
         <ScrollView>
             <Container>
-                <StatusBar />
+            <StatusBar barStyle="light-content" />
 
-                <DoctorImage
-                    source={require("../../../assets/images/doctorImage_temp.png")}
-                />
+                <DoctorImage source={{ uri: appointment.foto }} />
 
-                <Title style={{ marginBottom: 4, marginTop: 15 }}>
-                    Nome do(a) Dr.(a)
-                </Title>
-                <DefaultText>Área de atuação - CRM</DefaultText>
+                <Title style={{ marginBottom: 4, marginTop: 15 }}>Dr(a) {appointment.nome}</Title>
+                <DefaultText>{appointment.especialidade1}  -  CRM{appointment.crm}</DefaultText>
 
-                <TitleInput style={{ marginTop: 30 }} fontSize={18}>
-                    Descrição da consulta
-                </TitleInput>
+                <TitleInput style={{ marginTop: 30 }} fontSize={18}>Descrição da consulta</TitleInput>
                 <InputDisable
                     heightInput={"120px"}
                     fontSize={16}
                     textAlignVertical="top"
-                    placeholder="O paciente possuí uma infecção no ouvido. Necessário repouse de 2 dias e acompanhamento médico constante"
+                    placeholder={appointment.descricao}
                     editable={false}
                     multiline={true}
                     style={{ marginBottom: 20, marginTop: 8 }}
                 />
 
                 <TitleInput fontSize={18}>Diagnóstico do paciente</TitleInput>
-
                 <InputDisable
-                    heightInput={"120px"}
                     fontSize={16}
                     textAlignVertical="top"
-                    placeholder="Medicamento: Advil
-Dosagem: 50 mg
-Frequência: 3 vezes ao dia
-Duração: 3 dias"
+                    placeholder={appointment.diagnostico}
                     editable={false}
                     multiline={true}
                     style={{ marginBottom: 20, marginTop: 8 }}
@@ -115,23 +79,22 @@ Duração: 3 dias"
                     heightInput={"120px"}
                     fontSize={16}
                     textAlignVertical="top"
-                    placeholder="Medicamento: Advil
-Dosagem: 50 mg
-Frequência: 3 vezes ao dia
-Duração: 3 dias"
+                    placeholder={appointment.medicamento}
                     editable={false}
                     multiline={true}
                     style={{ marginBottom: 20, marginTop: 8 }}
                 />
+
                 <TitleInput fontSize={18}>Exames Médicos</TitleInput>
-                <ContainerImageExame>
-                    {photoUri && (
-                        <Image
-                            source={{ uri: photoUri }}
-                            style={styles.capturedImage}
-                        />
-                    )}
-                </ContainerImageExame>
+                <InputDisable
+                    heightInput={"120px"}
+                    fontSize={16}
+                    textAlignVertical="center"
+                    placeholder=" | ! |  Nenhuma Foto Informada"
+                    editable={false}
+                    multiline={true}
+                    style={{ marginBottom: 8, marginTop: 8 }}
+                />
 
                 <Container
                     widthContainer={"90%"}
@@ -146,41 +109,28 @@ Duração: 3 dias"
                         backgroundBtn={"#49B3BA"}
                         showBorder={false}
                         onPress={() => setModalVisible(true)}
+                        getMediaLibrary={true}
                     >
-                        <MaterialCommunityIcons
-                            name="camera-plus-outline"
-                            size={22}
-                            color="white"
-                            style={{ marginRight: 12, marginBottom: 1 }}
-                        />
+                        <MaterialCommunityIcons name="camera-plus-outline" size={22} color="white" style={{ marginRight: 12, marginBottom: 1 }} />
                         <TitleButton>Enviar</TitleButton>
                     </CustomButton>
 
-                    <Links widthLink={30} colorLink={"#C81D25"}>
-                        Cancelar
-                    </Links>
+                    <Links widthLink={30} colorLink={"#C81D25"}>Cancelar</Links>
                 </Container>
 
                 <RowGray />
 
                 <InputDisable
-                    value={descricaoExame}
                     heightInput={"100px"}
                     fontSize={16}
                     textAlignVertical="top"
+                    placeholder="Resultado do exame de sangue : tudo normal"
                     editable={false}
                     multiline={true}
                     style={{ marginBottom: 12, marginTop: 20 }}
                 />
 
-                <Links
-                    colorLink={"#344F8F"}
-                    fontSize={18}
-                    widthLink={100}
-                    style={{ paddingBottom: 20 }}
-                >
-                    Voltar
-                </Links>
+                <Links colorLink={"#344F8F"} fontSize={18} widthLink={100} style={{ paddingBottom: 20 }}>Voltar</Links>
             </Container>
 
             <ModalCamera
@@ -188,26 +138,7 @@ Duração: 3 dias"
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
                 title="Título do Modal"
-                setCapturePhoto={setCapturePhoto}
-                setModalVisible={setModalVisible}
-                onPhotoCaptured={handlePhotoCapture}
             />
         </ScrollView>
     );
-};
-
-const styles = StyleSheet.create({
-    cameraButtonText: {
-        color: "white",
-        fontSize: 18,
-        backgroundColor: "#496BBA",
-        padding: 10,
-        borderRadius: 5,
-    },
-    capturedImage: {
-        width: "100%",
-        height: "80%",
-
-        resizeMode: "contain",
-    },
-});
+}
