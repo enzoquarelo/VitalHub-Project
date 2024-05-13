@@ -5,7 +5,7 @@ namespace WebAPI.Domains;
 
 public partial class Exame
 {
-    public Guid Id { get; set; } = new Guid();
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public string? Descricao { get; set; }
 

@@ -6,6 +6,9 @@ using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
+
     public class ExameController : Controller
     {
         // Declaração de uma interface de repositório para manipulação de dados de exame

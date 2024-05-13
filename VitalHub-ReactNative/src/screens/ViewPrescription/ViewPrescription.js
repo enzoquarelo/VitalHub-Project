@@ -28,48 +28,6 @@ export const ViewPrescription = ({ route }) => {
 
     const [uriCameraCapture, SetUriCameraCapture] = useState(null);
 
-    useEffect(() => {
-        if (route.params?.photoUri) {
-            setPhotoUri(route.params.photoUri);
-
-            InserirExame();
-        }
-    }, [route.params?.photoUri]);
-
-    async function InserirExame() {
-        const formData = new FormData();
-        formData.append("consultaId", prontuario.id);
-        formData.append("Imagem", {
-            uri: photoUri,
-            name: `image${photoUri.split(".").pop()}`,
-            type: `image${photoUri.split(".").pop()}`,
-        });
-
-        try {
-            const response = await api.post(`/Exame/Cadastrar`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-
-            // Adicionando uma quebra de linha entre os resultados dos exames
-            setDescricaoExame((prevDescricao) =>
-                prevDescricao !== ""
-                    ? prevDescricao + "\n" + response.data.descricao
-                    : response.data.descricao
-            );
-
-            console.log(descricaoExame);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const handlePhotoCapture = (capturedPhotoUri) => {
-        setPhoto(capturedPhotoUri);
-    };
-
-
 
     const { appointmentId } = route.params;
 
@@ -92,8 +50,45 @@ export const ViewPrescription = ({ route }) => {
         SearchAppointment();
     }, []);
 
+    // useEffect(() => {
+    //     if (uriCameraCapture) {
+    //         InserirExame();
+    //     }
+    // }, [uriCameraCapture]);
+    
 
-    console.log(uriCameraCapture)
+    async function InserirExame() {
+        console.log('iniciou a função');
+        const formData = new FormData();
+        formData.append("consultaId", appointmentId);
+        formData.append("Imagem", {
+            uri: uriCameraCapture,
+            name: `image.${uriCameraCapture.split(".").pop()}`,
+            type: `image/${uriCameraCapture.split(".").pop()}`,
+        });
+        console.log('arquivo da imagem');
+
+        try {
+            console.log('entrou no try');
+            const response = await api.post(`Exame/Cadastrar`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            console.log('response passou', response.data);
+            // Adicionando uma quebra de linha entre os resultados dos exames
+            setDescricaoExame('foi');
+            console.log('inseriu', descricaoExame);
+        } catch (error) {
+            console.error("Erro ao inserir exame:", error);
+        }
+    }
+
+    const handlePhotoCapture = (capturedPhotoUri) => {
+        setPhoto(capturedPhotoUri);
+    };
+
 
     return (
         <ScrollView>
@@ -175,6 +170,9 @@ export const ViewPrescription = ({ route }) => {
                     </Links>
                 </Container>
 
+                <CustomButton onPress={InserirExame}>
+                    <TitleButton>Inserir Exame</TitleButton>
+                </CustomButton>
                 <RowGray />
 
                 <InputDisable

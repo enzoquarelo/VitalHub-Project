@@ -119,7 +119,8 @@ const ModalCamera = ({
         });
 
         if (assets.length > 0) {
-            setLatestPhoto(assets[0].uri);
+            const infoAssets = await MediaLibrary.getAssetInfoAsync(assets[0].id)
+            setLatestPhoto(infoAssets.localUri);
         }
     }
 
