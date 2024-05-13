@@ -50,11 +50,9 @@ const ModalCamera = ({
             });
     
             if (!result.cancelled && result.assets && result.assets.length > 0) {
-                // Atualiza o estado 'photo' com o URI da imagem selecionada
                 setPhoto(result.assets[0].uri);
-                // Atualiza o estado 'SetUriCameraCapture' com o URI da imagem selecionada
+                // Ensure SetUriCameraCapture is called with the correct URI
                 SetUriCameraCapture(result.assets[0].uri);
-                // Abre o modal para visualizar a imagem selecionada
                 setOpenModal(true);
             }
         } catch (error) {
@@ -73,11 +71,11 @@ const ModalCamera = ({
             const photo = await cameraRef.current.takePictureAsync({
                 quality: 1,
             });
-
+    
             if (photo) {
                 setPhoto(photo.uri);
+                // Ensure SetUriCameraCapture is called with the correct URI
                 SetUriCameraCapture(photo.uri);
-
                 setOpenModal(true);
             } else {
                 console.log("Failed to capture photo");

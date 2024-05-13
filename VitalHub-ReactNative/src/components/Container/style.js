@@ -40,3 +40,14 @@ export const ContainerInputAndTitle = styled.View`
     display: flex;
     justify-content: space-between;
 `
+
+export const ContainerImageExame = styled.View`
+  width: 90%;
+  height: 180px;
+  border: 2px solid #CECCCC;
+  border-radius: 5px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
