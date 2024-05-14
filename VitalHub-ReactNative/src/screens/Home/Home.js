@@ -100,16 +100,22 @@ export const Home = ({ navigation }) => {
     };
 
     const handleCardPress = (consulta, idadePaciente) => {
-        setConsultaSelecionada(consulta); // Atualiza a consulta selecionada
-        const pacienteNome = consulta.paciente.idNavigation.nome;
-        const pacienteEmail = consulta.paciente.idNavigation.email;
-        const pacienteIdade = moment().diff(consulta.paciente.dataNascimento, 'years');
-        const pacientePhoto = consulta.paciente.idNavigation.foto;
-        setPacienteNome(pacienteNome);
-        setPacienteEmail(pacienteEmail);
-        setPacienteIdade(pacienteIdade);
-        setPacientePhoto(pacientePhoto);
-        setShowPrescription(true); // Mostra o modal de prescrição
+        if (userRole == 'Medico') {
+            const pacienteNome = consulta.paciente.idNavigation.nome;
+            const pacienteEmail = consulta.paciente.idNavigation.email;
+            const pacienteIdade = moment().diff(consulta.paciente.dataNascimento, 'years');
+            const pacientePhoto = consulta.paciente.idNavigation.foto;
+            setPacienteNome(pacienteNome);
+            setPacienteEmail(pacienteEmail);
+            setPacienteIdade(pacienteIdade);
+            setPacientePhoto(pacientePhoto);
+            setConsultaSelecionada(consulta); // Atualiza a consulta selecionada
+            setShowPrescription(true); // Mostra o modal de prescrição
+        }
+        if (userRole == 'Paciente') {
+            setConsultaSelecionada(consulta); // Atualiza a consulta selecionada
+            setShowPrescription(true); // Mostra o modal de prescrição
+        }
     };
 
     if (userRole === 'Medico') {
@@ -164,55 +170,64 @@ export const Home = ({ navigation }) => {
                         </SelectableButton>
                     </Container>
 
-                    {consultas.map((consulta, index) => {
-                        const idadePaciente = moment().diff(consulta.paciente.dataNascimento, 'years');
-                        const situacaoConsulta = consulta.situacao.situacao;
 
-                        let buttonSelected = '';
-                        if (selectedAgendadas) {
-                            buttonSelected = 'Agendadas';
-                            return (
-                                <Cards
-                                    key={index}
-                                    imageHeader={consulta.paciente.idNavigation.foto}
-                                    profileName={consulta.paciente.idNavigation.nome}
-                                    profileEmail={consulta.paciente.idNavigation.email}
-                                    profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
-                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
-                                    onCardPress={() => handleCardPress(consulta, idadePaciente)}
+                    {consultas.length === 0 ? (
+                        <DefaultText style={{ marginTop: 100 }} fontSize={18}>Nenhuma consulta encontrada...</DefaultText>
+                    ) : (
 
-                                    buttonSelected={buttonSelected}
-                                />
-                            );
-                        } else if (selectedRealizadas) {
-                            buttonSelected = 'Realizadas';
-                            return (
-                                <Cards
-                                    key={index}
-                                    imageHeader={consulta.paciente.idNavigation.foto}
-                                    profileName={consulta.paciente.idNavigation.nome}
-                                    profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
-                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
-                                    onCardPress={() => handleCardPress(consulta)}
+                        consultas.map((consulta, index) => {
+                            const idadePaciente = moment().diff(consulta.paciente.dataNascimento, 'years');
+                            const situacaoConsulta = consulta.situacao.situacao;
+                            const consultaId = consulta.id;
 
-                                    buttonSelected={buttonSelected}
-                                />
-                            );
-                        } else if (selectedCanceladas) {
-                            buttonSelected = 'Canceladas';
-                            return (
-                                <Cards
-                                    key={index}
-                                    imageHeader={consulta.paciente.idNavigation.foto}
-                                    profileName={consulta.paciente.idNavigation.nome}
-                                    profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
-                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                            let buttonSelected = '';
+                            if (selectedAgendadas) {
+                                buttonSelected = 'Agendadas';
+                                return (
+                                    <Cards
+                                        key={index}
+                                        imageHeader={consulta.paciente.idNavigation.foto}
+                                        idConsulta={consultaId}
+                                        profileName={consulta.paciente.idNavigation.nome}
+                                        profileEmail={consulta.paciente.idNavigation.email}
+                                        profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
+                                        appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                        onCardPress={() => handleCardPress(consulta, idadePaciente)}
 
-                                    buttonSelected={buttonSelected}
-                                />
-                            );
-                        }
-                    })}
+                                        buttonSelected={buttonSelected}
+                                    />
+                                );
+                            } else if (selectedRealizadas) {
+                                buttonSelected = 'Realizadas';
+                                return (
+                                    <Cards
+                                        key={index}
+                                        imageHeader={consulta.paciente.idNavigation.foto}
+                                        profileName={consulta.paciente.idNavigation.nome}
+                                        profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
+                                        appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                        onCardPress={() => handleCardPress(consulta)}
+
+                                        buttonSelected={buttonSelected}
+                                    />
+                                );
+                            } else if (selectedCanceladas) {
+                                buttonSelected = 'Canceladas';
+                                return (
+                                    <Cards
+                                        key={index}
+                                        imageHeader={consulta.paciente.idNavigation.foto}
+                                        profileName={consulta.paciente.idNavigation.nome}
+                                        profileData={`${idadePaciente} anos . ${situacaoConsulta}`}
+                                        appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+
+                                        buttonSelected={buttonSelected}
+                                    />
+                                );
+                            }
+                        })
+
+                    )}
 
                     <AppointmentLocalModal
                         visible={showModalPrescription}
@@ -281,64 +296,72 @@ export const Home = ({ navigation }) => {
                         </SelectableButton>
                     </Container>
 
-                    {consultas.map((consulta, index) => {
-                        const crmDoctor = consulta.medicoClinica.medico.crm;
-                        const doctorName = consulta.medicoClinica.medico.idNavigation.nome;
-                        const doctorSpecialty = consulta.medicoClinica.medico.especialidade.especialidade1;
-                        const consultaId = consulta.id;
-                        const dateQuery = consulta.dataConsulta;
+                    {consultas.length === 0 ? (
+                        <DefaultText style={{ marginTop: 100 }} fontSize={18}>Nenhuma consulta encontrada...</DefaultText>
+                    ) : (
 
-                        const appointmentId = consulta.id
+                        consultas.map((consulta, index) => {
+                            const crmDoctor = consulta.medicoClinica.medico.crm;
+                            const doctorName = consulta.medicoClinica.medico.idNavigation.nome;
+                            const doctorSpecialty = consulta.medicoClinica.medico.especialidade.especialidade1;
+                            const consultaId = consulta.id;
+                            const dateQuery = consulta.dataConsulta;
 
-                        // Determine qual botão está selecionado
-                        let buttonSelected = '';
-                        if (selectedAgendadas) {
-                            buttonSelected = 'Agendadas';
+                            const appointmentId = consulta.id
 
-                            return (
-                                <Cards
-                                    key={index}
-                                    imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
-                                    idConsulta={consultaId}
-                                    profileName={`Dr. ${doctorName}`}
-                                    profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
-                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
-                                    onCardPress={() => handleCardPress(consulta)}
-                                    buttonSelected={buttonSelected} // Passe a propriedade buttonSelected para o componente Cards
-                                />
-                            );
+                            // Determine qual botão está selecionado
+                            let buttonSelected = '';
+                            if (selectedAgendadas) {
+                                buttonSelected = 'Agendadas';
 
-                        } else if (selectedRealizadas) {
-                            buttonSelected = 'Realizadas';
+                                return (
+                                    <Cards
+                                        key={index}
+                                        imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
+                                        idConsulta={consultaId}
+                                        profileName={`Dr. ${doctorName}`}
+                                        profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
+                                        appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                        onCardPress={() => handleCardPress(consulta)}
+                                        buttonSelected={buttonSelected} // Passe a propriedade buttonSelected para o componente Cards
+                                    />
+                                );
 
-                            return (
-                                <Cards
-                                    key={index}
-                                    imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
-                                    profileName={`Dr. ${doctorName}`}
-                                    profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
-                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
-                                    buttonSelected={buttonSelected}
+                            } else if (selectedRealizadas) {
+                                buttonSelected = 'Realizadas';
 
-                                    appointmentId={appointmentId}
-                                />
-                            );
+                                return (
+                                    <Cards
+                                        key={index}
+                                        imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
+                                        profileName={`Dr. ${doctorName}`}
+                                        profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
+                                        appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                        buttonSelected={buttonSelected}
 
-                        } else if (selectedCanceladas) {
-                            buttonSelected = 'Canceladas';
+                                        appointmentId={appointmentId}
+                                    />
+                                );
 
-                            return (
-                                <Cards
-                                    key={index}
-                                    imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
-                                    profileName={`Dr. ${doctorName}`}
-                                    profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
-                                    appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
-                                    buttonSelected={buttonSelected}
-                                />
-                            );
-                        }
-                    })}
+                            } else if (selectedCanceladas) {
+                                buttonSelected = 'Canceladas';
+
+                                return (
+                                    <Cards
+                                        key={index}
+                                        imageHeader={consulta.medicoClinica.medico.idNavigation.foto}
+                                        profileName={`Dr. ${doctorName}`}
+                                        profileData={`CRM ${crmDoctor} - ${doctorSpecialty}`}
+                                        appointmentHour={moment(consulta.dataConsulta).format('HH:mm')}
+                                        buttonSelected={buttonSelected}
+                                    />
+                                );
+                            }
+                        })
+
+                    )}
+
+
 
                     <ScheduleAppointment
                         onPress={() => {

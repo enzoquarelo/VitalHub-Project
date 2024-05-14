@@ -50,15 +50,16 @@ export const ViewPrescription = ({ route }) => {
         SearchAppointment();
     }, []);
 
-    // useEffect(() => {
-    //     if (uriCameraCapture) {
-    //         InserirExame();
-    //     }
-    // }, [uriCameraCapture]);
+    useEffect(() => {
+        if (uriCameraCapture) {
+            InserirExame();
+        }
+
+        console.log('aaa', uriCameraCapture);
+    }, [uriCameraCapture]);
     
 
     async function InserirExame() {
-        console.log('iniciou a função');
         const formData = new FormData();
         formData.append("consultaId", appointmentId);
         formData.append("Imagem", {
@@ -66,19 +67,15 @@ export const ViewPrescription = ({ route }) => {
             name: `image.${uriCameraCapture.split(".").pop()}`,
             type: `image/${uriCameraCapture.split(".").pop()}`,
         });
-        console.log('arquivo da imagem');
 
         try {
-            console.log('entrou no try');
             const response = await api.post(`Exame/Cadastrar`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-
-            console.log('response passou', response.data);
             // Adicionando uma quebra de linha entre os resultados dos exames
-            setDescricaoExame('foi');
+            setDescricaoExame(response.data.descricao);
             console.log('inseriu', descricaoExame);
         } catch (error) {
             console.error("Erro ao inserir exame:", error);
@@ -170,9 +167,6 @@ export const ViewPrescription = ({ route }) => {
                     </Links>
                 </Container>
 
-                <CustomButton onPress={InserirExame}>
-                    <TitleButton>Inserir Exame</TitleButton>
-                </CustomButton>
                 <RowGray />
 
                 <InputDisable

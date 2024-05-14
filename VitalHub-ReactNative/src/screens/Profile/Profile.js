@@ -21,6 +21,7 @@ import api from "../../service/service";
 import { Masks, useMaskedInputProps } from 'react-native-mask-input';
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import moment from "moment";
 
 export const Profile = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -47,7 +48,6 @@ export const Profile = ({ navigation, route }) => {
     //state para manipular edição dos inputs
     const [isEditing, setIsEditing] = useState(false);
 
-    console.log(userFoto);
     //máscara para data de nascimento
     const dataMasked = useMaskedInputProps({
         value: userDataNascimento,
@@ -188,6 +188,7 @@ export const Profile = ({ navigation, route }) => {
         BuscarUsuario();
     }, []);
 
+    const formattedDataNascimento = userDataNascimento ? moment(userDataNascimento).format("DD/MM/YYYY") : "";
 
     return (
         <ScrollView>
@@ -241,7 +242,7 @@ export const Profile = ({ navigation, route }) => {
                                     <Input
                                         value={userCep}
                                         onChangeText={setUserCep}
-                                        editable={false}
+                                        editable={true}
                                     />
                                 ) : (
                                     <InputDisable
@@ -250,7 +251,7 @@ export const Profile = ({ navigation, route }) => {
                                                 ?
                                                 userCep
                                                 :
-                                                UseMask('#####-###', userCep)
+                                                UseMask('#########', userCep)
                                         }
                                         editable={false}
                                     />
@@ -325,13 +326,11 @@ export const Profile = ({ navigation, route }) => {
                                 onChangeText={setUserDataNascimento}
                                 editable={true}
                                 keyboardType="numeric"
-                                {...dataMasked}
                             />
                         ) : (
                             <InputDisable
-                                value={userDataNascimento}
+                                value={formattedDataNascimento}
                                 editable={false}
-                                {...dataMasked}
                             />
                         )}
 

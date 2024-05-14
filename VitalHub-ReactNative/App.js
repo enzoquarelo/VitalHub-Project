@@ -18,6 +18,7 @@ import { Main } from './src/screens/Main/Main';
 import { SelectClinic } from './src/screens/SelectClinic/SelectClinic';
 import { SelectDoctor } from './src/screens/SelectDoctor/SelectDoctor';
 import { SelectDate } from './src/screens/SelectDate/SelectDate';
+import { MedicalRecord } from './src/screens/MedicalRecord/MedicalRecord';
 
 // Importe das Fontes
 import {

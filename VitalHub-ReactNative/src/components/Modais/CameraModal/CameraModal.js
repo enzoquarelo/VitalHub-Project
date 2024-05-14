@@ -75,7 +75,7 @@ const ModalCamera = ({
             if (photo) {
                 setPhoto(photo.uri);
                 // Ensure SetUriCameraCapture is called with the correct URI
-                SetUriCameraCapture(photo.uri);
+                // SetUriCameraCapture(photo.uri);
                 setOpenModal(true);
             } else {
                 console.log("Failed to capture photo");
@@ -94,7 +94,7 @@ const ModalCamera = ({
                 onClose();
 
                 setPhoto(photo.uri);
-                SetUriCameraCapture(photo.uri);
+                SetUriCameraCapture(photo);
             } else {
                 alert("No image captured.");
             }

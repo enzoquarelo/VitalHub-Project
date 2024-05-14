@@ -21,7 +21,7 @@ export const CancelAppointmentModal = ({ visible, onClose, onConfirm, idConsulta
       onClose();
       navigation.replace("Main")
     } catch (error) {
-      console.error("Erro ao cancelar a consulta:", error);
+      console.error("Erro ao cancelar a consulta:", error, idConsulta);
     }
   }
 

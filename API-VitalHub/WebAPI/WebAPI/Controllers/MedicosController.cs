@@ -46,13 +46,17 @@ namespace WebAPI.Controllers
             }
         }
 
-        [Authorize]
-        [HttpPut("AtualizarPerfil")]
-        public IActionResult AtualizarPerfil(MedicoViewModel medico)
+        [HttpPut]
+        public IActionResult AtualizarPerfil(Guid idUsuario, MedicoViewModel medico)
         {
-            Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-
-            return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+            try
+            {
+                return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -111,22 +115,6 @@ namespace WebAPI.Controllers
             try
             {
                 return Ok(_medicoRepository.BuscarPorData(data, id));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPut]
-        public IActionResult UpdateProfile(MedicoViewModel medico)
-        {
-            try
-            {
-                Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
-
-                return Ok(_medicoRepository.AtualizarPerfil(idUsuario, medico));
-
             }
             catch (Exception ex)
             {

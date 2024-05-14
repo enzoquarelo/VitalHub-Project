@@ -15,7 +15,7 @@ namespace WebAPI.ViewModels
 
         [NotMapped]
         [JsonIgnore]
-        public IFormFile ArquivoFoto { get; set; }
+        public IFormFile? ArquivoFoto { get; set; }
 
         public string? Cep { get; set; }
 
@@ -29,6 +29,6 @@ namespace WebAPI.ViewModels
 
         public string? Crm { get; set; }
 
-        public Guid? IdTipoUsuario { get; set; }
+        public Guid IdTipoUsuario { get; set; }
     }
 }
