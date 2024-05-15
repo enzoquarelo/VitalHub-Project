@@ -16,8 +16,9 @@ import { Links } from "../../Links/style";
 import { Container } from "../../Container/style";
 
 import { userDecodeToken } from "../../../utils/auth";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../../service/service";
+import * as Notifications from "expo-notifications";
 
 export const FinalDataQueryModal = ({
     visible,
@@ -28,8 +29,30 @@ export const FinalDataQueryModal = ({
     date,
     ...rest
 }) => {
-
     const navigation = useNavigation();
+
+    async function sendNotification() {
+        //personalizar a mensagem da notificação
+        const message = {
+            to: "ExpoPushToken[xxxxxxxxxxxxxxxxxxxxxx]",
+            sound: "default",
+            data: {},
+        };
+
+        // Agende a notificação aqui, dentro da função sendNotification
+        await Notifications.scheduleNotificationAsync({
+            content: message,
+            trigger: null,
+        });
+    }
+
+    Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+        }),
+    });
 
     const handleConfirm = () => {
         // Fechar o modal
@@ -38,22 +61,29 @@ export const FinalDataQueryModal = ({
         navigation.navigate("Main");
     };
 
-    console.log(agendamento)
+    console.log(agendamento);
 
     async function Post() {
         try {
             const token = await userDecodeToken();
             const userId = token.jti;
 
-            ;
+             // Agende a notificação aqui, dentro da função Post
+             await Notifications.scheduleNotificationAsync({
+                content: {
+                    title: "Consunta:",
+                    body: " Sua Consulta foi Agendada com Sucesso",
+                    icon: '././assets/images/VitalHub_logo.png',
+                },
+                trigger: null, 
+            });
 
-
-            const response = await api.post('/Consultas/Cadastrar', {
-                situacaoId: '57ACD4ED-24F3-415F-AB42-42F0AF7506FC',
+            const response = await api.post("/Consultas/Cadastrar", {
+                situacaoId: "57ACD4ED-24F3-415F-AB42-42F0AF7506FC",
                 pacienteId: userId,
                 medicoClinicaId: agendamento.idMedicoClinica,
                 prioridadeId: agendamento.idPriority,
-                dataConsulta: agendamento.dataConsulta
+                dataConsulta: agendamento.dataConsulta,
             });
 
             console.log(`cadastrou: ${response.status}`);
@@ -64,10 +94,9 @@ export const FinalDataQueryModal = ({
         }
     }
 
-
     useEffect(() => {
-        console.log(agendamento)
-    }, [visible])
+        console.log(agendamento);
+    }, [visible]);
 
     return (
         <Modal
@@ -91,7 +120,9 @@ export const FinalDataQueryModal = ({
                     >
                         <ContainerDataQueryText>
                             <SubTitleData>Data da Consulta</SubTitleData>
-                            <TextDataQuery>{agendamento.dataConsulta}</TextDataQuery>
+                            <TextDataQuery>
+                                {agendamento.dataConsulta}
+                            </TextDataQuery>
                         </ContainerDataQueryText>
 
                         <ContainerDataQueryText>
@@ -111,7 +142,9 @@ export const FinalDataQueryModal = ({
 
                         <ContainerDataQueryText>
                             <SubTitleData>Tipo da consulta</SubTitleData>
-                            <TextDataQuery>{agendamento.priorityLabel}</TextDataQuery>
+                            <TextDataQuery>
+                                {agendamento.priorityLabel}
+                            </TextDataQuery>
                         </ContainerDataQueryText>
                     </Container>
 

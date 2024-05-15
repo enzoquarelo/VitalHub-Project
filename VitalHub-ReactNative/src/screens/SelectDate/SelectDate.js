@@ -33,10 +33,23 @@ export const SelectDate = ({ navigation, route }) => {
 
     const [agendamento, setAgendamento] = useState({});
 
-    const categories = [
-        { key: "9h", value: "09:00" },
-        { key: "10h", value: "10:00" },
-    ];
+    const workHours = generateWorkHours(8, 22);
+
+    function generateWorkHours(startHour, endHour) {
+        const hours = [];
+        for (let hour = startHour; hour <= endHour; hour++) {
+            for (let minute = 0; minute < 60; minute += 30) {
+                const formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
+                const formattedMinute = minute === 0 ? "00" : `${minute}`;
+                const time = `${formattedHour}:${formattedMinute}`;
+                hours.push({
+                    key: `${formattedHour}:${formattedMinute}`,
+                    value: time,
+                });
+            }
+        }
+        return hours;
+    }
 
     const [fontsLoaded, fontsError] = useFonts({
         MontserratAlternates_600SemiBold,
@@ -171,7 +184,7 @@ export const SelectDate = ({ navigation, route }) => {
 
             <SelectList
                 setSelected={(val) => setCategory(val)}
-                data={categories}
+                data={workHours}
                 placeholder="Selecione o Horário"
                 fontFamily="MontserratAlternates_600SemiBold"
                 boxStyles={{

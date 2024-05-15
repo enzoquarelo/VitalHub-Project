@@ -1,11 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 //nativos
-import {
-    Modal,
-    StyleSheet,
-    StatusBar,
-    TouchableOpacity,
-} from "react-native";
+import { Modal, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
 
 //styles
 import { ButtonDisable, CustomButton, TitleButton } from "../../Button/styles";
@@ -24,13 +19,13 @@ import { CameraView } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-
+import * as Notifications from "expo-notifications";
 
 const ModalCamera = ({
     visible,
     onClose,
     getMediaLibrary = false,
-    SetUriCameraCapture
+    SetUriCameraCapture,
 }) => {
     const cameraRef = useRef(null);
 
@@ -41,6 +36,29 @@ const ModalCamera = ({
 
     const [latestPhoto, setLatestPhoto] = useState(null);
 
+    async function sendNotification() {
+        // Personalize a mensagem da notificação
+        const message = {
+            title: "Foto Salva com Sucesso!",
+            body: "Sua foto foi salva com sucesso.",
+            icon: "././assets/images/VitalHub_logo.png",
+        };
+
+        // Agende a notificação aqui, dentro da função sendNotification
+        await Notifications.scheduleNotificationAsync({
+            content: message,
+            trigger: null,
+        });
+    }
+
+    Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+        }),
+    });
+
     //seleciona a imagem da galeria
     async function selectImageGallery() {
         try {
@@ -48,8 +66,12 @@ const ModalCamera = ({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 quality: 1,
             });
-    
-            if (!result.cancelled && result.assets && result.assets.length > 0) {
+
+            if (
+                !result.cancelled &&
+                result.assets &&
+                result.assets.length > 0
+            ) {
                 setPhoto(result.assets[0].uri);
                 // Ensure SetUriCameraCapture is called with the correct URI
                 SetUriCameraCapture(result.assets[0].uri);
@@ -71,7 +93,7 @@ const ModalCamera = ({
             const photo = await cameraRef.current.takePictureAsync({
                 quality: 1,
             });
-    
+
             if (photo) {
                 setPhoto(photo.uri);
                 // Ensure SetUriCameraCapture is called with the correct URI
@@ -104,8 +126,6 @@ const ModalCamera = ({
         }
     }
 
-
-
     //altera o status do flash
     const toggleFlash = () => {
         setFlashMode(flashMode === "on" ? "off" : "on");
@@ -119,7 +139,9 @@ const ModalCamera = ({
         });
 
         if (assets.length > 0) {
-            const infoAssets = await MediaLibrary.getAssetInfoAsync(assets[0].id)
+            const infoAssets = await MediaLibrary.getAssetInfoAsync(
+                assets[0].id
+            );
             setLatestPhoto(infoAssets.localUri);
         }
     }
@@ -212,7 +234,9 @@ const ModalCamera = ({
                             </ButtonDisable>
 
                             <CustomButton
-                                onPress={() => {
+                                onPress={async () => {
+                                    // Chama a função para enviar notificação ao clicar em "CONFIRMAR"
+                                    await sendNotification();
                                     setOpenModal(false);
                                     onClose();
                                 }}
