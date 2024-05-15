@@ -17,7 +17,7 @@ export const AppointmentLocalModal = ({ visible, setShowPrescription, onPressClo
 
   async function handleClose(screen) {
     onPressClose();
-    navigation.replace(screen, { clinicId: clinicId });
+    navigation.replace(screen, { clinicId: clinicId, consultaId: consulta?.id }); // Passando ambos os IDs
   };
 
 
@@ -38,7 +38,7 @@ export const AppointmentLocalModal = ({ visible, setShowPrescription, onPressClo
             <DefaultText fontSize={16} widthText={"100%"}>{pacienteIdade} anos  -  {pacienteEmail}</DefaultText>
 
 
-            <CustomButton style={{ marginTop: 15 }} widthButton={100}>
+            <CustomButton style={{ marginTop: 15 }} widthButton={100} onPress={() => handleClose("MedicalRecord")}>
               <TitleButton>Inserir Prontuário</TitleButton>
             </CustomButton>
 
