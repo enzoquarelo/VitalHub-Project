@@ -41,7 +41,7 @@ export const Profile = ({ navigation, route }) => {
     const [userCep, setUserCep] = useState('');
     const [userCidade, setUserCidade] = useState('');
     const [userNumero, setUserNumero] = useState('');
-    const [userFoto, setUserFoto] = useState('');
+    const [userFoto, setUserFoto] = useState('https://blobvitalhubg10.blob.core.windows.net/blobvitalhubg10container/defaultImage.webp');
     const [userEspecialidade, setUserEspecialidade] = useState('');
     const [userCRM, setUserCRM] = useState('');
 
@@ -114,7 +114,6 @@ export const Profile = ({ navigation, route }) => {
                 setUserFoto(response.data.idNavigation.foto);
             }
         } catch (error) {
-            console.log(error);
         }
     }
 
@@ -142,8 +141,13 @@ export const Profile = ({ navigation, route }) => {
 
             setIsEditing(false);
 
+            navigation.replace("Main")
+
+            if (condition) {
+                
+            }
+
         } catch (error) {
-            console.error("Erro ao salvar alterações:", error);
         }
     }
 
@@ -153,12 +157,13 @@ export const Profile = ({ navigation, route }) => {
     }
 
     useEffect(() => {
-        if (uriCameraCapture) {
+        if (uriCameraCapture != null) {
             AlterarFotoPerfil()
         }
     }, [uriCameraCapture])
 
     async function AlterarFotoPerfil() {
+        console.log('entrou', userId);
         const formatDate = new FormData()
         formatDate.append("Arquivo", {
             uri: uriCameraCapture,
@@ -174,7 +179,6 @@ export const Profile = ({ navigation, route }) => {
             setUserFoto(uriCameraCapture);
             console.log("Foto atualizada com sucesso:", userFoto);
         }).catch(error => {
-            console.log(error)
         })
     }
 
@@ -185,7 +189,7 @@ export const Profile = ({ navigation, route }) => {
 
     //carrega dados para inserção dos inputs
     useEffect(() => {
-        BuscarUsuario();
+        BuscarUsuario(); 
     }, []);
 
     const formattedDataNascimento = userDataNascimento ? moment(userDataNascimento).format("DD/MM/YYYY") : "";
@@ -326,11 +330,13 @@ export const Profile = ({ navigation, route }) => {
                                 onChangeText={setUserDataNascimento}
                                 editable={true}
                                 keyboardType="numeric"
+                                {...dataMasked}
                             />
                         ) : (
                             <InputDisable
-                                value={formattedDataNascimento}
+                                value={userDataNascimento}
                                 editable={false}
+                                {...dataMasked}
                             />
                         )}
 

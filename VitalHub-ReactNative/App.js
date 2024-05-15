@@ -20,6 +20,8 @@ import { SelectDoctor } from './src/screens/SelectDoctor/SelectDoctor';
 import { SelectDate } from './src/screens/SelectDate/SelectDate';
 import { MedicalRecord } from './src/screens/MedicalRecord/MedicalRecord';
 
+import { LogBox } from 'react-native';
+
 // Importe das Fontes
 import {
   useFonts,
@@ -48,11 +50,11 @@ export default function App() {
     return null;
   }
 
-
+  LogBox.ignoreAllLogs();
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="SplashScreen">
 
         <Stack.Screen
           name="Main"

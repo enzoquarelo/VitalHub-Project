@@ -9,12 +9,14 @@ import { DoctorCard } from "../../components/DoctorCard/DoctorCard";
 import { Links } from "../../components/Links/style";
 import api from "../../service/service";
 import { ListComponent } from "../../components/List/List";
+import { DefaultText } from "../../components/DefaultText/DefaultText";
 
 export const SelectDoctor = ({ navigation, route }) => {
     const [selectedDoctorId, setselectedDoctorId] = useState(null);
     const [DoctorList, setDoctorList] = useState([]);
     const [selectedDoctorName, setSelectedDoctorName] = useState([]);
     const [agendamento, setAgendamento] = useState([]);
+    const [textWarning, setTextWarning] = useState('')
 
     const handleSelectDoctor = (doctorId, doctorName) => {
         setselectedDoctorId(doctorId);
@@ -41,6 +43,11 @@ export const SelectDoctor = ({ navigation, route }) => {
     };
 
     function handleContinue() {
+        if (!selectedDoctorId) {
+            setTextWarning("Por favor, selecione um médico."); // Exibe uma mensagem de alerta
+            return; // Interrompe a execução da função se nenhum clínica estiver selecionado
+        }
+
         navigation.replace("SelectDate", {
             agendamento: {
                 ...route.params.agendamento,
@@ -62,6 +69,14 @@ export const SelectDoctor = ({ navigation, route }) => {
             <Title style={{ marginBottom: 45, paddingTop: 100 }} fontSize={24}>
                 Selecionar Médico
             </Title>
+
+            <DefaultText
+                fontSize={18}
+                colorText={"#C81D25"}
+                widthText={"90%"}
+            >
+                {textWarning}
+            </DefaultText>
 
             <ListComponent
                 contentContainerStyle={{ alignItems: "center" }}
@@ -90,7 +105,7 @@ export const SelectDoctor = ({ navigation, route }) => {
                 colorLink={"#344F8F"}
                 fontSize={18}
                 style={{ marginTop: 12, marginBottom: 60 }}
-                onPress={() => navigation.navigate("SelectClinic")}
+                onPress={() => navigation.replace("Main")}
             >
                 Cancelar
             </Links>

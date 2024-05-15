@@ -14,17 +14,22 @@ import { Links } from "../../components/Links/style";
 import { Feather } from "@expo/vector-icons";
 import * as Notifications from "expo-notifications";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import api from "../../service/service";
 
 export const CreateAccount = ({ navigation }) => {
     const [textWarning, setTextWarning] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const [email, setEmail] = useState("enzo.q@gmail.com");
+    const [nome, setNome] = useState("Enzo Quarelo");
+    const [email, setEmail] = useState("enzo.quarelo@gmail.com");
     const [senha, setSenha] = useState("123");
     const [senhaConfirm, setSenhaConfirm] = useState("123");
 
     const [showPassword, setShowPassword] = useState(false);
+
+    const createAccount = "foi cadastrado";
 
     async function sendNotification() {
         //personalizar a mensagem da notificação
@@ -65,6 +70,24 @@ export const CreateAccount = ({ navigation }) => {
         return true;
     };
 
+    async function Login() {
+        try {
+            console.log('chamou login');
+            const response = await api.post('/Login', {
+                email: email,
+                senha: senha
+            });
+            if (response.status === 200) {
+                console.log('fez login');
+                const token = response.data.token;
+                await AsyncStorage.setItem("token", JSON.stringify(token));
+                console.log("Token armazenado:", token); // Verifica se o token está sendo armazenado
+            }
+        } catch (e) {
+        }
+    }
+    
+
     async function Post() {
         if (!validateFields()) {
             return;
@@ -76,9 +99,10 @@ export const CreateAccount = ({ navigation }) => {
             const response = await api.post(
                 "/Pacientes",
                 {
-                    email: "enzo.q@gmail.com",
-                    senha: "123",
-                    idTipoUsuario: "D3468A23-AF5A-490C-84AD-99C73F017B96",
+                    nome: nome,
+                    email: email,
+                    senha: senha,
+                    idTipoUsuario: "D2361179-3CBD-41D7-9409-D25062DA16A2",
                 },
                 {
                     headers: {
@@ -88,7 +112,8 @@ export const CreateAccount = ({ navigation }) => {
             );
 
             if (response.status === 200) {
-                navigation.replace("UpdateProfile");
+                Login();
+                navigation.replace("Profile")
 
                 // Adicionando a notificação aqui, após uma resposta bem-sucedida
                 await Notifications.scheduleNotificationAsync({
@@ -106,8 +131,7 @@ export const CreateAccount = ({ navigation }) => {
                 );
             }
         } catch (error) {
-            console.log(error);
-            setTextWarning("Erro passou pelo catch");
+
         } finally {
             setIsLoading(false);
         }
@@ -139,6 +163,13 @@ export const CreateAccount = ({ navigation }) => {
             >
                 {textWarning}
             </DefaultText>
+
+            <Input
+                placeholder="Nome"
+                value={nome}
+                style={{ marginBottom: 15 }}
+                onChangeText={(txt) => setNome(txt)}
+            />
 
             <Input
                 placeholder="Email"

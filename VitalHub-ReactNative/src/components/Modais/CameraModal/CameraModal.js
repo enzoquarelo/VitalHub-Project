@@ -110,7 +110,6 @@ const ModalCamera = ({
         try {
             if (photo) {
                 await MediaLibrary.saveToLibraryAsync(photo);
-                alert("Photo saved to gallery");
                 setOpenModal(false);
                 setLatestPhoto(photo);
                 onClose();
@@ -118,11 +117,9 @@ const ModalCamera = ({
                 setPhoto(photo.uri);
                 SetUriCameraCapture(photo);
             } else {
-                alert("No image captured.");
             }
         } catch (error) {
             console.error("Error saving photo:", error);
-            alert("Error saving photo: " + error.message);
         }
     }
 

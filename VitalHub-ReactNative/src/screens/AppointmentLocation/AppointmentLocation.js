@@ -103,7 +103,7 @@ export const AppointmentLocation = ({ navigation, route }) => {
                 fontLink={"MontserratAlternates_600SemiBold"}
                 fontSize={15}
                 style={{ textAlign: 'center', marginTop: 12 }}
-                onPress={() => (navigation.navigate("Home"))}
+                onPress={() => (navigation.navigate("Main"))}
             >
                 Cancelar
             </Links>

@@ -153,6 +153,7 @@ export const VerifyEmail = ({ navigation, route }) => {
                         paddingInput={"0px"}
                         placeholder="0"
                         textAlign="center"
+                        maxLength={1}
                         caretHidden={true}
                         onChangeText={(text) => {
                             if (text === "") {

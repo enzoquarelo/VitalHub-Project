@@ -8,6 +8,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Container } from "../../components/Container/style";
 import { Title } from "../../components/Title/style";
 import { TextSelectDatelabel, ViewCalendar } from "./style";
+import { DefaultText } from "../../components/DefaultText/DefaultText";
 
 //import fonts
 import {
@@ -32,6 +33,8 @@ export const SelectDate = ({ navigation, route }) => {
     const [category, setCategory] = useState(null);
 
     const [agendamento, setAgendamento] = useState({});
+
+    const [textWarning, setTextWarning] = useState('')
 
     const workHours = generateWorkHours(8, 22);
 
@@ -149,19 +152,31 @@ export const SelectDate = ({ navigation, route }) => {
 
 
     function handleContinue() {
+        if (!selected ||!category) {
+            setTextWarning("Por favor, selecione o dia e o horário da consulta."); // Exibe uma mensagem de alerta
+            return; // Interrompe a execução da função se nenhum dia ou horário estiver selecionado
+        }
+
         setAgendamento({
-            ...route.params.agendamento,
+           ...route.params.agendamento,
             dataConsulta: moment(`${selected} ${category}`, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm'),
         });
 
         setShowModalQuery(true);
-        
     }
 
 
     return (
         <Container>
             <Title style={{ marginBottom: 20 }}>Selecionar Data</Title>
+
+            <DefaultText
+                fontSize={18}
+                colorText={"#C81D25"}
+                widthText={"90%"}
+            >
+                {textWarning}
+            </DefaultText>
 
             <ViewCalendar>
                 <Calendar

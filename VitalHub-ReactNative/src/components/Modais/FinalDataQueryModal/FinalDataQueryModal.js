@@ -64,6 +64,7 @@ export const FinalDataQueryModal = ({
     console.log(agendamento);
 
     async function Post() {
+        console.log(agendamento);
         try {
             const token = await userDecodeToken();
             const userId = token.jti;
@@ -79,7 +80,7 @@ export const FinalDataQueryModal = ({
             });
 
             const response = await api.post("/Consultas/Cadastrar", {
-                situacaoId: "57ACD4ED-24F3-415F-AB42-42F0AF7506FC",
+                situacaoId: '40EACCE3-B140-43C4-96AD-212BA6DF6D8D',
                 pacienteId: userId,
                 medicoClinicaId: agendamento.idMedicoClinica,
                 prioridadeId: agendamento.idPriority,
@@ -88,7 +89,7 @@ export const FinalDataQueryModal = ({
 
             console.log(`cadastrou: ${response.status}`);
 
-            navigation.replace("Main");
+            navigation.replace("Main")
         } catch (error) {
             console.log(error);
         }
@@ -156,7 +157,7 @@ export const FinalDataQueryModal = ({
                         style={{ marginTop: 15 }}
                         colorLink={"#344F8F"}
                         fontSize={18}
-                        onPress={() => navigation.navigate("SelectDate")}
+                        onPress={() => navigation.replace("Main")}
                     >
                         Cancelar
                     </Links>

@@ -14,6 +14,7 @@ import {
 } from "../../Button/styles";
 import { Input, TitleInput } from "../../Input/styles";
 import { Links } from "../../Links/style";
+import { DefaultText } from "../../DefaultText/DefaultText";
 
 
 
@@ -33,11 +34,12 @@ export const QueryModalComponent = ({
         priorityLabel: "",
         idMedicoClinica: ""
     });
+    const [textWarning, setTextWarning] = useState('')
 
     const nivelConsulta = [
-        { id: "84A661AD-BAAE-4904-9522-2492CAAA2367", tipo: "Rotina" },
-        { id: "34F0DAE4-4E4F-4E19-A94D-AEAADB309EDF", tipo: "Exame" },
-        { id: "96C34BAB-D769-4BF7-9C83-F419635FBDD9", tipo: "Urgencia" },
+        { id: "83EAFA9F-CCA7-474A-9692-4E7871A7BF71", tipo: "Rotina" },
+        { id: "82D0291C-3B7C-4F33-B5B4-F84B92CFEA00", tipo: "Exame" },
+        { id: "2852FE9D-9F26-4FC0-A389-27B6F5281B03", tipo: "Urgencia" },
     ];
 
     const handleButtonPress = (buttonName) => {
@@ -46,16 +48,30 @@ export const QueryModalComponent = ({
 
     //função pra prosseguir com o agendamento da consulta
     const handleContinue = () => {
+        // Verifica se o campo de localização está vazio
+        if (!agendamento.location.trim()) {
+            setTextWarning("Por favor, informe a localização desejada.");
+            return; // Interrompe a execução da função se o campo estiver vazio
+        }
+    
+        // Verifica se nenhum botão de nível de consulta foi selecionado
+        if (!selectedButton) {
+            setTextWarning("Selecione o nível da consulta.");
+            return; // Interrompe a execução da função se nenhum botão estiver selecionado
+        }
+    
+        // Se todas as verificações passarem, procede com o agendamento
         setAgendamento({
-            ...agendamento
+           ...agendamento
         });
-
-        //fecha o modal
+    
+        // Fecha o modal
         setShowModalQuery(false);
-        //navega pra a outra tela, levando o agendamento
+    
+        // Navega para a outra tela, levando o agendamento
         navigation.replace("SelectClinic", { agendamento: agendamento });
-
-        console.log(agendamento)
+    
+        console.log(agendamento);
     };
 
     return (
@@ -63,8 +79,15 @@ export const QueryModalComponent = ({
             <QueryModal>
                 <ModalContent>
 
-                    <Title style={{ marginBottom: 30 }}>Agendar consulta</Title>
+                    <Title style={{ marginBottom: 20 }}>Agendar consulta</Title>
 
+                    <DefaultText
+                        fontSize={18}
+                        colorText={"#C81D25"}
+                        widthText={"90%"}
+                    >
+                        {textWarning}
+                    </DefaultText>
                     <TitleInput fontSize={18}>Informe a localização desejada</TitleInput>
 
                     <Input
