@@ -17,7 +17,7 @@ import ModalCamera from "../../components/Modais/CameraModal/CameraModal";
 import api from "../../service/service";
 
 
-export const ViewPrescription = ({ route }) => {
+export const ViewPrescription = ({navigation, route }) => {
     const [appointment, setAppointment] = useState({ descricao: '', diagnostico: '', medicamento: '', foto: '', nome: '', crm: '', especialidade1: '' });
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -177,6 +177,7 @@ export const ViewPrescription = ({ route }) => {
                     textAlignVertical="top"
                     editable={false}
                     multiline={true}
+                    
                     style={{ marginBottom: 12, marginTop: 20 }}
                 />
 
@@ -184,7 +185,8 @@ export const ViewPrescription = ({ route }) => {
                     colorLink={"#344F8F"}
                     fontSize={18}
                     widthLink={100}
-                    style={{ paddingBottom: 20 }}
+                    style={{ marginBottom: 40 }}
+                    onPress={() => navigation.replace("Main")}
                 >
                     Voltar
                 </Links>

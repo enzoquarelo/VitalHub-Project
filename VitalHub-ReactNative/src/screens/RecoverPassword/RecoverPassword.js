@@ -18,7 +18,7 @@ export const RecoverPassword = ({ navigation }) => {
     const [textWarning, setTextWarning] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const [email, setEmail] = useState("enzo.quarelo@gmail.com");
+    const [email, setEmail] = useState("");
 
     async function sendNotification() {
         //personalizar a mensagem da notificação
