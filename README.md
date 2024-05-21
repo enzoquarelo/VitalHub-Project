@@ -1,5 +1,5 @@
-# VitalHub
 
+# VitalHub
 VitalHub é uma aplicação destinada ao ambiente hospitalar, no cenário urbano dinâmico e contemporâneo, onde a demanda por soluções inovadoras na área da saúde se intensifica, um grupo de estudantes do curso técnico em desenvolvimento de sistemas embarcou em uma missão para transformar a experiência de pacientes e profissionais da medicina. Surgiu então o projeto "VitalHub", uma iniciativa que busca integrar médicos, pacientes e clínicas de forma inovadora.
 
 ## Tecnologias Utilizadas
@@ -27,7 +27,14 @@ VitalHub é uma aplicação destinada ao ambiente hospitalar, no cenário urbano
   - Utilizado para armazenar e gerenciar dados relacionais, como informações de usuário, consultas médicas e prontuários.
 
 ## Desenvolvedores
-Enzo Quarelo e Lucas Lacerda
+<div style="display: flex; flex-direction: wrap; justify-content: space-between; gap: 20px; padding: 20px;">
+    <a href="https://github.com/enzoquarelo" target="_blank">
+      <img src="./re" width="80px" height="80px">
+    </a>
+      <a href="https://github.com/enzoquarelo" target="_blank">
+      <img src="./readme/assets/images/colaborador - enzoquarelo.jpg" width="80px" height="80px">
+    </a>
+</div>
 
 ### Pré-requisitos
 
