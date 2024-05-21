@@ -1,0 +1,52 @@
+{
+  "name": "vitalhub",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@expo-google-fonts/montserrat-alternates": "^0.2.3",
+    "@expo-google-fonts/quicksand": "^0.2.3",
+    "@react-native-async-storage/async-storage": "^1.23.1",
+    "@react-native-community/datetimepicker": "^8.0.1",
+    "@react-navigation/bottom-tabs": "^6.5.20",
+    "@react-navigation/native": "^6.1.14",
+    "@react-navigation/native-stack": "^6.9.22",
+    "axios": "^1.6.8",
+    "base-64": "^1.0.0",
+    "date-fns": "^3.6.0",
+    "expo": "^51.0.0",
+    "expo-camera": "~15.0.4",
+    "expo-image-picker": "^15.0.4",
+    "expo-linear-gradient": "~13.0.2",
+    "expo-location": "~17.0.1",
+    "expo-media-library": "~16.0.3",
+    "expo-notifications": "^0.28.1",
+    "expo-status-bar": "~1.12.1",
+    "expo-updates": "~0.25.9",
+    "jwt-decode": "^4.0.0",
+    "lottie-react-native": "6.7.0",
+    "moment": "^2.30.1",
+    "react": "18.2.0",
+    "react-native": "0.74.1",
+    "react-native-axios": "^0.17.1",
+    "react-native-calendar-strip": "^2.2.6",
+    "react-native-calendars": "^1.1304.1",
+    "react-native-camera": "^4.2.1",
+    "react-native-datepicker": "^1.7.2",
+    "react-native-dropdown-select-list": "^2.0.5",
+    "react-native-maps": "1.14.0",
+    "react-native-maps-directions": "^1.9.0",
+    "react-native-mask-input": "^1.2.3",
+    "react-native-masked-text": "^1.13.0",
+    "styled-components": "^6.1.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0"
+  },
+  "private": true
+}
