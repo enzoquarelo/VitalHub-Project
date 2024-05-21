@@ -28,11 +28,11 @@ VitalHub é uma aplicação destinada ao ambiente hospitalar, no cenário urbano
 
 ## Desenvolvedores
 <div style="display: flex; flex-direction: wrap; justify-content: space-between; gap: 20px; padding: 20px;">
-    <a href="https://github.com/enzoquarelo" target="_blank">
-      <img src="./Readme.assets/enzoquarelo" width="80px" height="80px">
+    <a href="https://www.linkedin.com/in/enzo-quarelo-0819bb235/" target="_blank">
+      <img src="./Readme.assets/enzoquarelo.png" width="80px" height="80px">
     </a>
-      <a href="https://github.com/enzoquarelo" target="_blank">
-      <img src="./Readme.assets/lucaslacerda" width="80px" height="80px">
+    <a href="https://www.linkedin.com/in/lucasribeirolacerda/" target="_blank">
+      <img src="./Readme.assets/lucaslacerda.png" width="80px" height="80px">
     </a>
 </div>
 
